@@ -54,53 +54,60 @@ export default function Home() {
     reader.readAsText(file);
   };
 
-  useEffect(() => {
-    const fetchFilmData = async () => {
-      if (films.length === 0) {
-        setDisplayFilms([]);
-        return;
-      }
-      
-      const bearerToken = process.env.NEXT_PUBLIC_TMDB_BEARER_TOKEN;
-      if (!bearerToken) {
-        console.log('Missing TMDB Bearer token.');
-        return;
-      }
+ useEffect(() => {
+  const fetchFilmData = async () => {
+    if (films.length === 0) {
+      setDisplayFilms([]);
+      return;
+    }
 
-      setLoading(true);
-      const results = await Promise.all(films.map(async (film) => {
-        const query = encodeURIComponent(film.name);
-        const url = `https://api.themoviedb.org/3/search/movie?query=${query}`;
-        try {
-          const res = await fetch(url, {
-            method: 'GET',
-            headers: {
-              accept: 'application/json',
-              Authorization: `Bearer ${bearerToken}`
-            }
-          });
-          if (!res.ok) {
-            console.log('TMDb fetch failed:', res.statusText);
-            return film;
-          }
-          const json = await res.json();
-          console.log('TMDb search result for', film.name, json);
-          const movie = json.results && json.results.length > 0 ? json.results[0] : null;
-          return {
-            ...film,
-            posterPath: movie && movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : undefined,
-            overview: movie?.overview
-          };
-        } catch (err) {
-          console.log('Error fetching TMDb data:', err);
-          return film;
+    const bearerToken = process.env.NEXT_PUBLIC_TMDB_BEARER_TOKEN;
+    if (!bearerToken) {
+      console.log('Missing TMDB Bearer token.');
+      return;
+    }
+
+    setLoading(true);
+    const results = await Promise.all(films.map(async (film) => {
+      const query = encodeURIComponent(film.name);
+      const url = `https://api.themoviedb.org/3/search/movie?query=${query}&year=${film.year}`;
+
+      try {
+        const res = await fetch(url, {
+          method: 'GET',
+          headers: {
+            accept: 'application/json',
+            Authorization: `Bearer ${bearerToken}`,
+          },
+        });
+
+        if (!res.ok) {
+          console.log(`TMDB fetch failed for "${film.name}": ${res.statusText}`);
+          return { ...film };
         }
-      }));
-      setDisplayFilms(results);
-      setLoading(false);
-    };
-    fetchFilmData();
-  }, [films]);
+
+        const json = await res.json();
+        const movie = json.results?.find(
+          (m) => m.title.toLowerCase() === film.name.toLowerCase() && `${m.release_date}`.startsWith(film.year)
+        );
+
+        return {
+          ...film,
+          posterPath: movie?.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : undefined,
+          overview: movie?.overview,
+        };
+      } catch (err) {
+        console.log(`Error fetching TMDB data for "${film.name}":`, err);
+        return { ...film };
+      }
+    }));
+
+    setDisplayFilms(results);
+    setLoading(false);
+  };
+
+  fetchFilmData();
+}, [films]);
 
   return (
     <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
