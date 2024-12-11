@@ -36,7 +36,7 @@ export default function Home() {
       const ratingIndex = headers.indexOf('Rating');
 
       if (nameIndex === -1 || yearIndex === -1 || ratingIndex === -1) {
-        console.log('CSV missing required headers. Must have Name, Year, Rating.');
+        console.log('CSV missing required headers: Name, Year, Rating.');
         return;
       }
 
@@ -60,18 +60,24 @@ export default function Home() {
         return;
       }
       
-      const apiKey = process.env.TMDB_API_KEY;
-      if (!apiKey) {
-        console.log('Missing TMDB API key.');
+      const bearerToken = process.env.NEXT_PUBLIC_TMDB_BEARER_TOKEN;
+      if (!bearerToken) {
+        console.log('Missing TMDB Bearer token.');
         return;
       }
 
       const results = await Promise.all(films.map(async (film) => {
         const query = encodeURIComponent(film.name);
         const year = encodeURIComponent(film.year);
-        const url = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${query}&year=${year}`;
+        const url = `https://api.themoviedb.org/3/search/movie?query=${query}&year=${year}`;
         try {
-          const res = await fetch(url);
+          const res = await fetch(url, {
+            method: 'GET',
+            headers: {
+              accept: 'application/json',
+              Authorization: `Bearer ${bearerToken}`
+            }
+          });
           if (!res.ok) {
             console.log('TMDb fetch failed:', res.statusText);
             return film;
