@@ -38,20 +38,27 @@ export const fetchMovie = async (query: string, year?: string) => {
     ? `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(query)}&year=${year}`
     : `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(query)}`;
 
-  const res = await fetch(url, {
-    method: 'GET',
-    headers: {
-      accept: 'application/json',
-      Authorization: `Bearer ${TMDB_API_KEY}`,
-    },
-  });
+  try {
+    const res = await fetch(url, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        Authorization: `Bearer ${TMDB_API_KEY}`, // Correct Authorization format
+      },
+    });
 
-  if (!res.ok) {
-    throw new Error(`TMDB fetch failed: ${res.statusText}`);
+    if (!res.ok) {
+      console.error(`TMDB fetch failed: ${res.status} - ${res.statusText}`);
+      throw new Error(`TMDB fetch failed: ${res.status} - ${res.statusText}`);
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error('Error in fetchMovie:', error);
+    throw error;
   }
-
-  return await res.json();
 };
+
 
 
 
@@ -119,6 +126,10 @@ useEffect(() => {
               m.release_date?.startsWith(film.year)
           );
 
+          if (!movie) {
+            console.warn(`No match found for "${film.name}"`);
+          }
+
           return {
             ...film,
             posterPath: movie?.poster_path
@@ -127,8 +138,11 @@ useEffect(() => {
             overview: movie?.overview,
           };
         } catch (error) {
-          console.log(`Error fetching TMDB data for "${film.name}":`, error);
-          return film;
+          console.error(`Error fetching TMDB data for "${film.name}":`, error);
+          return {
+            ...film,
+            overview: `Error fetching data for "${film.name}"`,
+          };
         }
       })
     );
