@@ -17,7 +17,8 @@ type FilmDisplayData = {
 export default function Home() {
   const [films, setFilms] = useState<FilmData[]>([]);
   const [displayFilms, setDisplayFilms] = useState<FilmDisplayData[]>([]);
-  
+  const [loading, setLoading] = useState(false);
+
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -66,10 +67,10 @@ export default function Home() {
         return;
       }
 
+      setLoading(true);
       const results = await Promise.all(films.map(async (film) => {
         const query = encodeURIComponent(film.name);
-        const year = encodeURIComponent(film.year);
-        const url = `https://api.themoviedb.org/3/search/movie?query=${query}&year=${year}`;
+        const url = `https://api.themoviedb.org/3/search/movie?query=${query}`;
         try {
           const res = await fetch(url, {
             method: 'GET',
@@ -83,10 +84,11 @@ export default function Home() {
             return film;
           }
           const json = await res.json();
+          console.log('TMDb search result for', film.name, json);
           const movie = json.results && json.results.length > 0 ? json.results[0] : null;
           return {
             ...film,
-            posterPath: movie ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : undefined,
+            posterPath: movie && movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : undefined,
             overview: movie?.overview
           };
         } catch (err) {
@@ -94,8 +96,8 @@ export default function Home() {
           return film;
         }
       }));
-      console.log('Display films:', results);
       setDisplayFilms(results);
+      setLoading(false);
     };
     fetchFilmData();
   }, [films]);
@@ -105,18 +107,33 @@ export default function Home() {
       <h1>My Top Films</h1>
       <p>Upload CSV (with Name, Year, Rating):</p>
       <input type="file" accept=".csv" onChange={handleFileUpload} />
-      {displayFilms.length > 0 ? (
+
+      {loading && <p>Loading film data...</p>}
+
+      {!loading && displayFilms.length > 0 && (
         <ul style={{ marginTop: '20px', listStyle: 'none', padding: 0 }}>
           {displayFilms.map((f, i) => (
             <li key={i} style={{ marginBottom: '20px' }}>
               <strong>{f.name}, {f.year} - {f.rating}</strong><br />
-              {f.posterPath && <img src={f.posterPath} alt={f.name} style={{ width: '100px', display: 'block', marginTop: '10px' }} />}
+              {f.posterPath && (
+                <img 
+                  src={f.posterPath} 
+                  alt={f.name} 
+                  style={{ width: '100px', display: 'block', marginTop: '10px' }} 
+                />
+              )}
               {f.overview && <p style={{ maxWidth: '400px' }}>{f.overview}</p>}
             </li>
           ))}
         </ul>
-      ) : (
-        films.length > 0 ? <p>No matches found in TMDb.</p> : <p>Upload a file with some 5-star films to see results.</p>
+      )}
+
+      {!loading && films.length > 0 && displayFilms.every(f => !f.posterPath && !f.overview) && (
+        <p>No matches found in TMDb or no posters available.</p>
+      )}
+
+      {!loading && films.length === 0 && (
+        <p>Upload a file with some 5-star films to see results.</p>
       )}
     </div>
   );
