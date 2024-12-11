@@ -14,6 +14,18 @@ type FilmDisplayData = {
   overview?: string;
 };
 
+type TMDBMovie = {
+  title: string;
+  release_date: string;
+  poster_path?: string;
+  overview?: string;
+};
+
+type TMDBResponse = {
+  results: TMDBMovie[];
+};
+
+
 export default function Home() {
   const [films, setFilms] = useState<FilmData[]>([]);
   const [displayFilms, setDisplayFilms] = useState<FilmDisplayData[]>([]);
@@ -54,7 +66,7 @@ export default function Home() {
     reader.readAsText(file);
   };
 
- useEffect(() => {
+useEffect(() => {
   const fetchFilmData = async () => {
     if (films.length === 0) {
       setDisplayFilms([]);
@@ -86,9 +98,11 @@ export default function Home() {
           return { ...film };
         }
 
-        const json = await res.json();
+        const json = (await res.json()) as TMDBResponse;
         const movie = json.results?.find(
-          (m) => m.title.toLowerCase() === film.name.toLowerCase() && `${m.release_date}`.startsWith(film.year)
+          (m: TMDBMovie) =>
+            m.title.toLowerCase() === film.name.toLowerCase() &&
+            `${m.release_date}`.startsWith(film.year)
         );
 
         return {
@@ -108,6 +122,7 @@ export default function Home() {
 
   fetchFilmData();
 }, [films]);
+
 
   return (
     <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
