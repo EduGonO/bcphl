@@ -26,6 +26,41 @@ type TMDBResponse = {
 };
 
 
+
+
+
+
+
+const TMDB_API_KEY = 'af88d6dada5f10dd6fbc046537d3d6ce'; // Replace with actual key
+
+export const fetchMovie = async (query: string, year?: string) => {
+  const url = year
+    ? `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(query)}&year=${year}`
+    : `https://api.themoviedb.org/3/search/movie?query=${encodeURIComponent(query)}`;
+
+  const res = await fetch(url, {
+    method: 'GET',
+    headers: {
+      accept: 'application/json',
+      Authorization: `Bearer ${TMDB_API_KEY}`,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error(`TMDB fetch failed: ${res.statusText}`);
+  }
+
+  return await res.json();
+};
+
+
+
+
+
+
+
+
+
 export default function Home() {
   const [films, setFilms] = useState<FilmData[]>([]);
   const [displayFilms, setDisplayFilms] = useState<FilmDisplayData[]>([]);
@@ -73,60 +108,30 @@ useEffect(() => {
       return;
     }
 
-    const bearerToken = process.env.NEXT_PUBLIC_TMDB_BEARER_TOKEN;
-    if (!bearerToken) {
-      console.log('Missing TMDB Bearer token.');
-      return;
-    }
-
     setLoading(true);
-    const results = await Promise.all(films.map(async (film) => {
-      const query = encodeURIComponent(film.name);
-      const url = film.year
-        ? `https://api.themoviedb.org/3/search/movie?query=${query}&year=${film.year}`
-        : `https://api.themoviedb.org/3/search/movie?query=${query}`;
+    const results = await Promise.all(
+      films.map(async (film) => {
+        try {
+          const data = await fetchMovie(film.name, film.year);
+          const movie = data.results?.find(
+            (m: TMDBMovie) =>
+              m.title.toLowerCase().includes(film.name.toLowerCase()) &&
+              m.release_date?.startsWith(film.year)
+          );
 
-      try {
-        const res = await fetch(url, {
-          method: 'GET',
-          headers: {
-            accept: 'application/json',
-            Authorization: `Bearer ${bearerToken}`,
-          },
-        });
-
-        if (!res.ok) {
-          console.log(`TMDB fetch failed for "${film.name}": ${res.statusText}`);
-          return { ...film };
-        }
-
-        const json = (await res.json()) as TMDBResponse;
-        console.log('Raw TMDB response for', film.name, json);
-
-        const movie = json.results?.find(
-          (m: TMDBMovie) =>
-            m.title.toLowerCase().includes(film.name.toLowerCase()) &&
-            m.release_date?.startsWith(film.year)
-        );
-
-        if (!movie) {
-          console.log(`No match found for "${film.name}" (${film.year})`);
           return {
             ...film,
-            overview: `No match found for "${film.name}" (${film.year})`,
+            posterPath: movie?.poster_path
+              ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+              : undefined,
+            overview: movie?.overview,
           };
+        } catch (error) {
+          console.log(`Error fetching TMDB data for "${film.name}":`, error);
+          return film;
         }
-
-        return {
-          ...film,
-          posterPath: movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : undefined,
-          overview: movie.overview,
-        };
-      } catch (err) {
-        console.log(`Error fetching TMDB data for "${film.name}":`, err);
-        return { ...film };
-      }
-    }));
+      })
+    );
 
     setDisplayFilms(results);
     setLoading(false);
