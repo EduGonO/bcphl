@@ -82,7 +82,9 @@ useEffect(() => {
     setLoading(true);
     const results = await Promise.all(films.map(async (film) => {
       const query = encodeURIComponent(film.name);
-      const url = `https://api.themoviedb.org/3/search/movie?query=${query}&year=${film.year}`;
+      const url = film.year
+        ? `https://api.themoviedb.org/3/search/movie?query=${query}&year=${film.year}`
+        : `https://api.themoviedb.org/3/search/movie?query=${query}`;
 
       try {
         const res = await fetch(url, {
@@ -99,16 +101,26 @@ useEffect(() => {
         }
 
         const json = (await res.json()) as TMDBResponse;
+        console.log('Raw TMDB response for', film.name, json);
+
         const movie = json.results?.find(
           (m: TMDBMovie) =>
-            m.title.toLowerCase() === film.name.toLowerCase() &&
-            `${m.release_date}`.startsWith(film.year)
+            m.title.toLowerCase().includes(film.name.toLowerCase()) &&
+            m.release_date?.startsWith(film.year)
         );
+
+        if (!movie) {
+          console.log(`No match found for "${film.name}" (${film.year})`);
+          return {
+            ...film,
+            overview: `No match found for "${film.name}" (${film.year})`,
+          };
+        }
 
         return {
           ...film,
-          posterPath: movie?.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : undefined,
-          overview: movie?.overview,
+          posterPath: movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : undefined,
+          overview: movie.overview,
         };
       } catch (err) {
         console.log(`Error fetching TMDB data for "${film.name}":`, err);
