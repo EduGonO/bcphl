@@ -42,8 +42,8 @@ export const fetchMovie = async (query: string, year?: string) => {
     const res = await fetch(url, {
       method: 'GET',
       headers: {
-        Accept: 'application/json',
-        Authorization: `Bearer ${TMDB_API_KEY}`, // Correct Authorization format
+        accept: 'application/json',
+        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZjg4ZDZkYWRhNWYxMGRkNmZiYzA0NjUzN2QzZDZjZSIsIm5iZiI6MTU4NzM0NzE1NC4xMjksInN1YiI6IjVlOWNmZWQyYTUwNDZlMDAxZjk5ZDE3MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.hGgzgFEPIVIrbQ7DbMLNq5ll6RtjHQsvR4tJNJJarlc', // Replace with your Bearer token
       },
     });
 
