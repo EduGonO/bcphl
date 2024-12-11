@@ -1,23 +1,25 @@
 import React, { useState } from 'react';
-import Papa from 'papaparse';
 
 export default function Home() {
   const [data, setData] = useState<string[][]>([]);
-  
+
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files?.[0]) return;
-    const file = e.target.files[0];
-    Papa.parse(file, {
-      complete: (results: Papa.ParseResult<string[]>) => {
-        setData(results.data);
-      }
-    });
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const text = reader.result as string;
+      const lines = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+      const parsed = lines.map(line => line.split(','));
+      setData(parsed);
+    };
+    reader.readAsText(file);
   };
 
   return (
     <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
       <h1>My Movie Data</h1>
-      <p>Upload your CSV file to view data:</p>
+      <p>Upload your CSV file:</p>
       <input type="file" accept=".csv" onChange={handleFileUpload} />
       {data.length > 0 && (
         <table style={{ marginTop: '20px', borderCollapse: 'collapse' }}>
