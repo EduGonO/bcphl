@@ -12,6 +12,8 @@ type FilmDisplayData = {
   rating: string;
   posterPath?: string;
   overview?: string;
+  x: number;
+  y: number;
 };
 
 type TMDBMovie = {
@@ -66,7 +68,24 @@ export const fetchMovie = async (query: string, year?: string) => {
 
 
 
+const classifyFilm = (film: string): { x: number; y: number } => {
+  // Basic classification logic based on keywords
+  const lowerName = film.toLowerCase();
 
+  const x = lowerName.includes('inception') || lowerName.includes('memento')
+    ? 0.3 // Non-linear
+    : lowerName.includes('transformers') || lowerName.includes('marvel')
+    ? 0.8 // Linear
+    : 0.5; // Neutral
+
+  const y = lowerName.includes('kubrick') || lowerName.includes('bergman')
+    ? 0.8 // Artistic
+    : lowerName.includes('blockbuster') || lowerName.includes('disney')
+    ? 0.2 // Commercial
+    : 0.5; // Neutral
+
+  return { x, y };
+};
 
 export default function Home() {
   const [films, setFilms] = useState<FilmData[]>([]);
@@ -79,10 +98,6 @@ export default function Home() {
     const reader = new FileReader();
     reader.onload = () => {
       const text = (reader.result as string).trim();
-      if (!text) {
-        console.log('No file content.');
-        return;
-      }
       const lines = text.split('\n').map(line => line.trim()).filter(line => line.length > 0);
       const data = lines.map(line => line.split(',').map(cell => cell.trim()));
       const headers = data[0];
@@ -98,62 +113,55 @@ export default function Home() {
       const allFilms = data.slice(1).map(row => ({
         name: row[nameIndex],
         year: row[yearIndex],
-        rating: row[ratingIndex]
+        rating: row[ratingIndex],
       }));
 
       const bestFilms = allFilms.filter(f => f.rating === '5');
-      console.log('Best films:', bestFilms);
       setFilms(bestFilms);
     };
     reader.readAsText(file);
   };
 
-useEffect(() => {
-  const fetchFilmData = async () => {
-    if (films.length === 0) {
-      setDisplayFilms([]);
-      return;
-    }
+  useEffect(() => {
+    const fetchFilmData = async () => {
+      if (films.length === 0) {
+        setDisplayFilms([]);
+        return;
+      }
 
-    setLoading(true);
-    const results = await Promise.all(
-      films.map(async (film) => {
-        try {
-          const data = await fetchMovie(film.name, film.year);
-          const movie = data.results?.find(
-            (m: TMDBMovie) =>
-              m.title.toLowerCase().includes(film.name.toLowerCase()) &&
-              m.release_date?.startsWith(film.year)
-          );
+      setLoading(true);
+      const results = await Promise.all(
+        films.map(async (film) => {
+          try {
+            const data = await fetchMovie(film.name, film.year);
+            const movie = data.results?.[0];
+            const { x, y } = classifyFilm(film.name);
 
-          if (!movie) {
-            console.warn(`No match found for "${film.name}"`);
+            return {
+              ...film,
+              posterPath: movie?.poster_path
+                ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+                : undefined,
+              overview: movie?.overview,
+              x,
+              y,
+            };
+          } catch (error) {
+            return {
+              ...film,
+              x: 0.5,
+              y: 0.5,
+            };
           }
+        })
+      );
 
-          return {
-            ...film,
-            posterPath: movie?.poster_path
-              ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-              : undefined,
-            overview: movie?.overview,
-          };
-        } catch (error) {
-          console.error(`Error fetching TMDB data for "${film.name}":`, error);
-          return {
-            ...film,
-            overview: `Error fetching data for "${film.name}"`,
-          };
-        }
-      })
-    );
+      setDisplayFilms(results);
+      setLoading(false);
+    };
 
-    setDisplayFilms(results);
-    setLoading(false);
-  };
-
-  fetchFilmData();
-}, [films]);
-
+    fetchFilmData();
+  }, [films]);
 
   return (
     <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
@@ -163,26 +171,30 @@ useEffect(() => {
 
       {loading && <p>Loading film data...</p>}
 
-      {!loading && displayFilms.length > 0 && (
-        <ul style={{ marginTop: '20px', listStyle: 'none', padding: 0 }}>
-          {displayFilms.map((f, i) => (
-            <li key={i} style={{ marginBottom: '20px' }}>
-              <strong>{f.name}, {f.year} - {f.rating}</strong><br />
-              {f.posterPath && (
-                <img 
-                  src={f.posterPath} 
-                  alt={f.name} 
-                  style={{ width: '100px', display: 'block', marginTop: '10px' }} 
-                />
-              )}
-              {f.overview && <p style={{ maxWidth: '400px' }}>{f.overview}</p>}
-            </li>
+      {!loading && (
+        <div style={{ position: 'relative', width: '500px', height: '500px', border: '1px solid #ccc', margin: '20px auto' }}>
+          {displayFilms.map((film, i) => (
+            <div
+              key={i}
+              title={`${film.name} (${film.year})`}
+              style={{
+                position: 'absolute',
+                left: `${film.x * 100}%`,
+                bottom: `${film.y * 100}%`,
+                transform: 'translate(-50%, 50%)',
+                width: '50px',
+                height: '75px',
+                backgroundImage: `url(${film.posterPath})`,
+                backgroundSize: 'cover',
+                border: '1px solid #000',
+              }}
+            ></div>
           ))}
-        </ul>
+        </div>
       )}
 
-      {!loading && films.length > 0 && displayFilms.every(f => !f.posterPath && !f.overview) && (
-        <p>No matches found in TMDb or no posters available.</p>
+      {!loading && films.length > 0 && displayFilms.every(f => !f.posterPath) && (
+        <p>No posters available.</p>
       )}
 
       {!loading && films.length === 0 && (
