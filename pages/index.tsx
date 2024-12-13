@@ -21,6 +21,8 @@ type TMDBMovie = {
   release_date: string;
   poster_path?: string;
   overview?: string;
+  genres?: { id: number; name: string }[];
+  vote_average?: number;
 };
 
 type TMDBResponse = {
