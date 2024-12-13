@@ -72,17 +72,18 @@ const fetchMovieDetails = async (movieId: number): Promise<TMDBMovie> => {
       method: 'GET',
       headers: {
         accept: 'application/json',
-        Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZjg4ZDZkYWRhNWYxMGRkNmZiYzA0NjUzN2QzZDZjZSIsIm5iZiI6MTU4NzM0NzE1NC4xMjksInN1YiI6IjVlOWNmZWQyYTUwNDZlMDAxZjk5ZDE3MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.hGgzgFEPIVIrbQ7DbMLNq5ll6RtjHQsvR4tJNJJarlc', // Replace with your Bearer token
+        Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZjg4ZDZkYWRhNWYxMGRkNmZiYzA0NjUzN2QzZDZjZSIsIm5iZiI6MTU4NzM0NzE1NC4xMjksInN1YiI6IjVlOWNmZWQyYTUwNDZlMDAxZjk5ZDE3MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.hGgzgFEPIVIrbQ7DbMLNq5ll6RtjHQsvR4tJNJJarlc', // Replace with your Bearer token
       },
     });
 
     if (!res.ok) {
-      throw new Error(`TMDB movie details fetch failed: ${res.status} - ${res.statusText}`);
+      console.error(`TMDB fetch failed: ${res.status} - ${res.statusText}`);
+      throw new Error(`TMDB fetch failed: ${res.status} - ${res.statusText}`);
     }
 
     return await res.json();
   } catch (error) {
-    console.error('Error fetching TMDB movie details:', error);
+    console.error('Error in TMDB:', error);
     throw error;
   }
 };
@@ -240,16 +241,20 @@ export default function Home() {
   }, [films]);
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'sans-serif' }}>
-      <h1>My Top Films</h1>
-      <p>Upload CSV (with Name, Year, Rating):</p>
-      <input type="file" accept=".csv" onChange={handleFileUpload} />
+    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif', lineHeight: '1.5' }}>
+      <h1 style={{ textAlign: 'center', fontSize: '24px', fontWeight: 'bold', marginBottom: '20px' }}>My Top Films</h1>
+      <input 
+        type="file" 
+        accept=".csv" 
+        onChange={handleFileUpload} 
+        style={{ display: 'block', margin: '0 auto 20px auto', padding: '10px', fontSize: '14px' }}
+      />
 
-      {loading && <p>Loading film data...</p>}
+      {loading && <p style={{ textAlign: 'center', fontSize: '16px' }}>Loading film data...</p>}
 
       {!loading && (
         <>
-          <div style={{ position: 'relative', width: '500px', height: '500px', border: '1px solid #ccc', margin: '20px auto' }}>
+          <div style={{ position: 'relative', width: '500px', height: '500px', border: '1px solid #ccc', margin: '20px auto', borderRadius: '8px' }}>
             {displayFilms.map((film, i) => (
               <div
                 key={i}
@@ -263,27 +268,42 @@ export default function Home() {
                   height: '75px',
                   backgroundImage: `url(${film.posterPath})`,
                   backgroundSize: 'cover',
-                  border: '1px solid #000',
+                  backgroundColor: '#f0f0f0',
+                  borderRadius: '4px',
+                  border: '1px solid #ddd',
+                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
                 }}
               ></div>
             ))}
           </div>
 
-          <ul style={{ marginTop: '20px', listStyle: 'none', padding: 0 }}>
+          <ul style={{ marginTop: '30px', padding: '0', maxWidth: '600px', margin: '30px auto', listStyle: 'none' }}>
             {displayFilms.map((film, i) => (
-              <li key={i} style={{ marginBottom: '20px' }}>
-                <strong>{film.name}, {film.year} - {film.rating}</strong>
+              <li 
+                key={i} 
+                style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  padding: '15px', 
+                  marginBottom: '10px', 
+                  background: '#fff', 
+                  borderRadius: '8px', 
+                  boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)' 
+                }}
+              >
                 {film.posterPath && (
                   <img 
                     src={film.posterPath} 
                     alt={film.name} 
-                    style={{ width: '50px', marginLeft: '10px' }} 
+                    style={{ width: '50px', height: '75px', borderRadius: '4px', marginRight: '15px' }}
                   />
                 )}
-                <p>Genres: {film.genres?.map(g => g.name).join(', ') || 'N/A'}</p>
-                <p>Vote Average: {film.vote_average || 'N/A'} (Votes: {film.vote_count || 'N/A'})</p>
-                <p>Overview: {film.overview || 'No overview available.'}</p>
-                <p>X: {film.x.toFixed(2)}, Y: {film.y.toFixed(2)}</p>
+                <div>
+                  <h3 style={{ fontSize: '18px', fontWeight: 'bold', margin: '0 0 5px 0' }}>{film.name} ({film.year})</h3>
+                  <p style={{ margin: '0', color: '#555', fontSize: '14px' }}><strong>Genres:</strong> {film.genres?.map(g => g.name).join(', ') || 'N/A'}</p>
+                  <p style={{ margin: '0', color: '#555', fontSize: '14px' }}><strong>Rating:</strong> {film.vote_average || 'N/A'} ({film.vote_count || 'N/A'} votes)</p>
+                  <p style={{ margin: '0', color: '#777', fontSize: '12px', marginTop: '5px' }}><strong>X:</strong> {film.x.toFixed(2)}, <strong>Y:</strong> {film.y.toFixed(2)}</p>
+                </div>
               </li>
             ))}
           </ul>
@@ -291,11 +311,11 @@ export default function Home() {
       )}
 
       {!loading && films.length > 0 && displayFilms.every(f => !f.posterPath) && (
-        <p>No posters available.</p>
+        <p style={{ textAlign: 'center', fontSize: '16px' }}>No posters available.</p>
       )}
 
       {!loading && films.length === 0 && (
-        <p>Upload a file with some 5-star films to see results.</p>
+        <p style={{ textAlign: 'center', fontSize: '16px' }}>Upload a file with some 5-star films to see results.</p>
       )}
     </div>
   );
