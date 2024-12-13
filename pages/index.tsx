@@ -196,29 +196,62 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const fetchFilmData = async () => {
-      if (films.length === 0) {
-        setDisplayFilms([]);
-        return;
-      }
+  const fetchFilmData = async () => {
+    if (films.length === 0) {
+      setDisplayFilms([]);
+      return;
+    }
 
-      setLoading(true);
-      const results = films.map(film => ({
-        ...film,
-        posterPath: '',
-        overview: '',
-        genres: [],
-        vote_average: 0,
-        vote_count: 0,
-        x: Math.random(),
-        y: Math.random(),
-      }));
-      setDisplayFilms(results);
-      setLoading(false);
-    };
+    setLoading(true);
+    const results = await Promise.all(
+      films.map(async (film) => {
+        try {
+          const data = await fetchMovie(film.name, film.year);
+          const movie = data.results?.[0];
 
-    fetchFilmData();
-  }, [films]);
+          if (!movie) {
+            return {
+              ...film,
+              x: 0.5,
+              y: 0.5,
+              posterPath: undefined,
+              overview: 'No details available',
+            };
+          }
+
+          const detailedMovie = await fetchMovieDetails(movie.id);
+          const { x, y } = await classifyFilm(detailedMovie);
+
+          return {
+            ...film,
+            posterPath: movie.poster_path
+              ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
+              : undefined,
+            overview: movie.overview,
+            genres: detailedMovie.genres,
+            vote_average: detailedMovie.vote_average,
+            vote_count: detailedMovie.vote_count,
+            x,
+            y,
+          };
+        } catch (error) {
+          console.error(`Error fetching data for film: ${film.name}`, error);
+          return {
+            ...film,
+            x: 0.5,
+            y: 0.5,
+          };
+        }
+      })
+    );
+
+    setDisplayFilms(results);
+    setLoading(false);
+  };
+
+  fetchFilmData();
+}, [films]);
+
 
   return (
     <div style={{ display: 'grid', gridTemplateColumns: '3fr 2fr', height: '100vh', fontFamily: 'Arial, sans-serif' }}>
