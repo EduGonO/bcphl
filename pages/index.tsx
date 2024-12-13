@@ -27,6 +27,7 @@ type TMDBMovie = {
   genres?: { id: number; name: string }[];
   vote_average?: number;
   vote_count?: number;
+  genre_ids?: number[];
 };
 
 type TMDBResponse = {
@@ -63,9 +64,28 @@ export const fetchMovie = async (query: string, year?: string) => {
 };
 
 
+const fetchMovieDetails = async (movieId: number): Promise<TMDBMovie> => {
+  const url = `https://api.themoviedb.org/3/movie/${movieId}`;
 
+  try {
+    const res = await fetch(url, {
+      method: 'GET',
+      headers: {
+        accept: 'application/json',
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhZjg4ZDZkYWRhNWYxMGRkNmZiYzA0NjUzN2QzZDZjZSIsIm5iZiI6MTU4NzM0NzE1NC4xMjksInN1YiI6IjVlOWNmZWQyYTUwNDZlMDAxZjk5ZDE3MCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.hGgzgFEPIVIrbQ7DbMLNq5ll6RtjHQsvR4tJNJJarlc', // Replace with your Bearer token
+      },
+    });
 
+    if (!res.ok) {
+      throw new Error(`TMDB movie details fetch failed: ${res.status} - ${res.statusText}`);
+    }
 
+    return await res.json();
+  } catch (error) {
+    console.error('Error fetching TMDB movie details:', error);
+    throw error;
+  }
+};
 
 const fetchWikipediaData = async (filmName: string): Promise<{ x: number; y: number }> => {
   try {
@@ -108,29 +128,36 @@ const classifyFilm = async (movie: TMDBMovie): Promise<{ x: number; y: number }>
   let x = 0.5; // Default narrative complexity
   let y = 0.5; // Default artistic intent
 
-  // Use TMDB data if available
-  if (movie.genres) {
-    const genreNames = movie.genres.map(g => g.name.toLowerCase());
-    if (genreNames.includes('science fiction') || genreNames.includes('mystery') || genreNames.includes('drama')) {
-      x = 0.3; // More complex narratives
+  try {
+    // Fetch detailed data for more accurate genre classification
+    const detailedMovie = movie.id ? await fetchMovieDetails(movie.id) : movie;
+
+    if (detailedMovie.genres) {
+      const genreNames = detailedMovie.genres.map(g => g.name.toLowerCase());
+      if (genreNames.includes('science fiction') || genreNames.includes('mystery') || genreNames.includes('drama')) {
+        x = 0.3; // More complex narratives
+      }
+      if (genreNames.includes('action') || genreNames.includes('comedy')) {
+        x = 0.7; // Simpler narratives
+      }
     }
-    if (genreNames.includes('action') || genreNames.includes('comedy')) {
-      x = 0.7; // Simpler narratives
+
+    if (detailedMovie.vote_average !== undefined) {
+      y = detailedMovie.vote_average > 7 ? 0.8 : 0.4; // Higher ratings imply more artistic intent
     }
-  }
 
-  if (movie.vote_average !== undefined) {
-    y = movie.vote_average > 7 ? 0.8 : 0.4; // Higher ratings imply more artistic intent
-  }
+    if (detailedMovie.overview && detailedMovie.overview.toLowerCase().includes('experimental')) {
+      x = 0.2;
+      y = 0.9;
+    }
 
-  if (movie.overview && movie.overview.toLowerCase().includes('experimental')) {
-    x = 0.2;
-    y = 0.9;
+    // Supplement with Wikipedia data
+    const wikipediaData = await fetchWikipediaData(detailedMovie.title);
+    return { x: (x + wikipediaData.x) / 2, y: (y + wikipediaData.y) / 2 };
+  } catch (error) {
+    console.error(`Error in classifyFilm for "${movie.title}":`, error);
+    return { x, y };
   }
-
-  // Supplement with Wikipedia data
-  const wikipediaData = await fetchWikipediaData(movie.title);
-  return { x: (x + wikipediaData.x) / 2, y: (y + wikipediaData.y) / 2 };
 };
 
 export default function Home() {
