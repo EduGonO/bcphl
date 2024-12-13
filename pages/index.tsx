@@ -20,6 +20,7 @@ type FilmDisplayData = {
 };
 
 type TMDBMovie = {
+  id: number;
   title: string;
   release_date: string;
   poster_path?: string;
@@ -27,7 +28,6 @@ type TMDBMovie = {
   genres?: { id: number; name: string }[];
   vote_average?: number;
   vote_count?: number;
-  genre_ids?: number[];
 };
 
 type TMDBResponse = {
@@ -131,7 +131,7 @@ const classifyFilm = async (movie: TMDBMovie): Promise<{ x: number; y: number }>
 
   try {
     // Fetch detailed data for more accurate genre classification
-    const detailedMovie = movie.id ? await fetchMovieDetails(movie.id) : movie;
+    const detailedMovie = await fetchMovieDetails(movie.id);
 
     if (detailedMovie.genres) {
       const genreNames = detailedMovie.genres.map(g => g.name.toLowerCase());
