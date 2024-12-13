@@ -190,8 +190,7 @@ export default function Home() {
         rating: row[ratingIndex],
       }));
 
-      const bestFilms = allFilms.filter(f => f.rating === '5');
-      setFilms(bestFilms);
+      setFilms(allFilms.filter(f => f.rating === '5'));
     };
     reader.readAsText(file);
   };
@@ -204,35 +203,16 @@ export default function Home() {
       }
 
       setLoading(true);
-      const results = await Promise.all(
-        films.map(async (film) => {
-          try {
-            const data = await fetchMovie(film.name, film.year);
-            const movie = data.results?.[0];
-            const { x, y } = movie ? await classifyFilm(movie) : { x: 0.5, y: 0.5 };
-
-            return {
-              ...film,
-              posterPath: movie?.poster_path
-                ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
-                : undefined,
-              overview: movie?.overview,
-              genres: movie?.genres,
-              vote_average: movie?.vote_average,
-              vote_count: movie?.vote_count,
-              x,
-              y,
-            };
-          } catch (error) {
-            return {
-              ...film,
-              x: 0.5,
-              y: 0.5,
-            };
-          }
-        })
-      );
-
+      const results = films.map(film => ({
+        ...film,
+        posterPath: '',
+        overview: '',
+        genres: [],
+        vote_average: 0,
+        vote_count: 0,
+        x: Math.random(),
+        y: Math.random(),
+      }));
       setDisplayFilms(results);
       setLoading(false);
     };
@@ -241,10 +221,10 @@ export default function Home() {
   }, [films]);
 
   return (
-    <div style={{ display: 'flex', height: '100vh', fontFamily: 'Arial, sans-serif' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: '3fr 2fr', height: '100vh', fontFamily: 'Arial, sans-serif' }}>
       {/* Left Side: 2D Chart */}
-      <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', borderRight: '1px solid #ccc' }}>
-        <div style={{ position: 'relative', width: '90%', paddingBottom: '90%', backgroundColor: '#f9f9f9', border: '1px solid #ccc', borderRadius: '8px' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', background: '#f9f9f9', borderRight: '1px solid #ccc' }}>
+        <div style={{ position: 'relative', width: '90%', height: '90%', background: '#fff', border: '1px solid #ddd', borderRadius: '8px' }}>
           {displayFilms.map((film, i) => (
             <div
               key={i}
@@ -269,37 +249,47 @@ export default function Home() {
       </div>
 
       {/* Right Side: Scrollable List */}
-      <div style={{ flex: 1, overflowY: 'auto', padding: '20px' }}>
-        <ul style={{ padding: '0', margin: '0', listStyle: 'none' }}>
-          {displayFilms.map((film, i) => (
-            <li 
-              key={i} 
-              style={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                padding: '15px', 
-                marginBottom: '10px', 
-                background: '#fff', 
-                borderRadius: '8px', 
-                boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)' 
-              }}
-            >
-              {film.posterPath && (
-                <img 
-                  src={film.posterPath} 
-                  alt={film.name} 
-                  style={{ width: '50px', height: '75px', borderRadius: '4px', marginRight: '15px' }}
-                />
-              )}
-              <div>
-                <h3 style={{ fontSize: '18px', fontWeight: 'bold', margin: '0 0 5px 0' }}>{film.name} ({film.year})</h3>
-                <p style={{ margin: '0', color: '#555', fontSize: '14px' }}><strong>Genres:</strong> {film.genres?.map(g => g.name).join(', ') || 'N/A'}</p>
-                <p style={{ margin: '0', color: '#555', fontSize: '14px' }}><strong>Rating:</strong> {film.vote_average || 'N/A'} ({film.vote_count || 'N/A'} votes)</p>
-                <p style={{ margin: '0', color: '#777', fontSize: '12px', marginTop: '5px' }}><strong>X:</strong> {film.x.toFixed(2)}, <strong>Y:</strong> {film.y.toFixed(2)}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
+      <div style={{ overflowY: 'auto', padding: '20px', background: '#fff' }}>
+        <h1 style={{ textAlign: 'center', marginBottom: '20px' }}>My Top Films</h1>
+        <input
+          type="file"
+          accept=".csv"
+          onChange={handleFileUpload}
+          style={{ display: 'block', margin: '0 auto 20px', padding: '10px', fontSize: '14px', border: '1px solid #ccc', borderRadius: '4px' }}
+        />
+        {loading ? (
+          <p style={{ textAlign: 'center' }}>Loading...</p>
+        ) : (
+          <ul style={{ padding: '0', margin: '0', listStyle: 'none' }}>
+            {displayFilms.map((film, i) => (
+              <li
+                key={i}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  padding: '15px',
+                  marginBottom: '10px',
+                  background: '#f9f9f9',
+                  borderRadius: '8px',
+                  boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)',
+                }}
+              >
+                {film.posterPath && (
+                  <img
+                    src={film.posterPath}
+                    alt={film.name}
+                    style={{ width: '50px', height: '75px', borderRadius: '4px', marginRight: '15px' }}
+                  />
+                )}
+                <div>
+                  <h3 style={{ fontSize: '16px', margin: '0 0 5px' }}>{film.name} ({film.year})</h3>
+                  <p style={{ margin: '0', color: '#555', fontSize: '14px' }}><strong>Rating:</strong> {film.vote_average || 'N/A'}</p>
+                  <p style={{ margin: '0', color: '#777', fontSize: '12px' }}><strong>X:</strong> {film.x.toFixed(2)}, <strong>Y:</strong> {film.y.toFixed(2)}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );
