@@ -76,8 +76,8 @@ const fetchWikipediaData = async (filmName: string): Promise<{ plotKeywords: str
     const plotMatch = html.match(/<h2>.*?Plot.*?<p>(.*?)<\/p>/s);
     const receptionMatch = html.match(/<h2>.*?Reception.*?<p>(.*?)<\/p>/s);
 
-    const plotKeywords = plotMatch ? plotMatch[1].toLowerCase().split(/\\W+/) : [];
-    const receptionKeywords = receptionMatch ? receptionMatch[1].toLowerCase().split(/\\W+/) : [];
+    const plotKeywords = plotMatch ? plotMatch[1].toLowerCase().split(/\W+/) : [];
+    const receptionKeywords = receptionMatch ? receptionMatch[1].toLowerCase().split(/\W+/) : [];
 
     return { plotKeywords, receptionKeywords };
   } catch (error) {
@@ -85,7 +85,6 @@ const fetchWikipediaData = async (filmName: string): Promise<{ plotKeywords: str
     return { plotKeywords: [], receptionKeywords: [] };
   }
 };
-
 
 const classifyFilm = async (movie: TMDBMovie): Promise<{ x: number; y: number }> => {
   let x = 0.5; // Narrative complexity
@@ -173,7 +172,7 @@ export default function Home() {
           try {
             const data = await fetchMovie(film.name, film.year);
             const movie = data.results?.[0];
-            const { x, y } = movie ? classifyFilm(movie) : { x: 0.5, y: 0.5 };
+            const { x, y } = movie ? await classifyFilm(movie) : { x: 0.5, y: 0.5 };
 
             return {
               ...film,
