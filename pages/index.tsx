@@ -63,33 +63,51 @@ export const fetchMovie = async (query: string, year?: string) => {
 
 
 
-
-const fetchWikipediaData = async (filmName: string): Promise<{ plotKeywords: string[]; receptionKeywords: string[] }> => {
+const fetchWikipediaData = async (filmName: string): Promise<{ x: number; y: number }> => {
   try {
     const response = await fetch(`https://en.wikipedia.org/wiki/${encodeURIComponent(filmName)}`);
     if (!response.ok) {
       console.error(`Failed to fetch Wikipedia page for ${filmName}`);
-      return { plotKeywords: [], receptionKeywords: [] };
+      return { x: 0.5, y: 0.5 };
     }
 
     const html = await response.text();
+
+    // Extract relevant sections
     const plotMatch = html.match(/<h2>.*?Plot.*?<p>(.*?)<\/p>/s);
     const receptionMatch = html.match(/<h2>.*?Reception.*?<p>(.*?)<\/p>/s);
 
-    const plotKeywords = plotMatch ? plotMatch[1].toLowerCase().split(/\W+/) : [];
-    const receptionKeywords = receptionMatch ? receptionMatch[1].toLowerCase().split(/\W+/) : [];
+    const plotText = plotMatch ? plotMatch[1].toLowerCase() : '';
+    const receptionText = receptionMatch ? receptionMatch[1].toLowerCase() : '';
 
-    return { plotKeywords, receptionKeywords };
+    // Heuristics for narrative complexity (x)
+    let x = 0.5;
+    if (plotText.includes('nonlinear') || plotText.includes('complex') || plotText.includes('experimental')) {
+      x = 0.2;
+    } else if (plotText.includes('simple') || plotText.includes('straightforward')) {
+      x = 0.8;
+    }
+
+    // Heuristics for artistic intent (y)
+    let y = 0.5;
+    if (receptionText.includes('masterpiece') || receptionText.includes('critically acclaimed') || receptionText.includes('innovative')) {
+      y = 0.8;
+    } else if (receptionText.includes('blockbuster') || receptionText.includes('mainstream') || receptionText.includes('commercial')) {
+      y = 0.3;
+    }
+
+    return { x, y };
   } catch (error) {
     console.error(`Error scraping Wikipedia for ${filmName}:`, error);
-    return { plotKeywords: [], receptionKeywords: [] };
+    return { x: 0.5, y: 0.5 };
   }
 };
 
 const classifyFilm = async (movie: TMDBMovie): Promise<{ x: number; y: number }> => {
-  let x = 0.5; // Narrative complexity
-  let y = 0.5; // Artistic intent
+  let x = 0.5; // Default narrative complexity
+  let y = 0.5; // Default artistic intent
 
+  // Use TMDB data if available
   if (movie.genres) {
     const genreNames = movie.genres.map(g => g.name.toLowerCase());
     if (genreNames.includes('science fiction') || genreNames.includes('mystery') || genreNames.includes('drama')) {
@@ -105,24 +123,14 @@ const classifyFilm = async (movie: TMDBMovie): Promise<{ x: number; y: number }>
   }
 
   if (movie.overview && movie.overview.toLowerCase().includes('experimental')) {
-    x = 0.2; // Strong narrative complexity
-    y = 0.9; // Artistic focus
+    x = 0.2;
+    y = 0.9;
   }
 
-  // Scrape additional data
-  const { plotKeywords, receptionKeywords } = await fetchWikipediaData(movie.title);
-
-  if (plotKeywords.includes('nonlinear') || plotKeywords.includes('complex')) {
-    x = Math.min(x, 0.3); // Favor more complexity
-  }
-  if (receptionKeywords.includes('blockbuster') || receptionKeywords.includes('mainstream')) {
-    y = Math.max(y, 0.3); // Favor commercial intent
-  }
-
-  return { x, y };
+  // Supplement with Wikipedia data
+  const wikipediaData = await fetchWikipediaData(movie.title);
+  return { x: (x + wikipediaData.x) / 2, y: (y + wikipediaData.y) / 2 };
 };
-
-
 
 export default function Home() {
   const [films, setFilms] = useState<FilmData[]>([]);
