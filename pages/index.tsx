@@ -28,11 +28,6 @@ type TMDBResponse = {
 };
 
 
-
-
-
-
-
 const TMDB_API_KEY = 'af88d6dada5f10dd6fbc046537d3d6ce'; // Replace with actual key
 
 export const fetchMovie = async (query: string, year?: string) => {
@@ -68,21 +63,29 @@ export const fetchMovie = async (query: string, year?: string) => {
 
 
 
-const classifyFilm = (film: string): { x: number; y: number } => {
-  // Basic classification logic based on keywords
-  const lowerName = film.toLowerCase();
 
-  const x = lowerName.includes('inception') || lowerName.includes('memento')
-    ? 0.3 // Non-linear
-    : lowerName.includes('transformers') || lowerName.includes('marvel')
-    ? 0.8 // Linear
-    : 0.5; // Neutral
+const classifyFilm = (movie: TMDBMovie): { x: number; y: number } => {
+  let x = 0.5; // Narrative complexity
+  let y = 0.5; // Artistic intent
 
-  const y = lowerName.includes('kubrick') || lowerName.includes('bergman')
-    ? 0.8 // Artistic
-    : lowerName.includes('blockbuster') || lowerName.includes('disney')
-    ? 0.2 // Commercial
-    : 0.5; // Neutral
+  if (movie.genres) {
+    const genreNames = movie.genres.map(g => g.name.toLowerCase());
+    if (genreNames.includes('science fiction') || genreNames.includes('mystery') || genreNames.includes('drama')) {
+      x = 0.3; // More complex narratives
+    }
+    if (genreNames.includes('action') || genreNames.includes('comedy')) {
+      x = 0.7; // Simpler narratives
+    }
+  }
+
+  if (movie.vote_average !== undefined) {
+    y = movie.vote_average > 7 ? 0.8 : 0.4; // Higher ratings imply more artistic intent
+  }
+
+  if (movie.overview && movie.overview.toLowerCase().includes('experimental')) {
+    x = 0.2; // Strong narrative complexity
+    y = 0.9; // Artistic focus
+  }
 
   return { x, y };
 };
@@ -135,7 +138,7 @@ export default function Home() {
           try {
             const data = await fetchMovie(film.name, film.year);
             const movie = data.results?.[0];
-            const { x, y } = classifyFilm(film.name);
+            const { x, y } = movie ? classifyFilm(movie) : { x: 0.5, y: 0.5 };
 
             return {
               ...film,
