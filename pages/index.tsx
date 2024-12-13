@@ -64,9 +64,30 @@ export const fetchMovie = async (query: string, year?: string) => {
 
 
 
+const fetchWikipediaData = async (filmName: string): Promise<{ plotKeywords: string[]; receptionKeywords: string[] }> => {
+  try {
+    const response = await fetch(`https://en.wikipedia.org/wiki/${encodeURIComponent(filmName)}`);
+    if (!response.ok) {
+      console.error(`Failed to fetch Wikipedia page for ${filmName}`);
+      return { plotKeywords: [], receptionKeywords: [] };
+    }
+
+    const html = await response.text();
+    const plotMatch = html.match(/<h2>.*?Plot.*?<p>(.*?)<\/p>/s);
+    const receptionMatch = html.match(/<h2>.*?Reception.*?<p>(.*?)<\/p>/s);
+
+    const plotKeywords = plotMatch ? plotMatch[1].toLowerCase().split(/\\W+/) : [];
+    const receptionKeywords = receptionMatch ? receptionMatch[1].toLowerCase().split(/\\W+/) : [];
+
+    return { plotKeywords, receptionKeywords };
+  } catch (error) {
+    console.error(`Error scraping Wikipedia for ${filmName}:`, error);
+    return { plotKeywords: [], receptionKeywords: [] };
+  }
+};
 
 
-const classifyFilm = (movie: TMDBMovie): { x: number; y: number } => {
+const classifyFilm = async (movie: TMDBMovie): Promise<{ x: number; y: number }> => {
   let x = 0.5; // Narrative complexity
   let y = 0.5; // Artistic intent
 
@@ -89,8 +110,20 @@ const classifyFilm = (movie: TMDBMovie): { x: number; y: number } => {
     y = 0.9; // Artistic focus
   }
 
+  // Scrape additional data
+  const { plotKeywords, receptionKeywords } = await fetchWikipediaData(movie.title);
+
+  if (plotKeywords.includes('nonlinear') || plotKeywords.includes('complex')) {
+    x = Math.min(x, 0.3); // Favor more complexity
+  }
+  if (receptionKeywords.includes('blockbuster') || receptionKeywords.includes('mainstream')) {
+    y = Math.max(y, 0.3); // Favor commercial intent
+  }
+
   return { x, y };
 };
+
+
 
 export default function Home() {
   const [films, setFilms] = useState<FilmData[]>([]);
