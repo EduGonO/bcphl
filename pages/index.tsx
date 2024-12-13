@@ -12,6 +12,9 @@ type FilmDisplayData = {
   rating: string;
   posterPath?: string;
   overview?: string;
+  genres?: { id: number; name: string }[];
+  vote_average?: number;
+  vote_count?: number;
   x: number;
   y: number;
 };
@@ -23,6 +26,7 @@ type TMDBMovie = {
   overview?: string;
   genres?: { id: number; name: string }[];
   vote_average?: number;
+  vote_count?: number;
 };
 
 type TMDBResponse = {
@@ -73,26 +77,23 @@ const fetchWikipediaData = async (filmName: string): Promise<{ x: number; y: num
 
     const html = await response.text();
 
-    // Extract relevant sections
-    const plotMatch = html.match(/<h2>.*?Plot.*?<p>(.*?)<\/p>/s);
-    const receptionMatch = html.match(/<h2>.*?Reception.*?<p>(.*?)<\/p>/s);
-
-    const plotText = plotMatch ? plotMatch[1].toLowerCase() : '';
-    const receptionText = receptionMatch ? receptionMatch[1].toLowerCase() : '';
+    // Extract all text to avoid reliance on headings
+    const bodyMatch = html.match(/<body.*?>([\s\S]*?)<\/body>/i);
+    const bodyText = bodyMatch ? bodyMatch[1].replace(/<[^>]+>/g, '').toLowerCase() : '';
 
     // Heuristics for narrative complexity (x)
     let x = 0.5;
-    if (plotText.includes('nonlinear') || plotText.includes('complex') || plotText.includes('experimental')) {
+    if (bodyText.includes('nonlinear') || bodyText.includes('complex') || bodyText.includes('experimental')) {
       x = 0.2;
-    } else if (plotText.includes('simple') || plotText.includes('straightforward')) {
+    } else if (bodyText.includes('simple') || bodyText.includes('straightforward')) {
       x = 0.8;
     }
 
     // Heuristics for artistic intent (y)
     let y = 0.5;
-    if (receptionText.includes('masterpiece') || receptionText.includes('critically acclaimed') || receptionText.includes('innovative')) {
+    if (bodyText.includes('masterpiece') || bodyText.includes('critically acclaimed') || bodyText.includes('innovative')) {
       y = 0.8;
-    } else if (receptionText.includes('blockbuster') || receptionText.includes('mainstream') || receptionText.includes('commercial')) {
+    } else if (bodyText.includes('blockbuster') || bodyText.includes('mainstream') || bodyText.includes('commercial')) {
       y = 0.3;
     }
 
@@ -188,6 +189,9 @@ export default function Home() {
                 ? `https://image.tmdb.org/t/p/w500${movie.poster_path}`
                 : undefined,
               overview: movie?.overview,
+              genres: movie?.genres,
+              vote_average: movie?.vote_average,
+              vote_count: movie?.vote_count,
               x,
               y,
             };
@@ -217,25 +221,46 @@ export default function Home() {
       {loading && <p>Loading film data...</p>}
 
       {!loading && (
-        <div style={{ position: 'relative', width: '500px', height: '500px', border: '1px solid #ccc', margin: '20px auto' }}>
-          {displayFilms.map((film, i) => (
-            <div
-              key={i}
-              title={`${film.name} (${film.year})`}
-              style={{
-                position: 'absolute',
-                left: `${film.x * 100}%`,
-                bottom: `${film.y * 100}%`,
-                transform: 'translate(-50%, 50%)',
-                width: '50px',
-                height: '75px',
-                backgroundImage: `url(${film.posterPath})`,
-                backgroundSize: 'cover',
-                border: '1px solid #000',
-              }}
-            ></div>
-          ))}
-        </div>
+        <>
+          <div style={{ position: 'relative', width: '500px', height: '500px', border: '1px solid #ccc', margin: '20px auto' }}>
+            {displayFilms.map((film, i) => (
+              <div
+                key={i}
+                title={`${film.name} (${film.year})`}
+                style={{
+                  position: 'absolute',
+                  left: `${film.x * 100}%`,
+                  bottom: `${film.y * 100}%`,
+                  transform: 'translate(-50%, 50%)',
+                  width: '50px',
+                  height: '75px',
+                  backgroundImage: `url(${film.posterPath})`,
+                  backgroundSize: 'cover',
+                  border: '1px solid #000',
+                }}
+              ></div>
+            ))}
+          </div>
+
+          <ul style={{ marginTop: '20px', listStyle: 'none', padding: 0 }}>
+            {displayFilms.map((film, i) => (
+              <li key={i} style={{ marginBottom: '20px' }}>
+                <strong>{film.name}, {film.year} - {film.rating}</strong>
+                {film.posterPath && (
+                  <img 
+                    src={film.posterPath} 
+                    alt={film.name} 
+                    style={{ width: '50px', marginLeft: '10px' }} 
+                  />
+                )}
+                <p>Genres: {film.genres?.map(g => g.name).join(', ') || 'N/A'}</p>
+                <p>Vote Average: {film.vote_average || 'N/A'} (Votes: {film.vote_count || 'N/A'})</p>
+                <p>Overview: {film.overview || 'No overview available.'}</p>
+                <p>X: {film.x.toFixed(2)}, Y: {film.y.toFixed(2)}</p>
+              </li>
+            ))}
+          </ul>
+        </>
       )}
 
       {!loading && films.length > 0 && displayFilms.every(f => !f.posterPath) && (
