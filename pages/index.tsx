@@ -241,82 +241,66 @@ export default function Home() {
   }, [films]);
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif', lineHeight: '1.5' }}>
-      <h1 style={{ textAlign: 'center', fontSize: '24px', fontWeight: 'bold', marginBottom: '20px' }}>My Top Films</h1>
-      <input 
-        type="file" 
-        accept=".csv" 
-        onChange={handleFileUpload} 
-        style={{ display: 'block', margin: '0 auto 20px auto', padding: '10px', fontSize: '14px' }}
-      />
+    <div style={{ display: 'flex', height: '100vh', fontFamily: 'Arial, sans-serif' }}>
+      {/* Left Side: 2D Chart */}
+      <div style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', borderRight: '1px solid #ccc' }}>
+        <div style={{ position: 'relative', width: '90%', paddingBottom: '90%', backgroundColor: '#f9f9f9', border: '1px solid #ccc', borderRadius: '8px' }}>
+          {displayFilms.map((film, i) => (
+            <div
+              key={i}
+              title={`${film.name} (${film.year})`}
+              style={{
+                position: 'absolute',
+                left: `${film.x * 100}%`,
+                bottom: `${film.y * 100}%`,
+                transform: 'translate(-50%, 50%)',
+                width: '50px',
+                height: '75px',
+                backgroundImage: `url(${film.posterPath})`,
+                backgroundSize: 'cover',
+                backgroundColor: '#f0f0f0',
+                borderRadius: '4px',
+                border: '1px solid #ddd',
+                boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+              }}
+            ></div>
+          ))}
+        </div>
+      </div>
 
-      {loading && <p style={{ textAlign: 'center', fontSize: '16px' }}>Loading film data...</p>}
-
-      {!loading && (
-        <>
-          <div style={{ position: 'relative', width: '500px', height: '500px', border: '1px solid #ccc', margin: '20px auto', borderRadius: '8px' }}>
-            {displayFilms.map((film, i) => (
-              <div
-                key={i}
-                title={`${film.name} (${film.year})`}
-                style={{
-                  position: 'absolute',
-                  left: `${film.x * 100}%`,
-                  bottom: `${film.y * 100}%`,
-                  transform: 'translate(-50%, 50%)',
-                  width: '50px',
-                  height: '75px',
-                  backgroundImage: `url(${film.posterPath})`,
-                  backgroundSize: 'cover',
-                  backgroundColor: '#f0f0f0',
-                  borderRadius: '4px',
-                  border: '1px solid #ddd',
-                  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-                }}
-              ></div>
-            ))}
-          </div>
-
-          <ul style={{ marginTop: '30px', padding: '0', maxWidth: '600px', margin: '30px auto', listStyle: 'none' }}>
-            {displayFilms.map((film, i) => (
-              <li 
-                key={i} 
-                style={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  padding: '15px', 
-                  marginBottom: '10px', 
-                  background: '#fff', 
-                  borderRadius: '8px', 
-                  boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)' 
-                }}
-              >
-                {film.posterPath && (
-                  <img 
-                    src={film.posterPath} 
-                    alt={film.name} 
-                    style={{ width: '50px', height: '75px', borderRadius: '4px', marginRight: '15px' }}
-                  />
-                )}
-                <div>
-                  <h3 style={{ fontSize: '18px', fontWeight: 'bold', margin: '0 0 5px 0' }}>{film.name} ({film.year})</h3>
-                  <p style={{ margin: '0', color: '#555', fontSize: '14px' }}><strong>Genres:</strong> {film.genres?.map(g => g.name).join(', ') || 'N/A'}</p>
-                  <p style={{ margin: '0', color: '#555', fontSize: '14px' }}><strong>Rating:</strong> {film.vote_average || 'N/A'} ({film.vote_count || 'N/A'} votes)</p>
-                  <p style={{ margin: '0', color: '#777', fontSize: '12px', marginTop: '5px' }}><strong>X:</strong> {film.x.toFixed(2)}, <strong>Y:</strong> {film.y.toFixed(2)}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
-
-      {!loading && films.length > 0 && displayFilms.every(f => !f.posterPath) && (
-        <p style={{ textAlign: 'center', fontSize: '16px' }}>No posters available.</p>
-      )}
-
-      {!loading && films.length === 0 && (
-        <p style={{ textAlign: 'center', fontSize: '16px' }}>Upload a file with some 5-star films to see results.</p>
-      )}
+      {/* Right Side: Scrollable List */}
+      <div style={{ flex: 1, overflowY: 'auto', padding: '20px' }}>
+        <ul style={{ padding: '0', margin: '0', listStyle: 'none' }}>
+          {displayFilms.map((film, i) => (
+            <li 
+              key={i} 
+              style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                padding: '15px', 
+                marginBottom: '10px', 
+                background: '#fff', 
+                borderRadius: '8px', 
+                boxShadow: '0 2px 6px rgba(0, 0, 0, 0.1)' 
+              }}
+            >
+              {film.posterPath && (
+                <img 
+                  src={film.posterPath} 
+                  alt={film.name} 
+                  style={{ width: '50px', height: '75px', borderRadius: '4px', marginRight: '15px' }}
+                />
+              )}
+              <div>
+                <h3 style={{ fontSize: '18px', fontWeight: 'bold', margin: '0 0 5px 0' }}>{film.name} ({film.year})</h3>
+                <p style={{ margin: '0', color: '#555', fontSize: '14px' }}><strong>Genres:</strong> {film.genres?.map(g => g.name).join(', ') || 'N/A'}</p>
+                <p style={{ margin: '0', color: '#555', fontSize: '14px' }}><strong>Rating:</strong> {film.vote_average || 'N/A'} ({film.vote_count || 'N/A'} votes)</p>
+                <p style={{ margin: '0', color: '#777', fontSize: '12px', marginTop: '5px' }}><strong>X:</strong> {film.x.toFixed(2)}, <strong>Y:</strong> {film.y.toFixed(2)}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
