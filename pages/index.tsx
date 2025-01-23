@@ -86,21 +86,35 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
       {/* Articles */}
       <div>
         {filteredArticles.map((article, index) => (
-  <div key={index} style={{ marginBottom: '15px' }}>
-    <Link href={`/article?slug=${article.category}/${article.title.toLowerCase().replace(/\s+/g, '-')}`}>
-      <a style={{ textDecoration: 'none', color: '#000' }}>
-        <h2 style={{ margin: '0 0 5px' }}>{article.title}</h2>
-        <p style={{ margin: '0 0 5px', fontSize: '14px', color: '#666' }}>
-          {article.date} • {article.author}
-        </p>
-        <p style={{ margin: '0 0 10px', fontSize: '14px', color: '#444' }}>
-          {article.preview}
-        </p>
-        <hr style={{ border: 'none', borderBottom: '1px solid #ddd' }} />
-      </a>
-    </Link>
-  </div>
-))}
+          <div key={index} style={{ marginBottom: '15px' }}>
+            <Link href={`/article?slug=${article.category}/${article.title.toLowerCase().replace(/\s+/g, '-')}`}>
+              <a style={{ textDecoration: 'none', color: '#000' }}>
+                <h3 style={{ margin: '0 0 5px', fontSize: '18px' }}>{article.title}</h3>
+                <p style={{ margin: '0 0 5px', fontSize: '14px', color: '#666' }}>
+                  {article.date} • {article.author}
+                </p>
+                <div
+                  style={{
+                    display: 'inline-block',
+                    fontSize: '12px',
+                    fontWeight: 'bold',
+                    padding: '3px 8px',
+                    color: categories.find((cat) => cat.name === article.category)?.color || '#000',
+                    border: `1px solid ${categories.find((cat) => cat.name === article.category)?.color || '#000'}`,
+                    backgroundColor:
+                      categories.find((cat) => cat.name === article.category)?.color + '20' || '#f0f0f0',
+                    borderRadius: '4px',
+                    marginBottom: '10px',
+                  }}
+                >
+                  {article.category}
+                </div>
+                <p style={{ margin: '0 0 10px', fontSize: '14px', color: '#444' }}>{article.preview}</p>
+                <hr style={{ border: 'none', borderBottom: '1px solid #ddd', width: '80%' }} />
+              </a>
+            </Link>
+          </div>
+        ))}
       </div>
     </div>
   );
