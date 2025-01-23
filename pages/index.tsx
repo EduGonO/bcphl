@@ -62,21 +62,19 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
               onClick={() => handleCategoryChange(category)}
               style={{
                 margin: '10px',
-                width: '50px',
-                height: '120px',
+                width: 'auto',
+                height: 'auto',
+                padding: '5px 0',
+                writingMode: 'vertical-rl', // Vertical text layout
+                textAlign: 'center',
                 fontSize: '14px',
                 border: '1px solid #ccc',
-                borderRadius: '5px',
                 backgroundColor: categories.find((cat) => cat.name === category)?.color || '#fff',
                 color: '#fff',
                 cursor: 'pointer',
-                display: 'inline-flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                textAlign: 'center',
                 fontWeight: 'bold',
+                borderRadius: '5px',
                 transition: 'all 0.2s ease',
-                transform: 'rotate(-90deg)',
               }}
             >
               {category.charAt(0).toUpperCase() + category.slice(1)}
