@@ -55,46 +55,34 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
           <img src="/media/logo.png" alt="Logo" style={{ maxHeight: '320px' }} />
         </div>
 
-        {/* Category Selector */}
+                {/* Category Selector */}
         <div style={{ textAlign: 'center', marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
           {categories.map((cat) => (
             <button
               key={cat.name}
               onClick={() => handleCategoryChange(cat.name)}
               style={{
-                margin: '10px',
+                margin: '5px', // Reduced spacing between buttons
                 width: 'auto',
                 height: 'auto',
-                padding: '5px 0',
+                padding: '10px 5px', // Added padding for better button visibility
                 writingMode: 'vertical-rl',
                 textAlign: 'center',
                 fontSize: '14px',
-                border: '1px solid #ccc',
-                backgroundColor: activeCategory === cat.name ? cat.color : '#fff',
-                color: activeCategory === cat.name ? '#fff' : '#000',
+                border: 'none', // Removed border for a cleaner look
+                backgroundColor: cat.color, // Always use category color as the background
+                color: '#fff', // White text for contrast
                 cursor: 'pointer',
                 fontWeight: 'bold',
                 borderRadius: '5px',
                 transition: 'all 0.2s ease',
+                opacity: activeCategory === cat.name ? 1 : 0.8, // Slight dimming for inactive buttons
               }}
             >
               {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
             </button>
           ))}
         </div>
-
-        {/* Current Category Title */}
-        <h2
-          style={{
-            fontSize: '24px',
-            fontWeight: 'bold',
-            textAlign: 'left',
-            marginBottom: '20px',
-            color: '#333',
-          }}
-        >
-          {activeCategory ? activeCategory.charAt(0).toUpperCase() + activeCategory.slice(1) : 'Articles Recents'}
-        </h2>
 
         {/* Articles */}
         <div>
@@ -119,19 +107,21 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
               ></div>
 
               {/* Article Content */}
-                            <Link href={`/${article.category}/${article.title.toLowerCase().replace(/\s+/g, '-')}`}>
+              <Link href={`/${article.category}/${article.title.toLowerCase().replace(/\s+/g, '-')}`}>
                 <a
                   style={{
-                    textDecoration: 'none', // Remove underline
+                    textDecoration: 'none', // Remove underline from the link
                     color: 'inherit', // Inherit color for consistency
+                    display: 'block', // Ensure block-level styling
                   }}
                 >
-                  <div style={{ display: 'block' }}>
+                  <div>
                     <h3
                       style={{
                         margin: '0 0 5px',
                         fontSize: '18px',
                         color: '#000', // Neutral black for title
+                        textDecoration: 'none', // Explicitly ensure no underline
                       }}
                     >
                       {article.title}
@@ -141,6 +131,7 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
                         margin: '0 0 5px',
                         fontSize: '14px',
                         color: '#666', // Subdued gray for date + author
+                        textDecoration: 'none', // Explicitly ensure no underline
                       }}
                     >
                       {article.date} • {article.author}
@@ -157,6 +148,7 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
                           categories.find((cat) => cat.name === article.category)?.color + '20' || '#f0f0f0',
                         borderRadius: '4px',
                         marginBottom: '10px',
+                        textDecoration: 'none', // Explicitly ensure no underline
                       }}
                     >
                       {article.category}
@@ -166,6 +158,7 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
                         margin: '0 0 10px',
                         fontSize: '14px',
                         color: '#444', // Subtle gray for preview
+                        textDecoration: 'none', // Explicitly ensure no underline
                       }}
                     >
                       {article.preview}
