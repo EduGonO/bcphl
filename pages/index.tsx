@@ -55,23 +55,20 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
         </div>
 
         {/* Category Selector */}
-        <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+        <div style={{ textAlign: 'center', marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
           {['all', ...categories.map((cat) => cat.name)].map((category) => (
             <button
               key={category}
               onClick={() => handleCategoryChange(category)}
               style={{
                 margin: '10px',
-                width: '100px',
-                height: '100px',
+                width: '50px',
+                height: '120px',
                 fontSize: '14px',
                 border: '1px solid #ccc',
                 borderRadius: '5px',
-                backgroundColor:
-                  activeCategory === category
-                    ? categories.find((cat) => cat.name === category)?.color || '#000'
-                    : '#fff',
-                color: activeCategory === category ? '#fff' : '#000',
+                backgroundColor: categories.find((cat) => cat.name === category)?.color || '#fff',
+                color: '#fff',
                 cursor: 'pointer',
                 display: 'inline-flex',
                 justifyContent: 'center',
@@ -79,6 +76,7 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
                 textAlign: 'center',
                 fontWeight: 'bold',
                 transition: 'all 0.2s ease',
+                transform: 'rotate(-90deg)',
               }}
             >
               {category.charAt(0).toUpperCase() + category.slice(1)}
@@ -139,7 +137,14 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
                     {article.category}
                   </div>
                   <p style={{ margin: '0 0 10px', fontSize: '14px', color: '#444' }}>{article.preview}</p>
-                  <hr style={{ border: 'none', borderBottom: '1px solid #ddd', width: '80%' }} />
+                  <hr
+                    style={{
+                      border: 'none',
+                      borderBottom: '1px solid #ddd',
+                      width: '80%',
+                      margin: '0 auto',
+                    }}
+                  />
                 </a>
               </Link>
             </div>
