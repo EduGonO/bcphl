@@ -109,7 +109,7 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
               ></div>
 
               {/* Article Content */}
-              <Link href={`/article?slug=${article.category}/${article.title.toLowerCase().replace(/\s+/g, '-')}`}>
+              <Link href={`/${article.category}/${article.title.toLowerCase().replace(/\s+/g, '-')}`}>
                 <a
                   style={{
                     textDecoration: 'none',
