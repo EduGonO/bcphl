@@ -1,6 +1,5 @@
+// pages/index.tsx
 import React, { useState, useEffect } from 'react';
-import fs from 'fs';
-import path from 'path';
 
 type Article = {
   title: string;
@@ -18,46 +17,9 @@ const categories = [
   'archives',
 ];
 
-const loadArticles = (): Article[] => {
-  const categoriesDir = path.join(process.cwd(), 'pages/text');
-  const articles: Article[] = [];
-
-  for (const category of categories) {
-    const categoryPath = path.join(categoriesDir, category);
-    if (fs.existsSync(categoryPath)) {
-      const files = fs.readdirSync(categoryPath);
-
-      for (const file of files) {
-        if (file.endsWith('.md')) {
-          const filePath = path.join(categoryPath, file);
-          const fileContents = fs.readFileSync(filePath, 'utf-8').trim();
-
-          // Extract title (first line of the file as Markdown convention)
-          const firstLine = fileContents.split('\n')[0];
-          const title = firstLine.startsWith('#') ? firstLine.replace(/^#+\s*/, '') : file.replace('.md', '');
-
-          // Content is the rest of the file
-          const content = fileContents.split('\n').slice(1).join('\n').trim();
-
-          articles.push({ title, category, content });
-        }
-      }
-    }
-  }
-
-  return articles;
-};
-
-const Home: React.FC = () => {
-  const [articles, setArticles] = useState<Article[]>([]);
-  const [filteredArticles, setFilteredArticles] = useState<Article[]>([]);
+const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
+  const [filteredArticles, setFilteredArticles] = useState<Article[]>(articles);
   const [activeCategory, setActiveCategory] = useState<string>('all');
-
-  useEffect(() => {
-    const allArticles = loadArticles();
-    setArticles(allArticles);
-    setFilteredArticles(allArticles);
-  }, []);
 
   const handleCategoryChange = (category: string) => {
     setActiveCategory(category);
@@ -121,5 +83,43 @@ const Home: React.FC = () => {
     </div>
   );
 };
+
+export async function getStaticProps() {
+  const fs = require('fs');
+  const path = require('path');
+
+  const articles: Article[] = [];
+
+  const categoriesDir = path.join(process.cwd(), 'pages/text');
+
+  for (const category of categories) {
+    const categoryPath = path.join(categoriesDir, category);
+    if (fs.existsSync(categoryPath)) {
+      const files = fs.readdirSync(categoryPath);
+
+      for (const file of files) {
+        if (file.endsWith('.md')) {
+          const filePath = path.join(categoryPath, file);
+          const fileContents = fs.readFileSync(filePath, 'utf-8').trim();
+
+          // Extract title (first line of the file as Markdown convention)
+          const firstLine = fileContents.split('\n')[0];
+          const title = firstLine.startsWith('#') ? firstLine.replace(/^#+\s*/, '') : file.replace('.md', '');
+
+          // Content is the rest of the file
+          const content = fileContents.split('\n').slice(1).join('\n').trim();
+
+          articles.push({ title, category, content });
+        }
+      }
+    }
+  }
+
+  return {
+    props: {
+      articles,
+    },
+  };
+}
 
 export default Home;
