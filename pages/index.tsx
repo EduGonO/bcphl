@@ -3,7 +3,9 @@ import React, { useState, useEffect } from 'react';
 type Article = {
   title: string;
   category: string;
-  content: string;
+  date: string;
+  author: string;
+  preview: string;
 };
 
 const categories = [
@@ -83,21 +85,15 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
       {/* Articles */}
       <div>
         {filteredArticles.map((article, index) => (
-          <div
-            key={index}
-            style={{
-              border: '1px solid #ddd',
-              borderRadius: '8px',
-              padding: '15px',
-              marginBottom: '20px',
-              background: '#f9f9f9',
-            }}
-          >
-            <h2 style={{ margin: '0 0 10px' }}>{article.title}</h2>
-            <p style={{ color: '#555', marginBottom: '10px' }}>
-              <strong>Category:</strong> {article.category}
+          <div key={index} style={{ marginBottom: '15px' }}>
+            <h2 style={{ margin: '0 0 5px' }}>{article.title}</h2>
+            <p style={{ margin: '0 0 5px', fontSize: '14px', color: '#666' }}>
+              {article.date} • {article.author}
             </p>
-            <p style={{ color: '#777', whiteSpace: 'pre-wrap' }}>{article.content.slice(0, 200)}...</p>
+            <p style={{ margin: '0 0 10px', fontSize: '14px', color: '#444' }}>
+              {article.preview}
+            </p>
+            <hr style={{ border: 'none', borderBottom: '1px solid #ddd' }} />
           </div>
         ))}
       </div>
@@ -123,15 +119,15 @@ export async function getStaticProps() {
         if (file.endsWith('.md')) {
           const filePath = path.join(categoryPath, file);
           const fileContents = fs.readFileSync(filePath, 'utf-8').trim();
+          const lines = fileContents.split('\n').map((line) => line.trim());
 
-          // Extract title (first line of the file as Markdown convention)
-          const firstLine = fileContents.split('\n')[0];
-          const title = firstLine.startsWith('#') ? firstLine.replace(/^#+\s*/, '') : file.replace('.md', '');
+          // Extract metadata
+          const title = lines[0].startsWith('#') ? lines[0].replace(/^#+\s*/, '') : file.replace('.md', '');
+          const date = lines[1] || 'Unknown Date';
+          const author = lines[2] || 'Unknown Author';
+          const preview = lines.slice(3).join(' ').slice(0, 80) + '...';
 
-          // Content is the rest of the file
-          const content = fileContents.split('\n').slice(1).join('\n').trim();
-
-          articles.push({ title, category, content });
+          articles.push({ title, category, date, author, preview });
         }
       }
     }
