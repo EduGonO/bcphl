@@ -90,7 +90,7 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
           style={{
             fontSize: '24px',
             fontWeight: 'bold',
-            textAlign: 'center',
+            textAlign: 'left',
             marginBottom: '20px',
             color: '#333',
           }}
@@ -124,14 +124,30 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
               <Link href={`/${article.category}/${article.title.toLowerCase().replace(/\s+/g, '-')}`}>
                 <a
                   style={{
-                    textDecoration: 'none',
-                    color: '#000', // Neutral black color
+                    textDecoration: 'none', // Remove underline from the entire link
+                    color: 'inherit', // Neutral color
                     display: 'block',
                     flex: '1',
                   }}
                 >
-                  <h3 style={{ margin: '0 0 5px', fontSize: '18px' }}>{article.title}</h3>
-                  <p style={{ margin: '0 0 5px', fontSize: '14px', color: '#666' }}>
+                  <h3
+                    style={{
+                      margin: '0 0 5px',
+                      fontSize: '18px',
+                      textDecoration: 'none', // Ensure no underline
+                      color: '#000',
+                    }}
+                  >
+                    {article.title}
+                  </h3>
+                  <p
+                    style={{
+                      margin: '0 0 5px',
+                      fontSize: '14px',
+                      color: '#666',
+                      textDecoration: 'none', // Ensure no underline
+                    }}
+                  >
                     {article.date} • {article.author}
                   </p>
                   <div
@@ -146,17 +162,27 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
                         categories.find((cat) => cat.name === article.category)?.color + '20' || '#f0f0f0',
                       borderRadius: '4px',
                       marginBottom: '10px',
+                      textDecoration: 'none', // Ensure no underline
                     }}
                   >
                     {article.category}
                   </div>
-                  <p style={{ margin: '0 0 10px', fontSize: '14px', color: '#444' }}>{article.preview}</p>
+                  <p
+                    style={{
+                      margin: '0 0 10px',
+                      fontSize: '14px',
+                      color: '#444',
+                      textDecoration: 'none', // Ensure no underline
+                    }}
+                  >
+                    {article.preview}
+                  </p>
                   <hr
                     style={{
                       border: 'none',
                       borderBottom: '1px solid #ddd',
-                      width: '80%',
-                      margin: '0 auto',
+                      width: '80%', // Fixed width for centered line
+                      margin: '0 auto', // Centered on the screen
                     }}
                   />
                 </a>
