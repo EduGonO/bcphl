@@ -89,16 +89,36 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
         {/* Articles */}
         <div>
           {filteredArticles.map((article, index) => (
-            <div key={index} style={{ marginBottom: '15px' }}>
+            <div
+              key={index}
+              style={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                marginBottom: '15px',
+              }}
+            >
+              {/* Thumbnail */}
+              <div
+                style={{
+                  width: '60px',
+                  height: '60px',
+                  backgroundColor: '#e0e0e0',
+                  marginRight: '15px',
+                  borderRadius: '4px',
+                }}
+              ></div>
+
+              {/* Article Content */}
               <Link href={`/article?slug=${article.category}/${article.title.toLowerCase().replace(/\s+/g, '-')}`}>
                 <a
                   style={{
-                    textDecoration: 'none', // Removes underline
-                    color: 'inherit', // Inherit parent color
-                    display: 'block', // Ensure block-level styling applies
+                    textDecoration: 'none',
+                    color: '#000', // Neutral black color
+                    display: 'block',
+                    flex: '1',
                   }}
                 >
-                  <h3 style={{ margin: '0 0 5px', fontSize: '18px', color: '#000' }}>{article.title}</h3>
+                  <h3 style={{ margin: '0 0 5px', fontSize: '18px' }}>{article.title}</h3>
                   <p style={{ margin: '0 0 5px', fontSize: '14px', color: '#666' }}>
                     {article.date} • {article.author}
                   </p>
