@@ -21,15 +21,18 @@ const categories = [
 
 const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
   const [filteredArticles, setFilteredArticles] = useState<Article[]>(articles);
-  const [activeCategory, setActiveCategory] = useState<string>('all');
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [backgroundColor, setBackgroundColor] = useState<string>('#ffffff');
 
   const handleCategoryChange = (category: string) => {
-    setActiveCategory(category);
-    if (category === 'all') {
+    if (activeCategory === category) {
+      // If the selected category is clicked again, show all articles
+      setActiveCategory(null);
       setFilteredArticles(articles);
-      setBackgroundColor('#ffffff'); // Default white background
+      setBackgroundColor('#ffffff');
     } else {
+      // Otherwise, filter by the selected category
+      setActiveCategory(category);
       setFilteredArticles(articles.filter((article) => article.category === category));
       const categoryColor = categories.find((cat) => cat.name === category)?.color || '#ffffff';
       setBackgroundColor(categoryColor);
@@ -56,28 +59,28 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
 
         {/* Category Selector */}
         <div style={{ textAlign: 'center', marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
-          {['all', ...categories.map((cat) => cat.name)].map((category) => (
+          {categories.map((cat) => (
             <button
-              key={category}
-              onClick={() => handleCategoryChange(category)}
+              key={cat.name}
+              onClick={() => handleCategoryChange(cat.name)}
               style={{
                 margin: '10px',
                 width: 'auto',
                 height: 'auto',
-                padding: '5px 0',
+                padding: '5px 2px',
                 writingMode: 'vertical-rl', // Vertical text layout
                 textAlign: 'center',
                 fontSize: '14px',
                 border: '1px solid #ccc',
-                backgroundColor: categories.find((cat) => cat.name === category)?.color || '#fff',
-                color: '#fff',
+                backgroundColor: activeCategory === cat.name ? cat.color : '#fff',
+                color: activeCategory === cat.name ? '#fff' : '#000',
                 cursor: 'pointer',
                 fontWeight: 'bold',
                 borderRadius: '5px',
                 transition: 'all 0.2s ease',
               }}
             >
-              {category.charAt(0).toUpperCase() + category.slice(1)}
+              {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
             </button>
           ))}
         </div>
