@@ -26,12 +26,10 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
 
   const handleCategoryChange = (category: string) => {
     if (activeCategory === category) {
-      // If the selected category is clicked again, show all articles
       setActiveCategory(null);
       setFilteredArticles(articles);
       setBackgroundColor('#ffffff');
     } else {
-      // Otherwise, filter by the selected category
       setActiveCategory(category);
       setFilteredArticles(articles.filter((article) => article.category === category));
       const categoryColor = categories.find((cat) => cat.name === category)?.color || '#ffffff';
@@ -68,7 +66,7 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
                 width: 'auto',
                 height: 'auto',
                 padding: '5px 0',
-                writingMode: 'vertical-rl', // Vertical text layout
+                writingMode: 'vertical-rl',
                 textAlign: 'center',
                 fontSize: '14px',
                 border: '1px solid #ccc',
@@ -124,8 +122,8 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
               <Link href={`/${article.category}/${article.title.toLowerCase().replace(/\s+/g, '-')}`}>
                 <a
                   style={{
-                    textDecoration: 'none', // Remove underline from the entire link
-                    color: 'inherit', // Neutral color
+                    textDecoration: 'none', // Remove underline for the link
+                    color: 'inherit', // Inherit text color
                     display: 'block',
                     flex: '1',
                   }}
@@ -181,8 +179,8 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
                     style={{
                       border: 'none',
                       borderBottom: '1px solid #ddd',
-                      width: '80%', // Fixed width for centered line
-                      margin: '0 auto', // Centered on the screen
+                      width: '80%',
+                      margin: '0 auto',
                     }}
                   />
                 </a>
