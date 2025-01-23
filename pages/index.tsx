@@ -67,7 +67,7 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
                 margin: '10px',
                 width: 'auto',
                 height: 'auto',
-                padding: '5px 2px',
+                padding: '5px 0',
                 writingMode: 'vertical-rl', // Vertical text layout
                 textAlign: 'center',
                 fontSize: '14px',
@@ -84,6 +84,19 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
             </button>
           ))}
         </div>
+
+        {/* Current Category Title */}
+        <h2
+          style={{
+            fontSize: '24px',
+            fontWeight: 'bold',
+            textAlign: 'center',
+            marginBottom: '20px',
+            color: '#333',
+          }}
+        >
+          {activeCategory ? activeCategory.charAt(0).toUpperCase() + activeCategory.slice(1) : 'Articles Recents'}
+        </h2>
 
         {/* Articles */}
         <div>
