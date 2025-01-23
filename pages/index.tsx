@@ -119,7 +119,7 @@ export async function getStaticProps() {
         if (file.endsWith('.md')) {
           const filePath = path.join(categoryPath, file);
           const fileContents = fs.readFileSync(filePath, 'utf-8').trim();
-          const lines = fileContents.split('\n').map((line) => line.trim());
+          const lines = fileContents.split('\n').map((line: string) => line.trim());
 
           // Extract metadata
           const title = lines[0].startsWith('#') ? lines[0].replace(/^#+\s*/, '') : file.replace('.md', '');
