@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 type Article = {
   title: string;
@@ -85,17 +86,21 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
       {/* Articles */}
       <div>
         {filteredArticles.map((article, index) => (
-          <div key={index} style={{ marginBottom: '15px' }}>
-            <h2 style={{ margin: '0 0 5px' }}>{article.title}</h2>
-            <p style={{ margin: '0 0 5px', fontSize: '14px', color: '#666' }}>
-              {article.date} • {article.author}
-            </p>
-            <p style={{ margin: '0 0 10px', fontSize: '14px', color: '#444' }}>
-              {article.preview}
-            </p>
-            <hr style={{ border: 'none', borderBottom: '1px solid #ddd' }} />
-          </div>
-        ))}
+  <div key={index} style={{ marginBottom: '15px' }}>
+    <Link href={`/article?slug=${article.category}/${article.title.toLowerCase().replace(/\s+/g, '-')}`}>
+      <a style={{ textDecoration: 'none', color: '#000' }}>
+        <h2 style={{ margin: '0 0 5px' }}>{article.title}</h2>
+        <p style={{ margin: '0 0 5px', fontSize: '14px', color: '#666' }}>
+          {article.date} • {article.author}
+        </p>
+        <p style={{ margin: '0 0 10px', fontSize: '14px', color: '#444' }}>
+          {article.preview}
+        </p>
+        <hr style={{ border: 'none', borderBottom: '1px solid #ddd' }} />
+      </a>
+    </Link>
+  </div>
+))}
       </div>
     </div>
   );
