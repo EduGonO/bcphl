@@ -197,7 +197,6 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
       {article.preview}
     </p>
   </div>
-</div>
           ))}
         </div>
       </div>
