@@ -55,7 +55,7 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
           <img src="/media/logo.png" alt="Logo" style={{ maxHeight: '320px' }} />
         </div>
 
-                {/* Category Selector */}
+        {/* Category Selector */}
         <div style={{ textAlign: 'center', marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
           {categories.map((cat) => (
             <button
@@ -84,7 +84,7 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
           ))}
         </div>
 
-                {/* Articles */}
+        {/* Articles */}
         <div>
           {filteredArticles.map((article, index) => (
             <div
@@ -107,72 +107,74 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
               ></div>
 
               {/* Article Content */}
-              <Link href={`/${article.category}/${article.title.toLowerCase().replace(/\s+/g, '-')}`}>
-                <a
-                  style={{
-                    textDecoration: 'none', // Remove underline from the link
-                    color: 'inherit', // Inherit color for consistency
-                    display: 'block', // Ensure block-level styling
-                  }}
-                >
-                  <div>
+              <div style={{ flex: '1' }}>
+                {/* Title (Clickable Link) */}
+                <Link href={`/${article.category}/${article.title.toLowerCase().replace(/\s+/g, '-')}`}>
+                  <a
+                    style={{
+                      textDecoration: 'none', // Remove underline
+                      color: 'inherit', // Inherit color for consistency
+                    }}
+                  >
                     <h3
                       style={{
                         margin: '0 0 5px',
                         fontSize: '18px',
                         color: activeCategory ? '#fff' : '#000', // White for selected category
-                        textDecoration: 'none', // Explicitly ensure no underline
                       }}
                     >
                       {article.title}
                     </h3>
-                    <p
-                      style={{
-                        margin: '0 0 5px',
-                        fontSize: '14px',
-                        color: activeCategory ? '#fff' : '#666', // White for selected category
-                        textDecoration: 'none', // Explicitly ensure no underline
-                      }}
-                    >
-                      {article.date} • {article.author}
-                    </p>
-                    <div
-  style={{
-    display: 'inline-block',
-    fontSize: '12px',
-    fontWeight: 'bold',
-    padding: '3px 8px',
-    color: activeCategory
-      ? '#000' // Black text for contrast when category is selected
-      : categories.find((cat) => cat.name === article.category)?.color || '#000',
-    border: `1px solid ${
-      activeCategory
-        ? 'rgba(255, 255, 255, 0.8)' // Translucent white border
-        : categories.find((cat) => cat.name === article.category)?.color || '#000'
-    }`,
-    backgroundColor: activeCategory
-      ? 'rgba(255, 255, 255, 0.8)' // Translucent white background
-      : categories.find((cat) => cat.name === article.category)?.color + '20' || '#f0f0f0',
-    borderRadius: '4px',
-    marginBottom: '10px',
-    textDecoration: 'none', // Explicitly ensure no underline
-  }}
->
-  {article.category}
-</div>
-                    <p
-                      style={{
-                        margin: '0 0 10px',
-                        fontSize: '14px',
-                        color: activeCategory ? '#fff' : '#444', // White for selected category
-                        textDecoration: 'none', // Explicitly ensure no underline
-                      }}
-                    >
-                      {article.preview}
-                    </p>
-                  </div>
-                </a>
-              </Link>
+                  </a>
+                </Link>
+
+                {/* Date and Author */}
+                <p
+                  style={{
+                    margin: '0 0 5px',
+                    fontSize: '14px',
+                    color: activeCategory ? '#fff' : '#666', // White for selected category
+                  }}
+                >
+                  {article.date} • {article.author}
+                </p>
+
+                {/* Category Indicator */}
+                <div
+                  style={{
+                    display: 'inline-block',
+                    fontSize: '12px',
+                    fontWeight: 'bold',
+                    padding: '3px 8px',
+                    color: activeCategory
+                      ? '#000' // Black text for contrast when category is selected
+                      : categories.find((cat) => cat.name === article.category)?.color || '#000',
+                    border: `1px solid ${
+                      activeCategory
+                        ? 'rgba(255, 255, 255, 0.8)' // Translucent white border
+                        : categories.find((cat) => cat.name === article.category)?.color || '#000'
+                    }`,
+                    backgroundColor: activeCategory
+                      ? 'rgba(255, 255, 255, 0.8)' // Translucent white background
+                      : categories.find((cat) => cat.name === article.category)?.color + '20' || '#f0f0f0',
+                    borderRadius: '4px',
+                    marginBottom: '10px',
+                  }}
+                >
+                  {article.category}
+                </div>
+
+                {/* Preview */}
+                <p
+                  style={{
+                    margin: '0 0 10px',
+                    fontSize: '14px',
+                    color: activeCategory ? '#fff' : '#444', // White for selected category
+                  }}
+                >
+                  {article.preview}
+                </p>
+              </div>
             </div>
           ))}
         </div>
