@@ -51,12 +51,12 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
     >
       <div style={{ maxWidth: '800px', width: '100%' }}>
         {/* Logo */}
-        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <img src="/media/logo.png" alt="Logo" style={{ maxHeight: '320px' }} />
+        <div style={{ textAlign: 'center', marginBottom: '24px' }}>
+          <img src="/media/logo.png" alt="Logo" style={{ maxHeight: '240px' }} />
         </div>
 
         {/* Category Selector */}
-        <div style={{ textAlign: 'center', marginBottom: '20px', display: 'flex', justifyContent: 'center' }}>
+        <div style={{ textAlign: 'center', marginBottom: '42px', display: 'flex', justifyContent: 'center' }}>
           {categories.map((cat) => (
             <button
               key={cat.name}
