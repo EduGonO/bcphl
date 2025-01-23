@@ -84,7 +84,7 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
           ))}
         </div>
 
-        {/* Articles */}
+                {/* Articles */}
         <div>
           {filteredArticles.map((article, index) => (
             <div
@@ -120,7 +120,7 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
                       style={{
                         margin: '0 0 5px',
                         fontSize: '18px',
-                        color: '#000', // Neutral black for title
+                        color: activeCategory ? '#fff' : '#000', // White for selected category
                         textDecoration: 'none', // Explicitly ensure no underline
                       }}
                     >
@@ -130,7 +130,7 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
                       style={{
                         margin: '0 0 5px',
                         fontSize: '14px',
-                        color: '#666', // Subdued gray for date + author
+                        color: activeCategory ? '#fff' : '#666', // White for selected category
                         textDecoration: 'none', // Explicitly ensure no underline
                       }}
                     >
@@ -142,10 +142,9 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
                         fontSize: '12px',
                         fontWeight: 'bold',
                         padding: '3px 8px',
-                        color: categories.find((cat) => cat.name === article.category)?.color || '#000',
-                        border: `1px solid ${categories.find((cat) => cat.name === article.category)?.color || '#000'}`,
-                        backgroundColor:
-                          categories.find((cat) => cat.name === article.category)?.color + '20' || '#f0f0f0',
+                        color: activeCategory ? '#000' : categories.find((cat) => cat.name === article.category)?.color || '#000', // Black text for contrast
+                        border: `1px solid ${activeCategory ? '#fff' : categories.find((cat) => cat.name === article.category)?.color || '#000'}`, // White border for visibility
+                        backgroundColor: activeCategory ? '#fff' : categories.find((cat) => cat.name === article.category)?.color + '20' || '#f0f0f0', // White background when selected
                         borderRadius: '4px',
                         marginBottom: '10px',
                         textDecoration: 'none', // Explicitly ensure no underline
@@ -157,7 +156,7 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
                       style={{
                         margin: '0 0 10px',
                         fontSize: '14px',
-                        color: '#444', // Subtle gray for preview
+                        color: activeCategory ? '#fff' : '#444', // White for selected category
                         textDecoration: 'none', // Explicitly ensure no underline
                       }}
                     >
