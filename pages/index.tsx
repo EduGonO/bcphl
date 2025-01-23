@@ -119,70 +119,58 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
               ></div>
 
               {/* Article Content */}
-              <Link href={`/${article.category}/${article.title.toLowerCase().replace(/\s+/g, '-')}`}>
+                            <Link href={`/${article.category}/${article.title.toLowerCase().replace(/\s+/g, '-')}`}>
                 <a
                   style={{
-                    textDecoration: 'none', // Remove underline for the link
-                    color: 'inherit', // Inherit text color
-                    display: 'block',
-                    flex: '1',
+                    textDecoration: 'none', // Remove underline
+                    color: 'inherit', // Inherit color for consistency
                   }}
                 >
-                  <h3
-                    style={{
-                      margin: '0 0 5px',
-                      fontSize: '18px',
-                      textDecoration: 'none', // Ensure no underline
-                      color: '#000',
-                    }}
-                  >
-                    {article.title}
-                  </h3>
-                  <p
-                    style={{
-                      margin: '0 0 5px',
-                      fontSize: '14px',
-                      color: '#666',
-                      textDecoration: 'none', // Ensure no underline
-                    }}
-                  >
-                    {article.date} • {article.author}
-                  </p>
-                  <div
-                    style={{
-                      display: 'inline-block',
-                      fontSize: '12px',
-                      fontWeight: 'bold',
-                      padding: '3px 8px',
-                      color: categories.find((cat) => cat.name === article.category)?.color || '#000',
-                      border: `1px solid ${categories.find((cat) => cat.name === article.category)?.color || '#000'}`,
-                      backgroundColor:
-                        categories.find((cat) => cat.name === article.category)?.color + '20' || '#f0f0f0',
-                      borderRadius: '4px',
-                      marginBottom: '10px',
-                      textDecoration: 'none', // Ensure no underline
-                    }}
-                  >
-                    {article.category}
+                  <div style={{ display: 'block' }}>
+                    <h3
+                      style={{
+                        margin: '0 0 5px',
+                        fontSize: '18px',
+                        color: '#000', // Neutral black for title
+                      }}
+                    >
+                      {article.title}
+                    </h3>
+                    <p
+                      style={{
+                        margin: '0 0 5px',
+                        fontSize: '14px',
+                        color: '#666', // Subdued gray for date + author
+                      }}
+                    >
+                      {article.date} • {article.author}
+                    </p>
+                    <div
+                      style={{
+                        display: 'inline-block',
+                        fontSize: '12px',
+                        fontWeight: 'bold',
+                        padding: '3px 8px',
+                        color: categories.find((cat) => cat.name === article.category)?.color || '#000',
+                        border: `1px solid ${categories.find((cat) => cat.name === article.category)?.color || '#000'}`,
+                        backgroundColor:
+                          categories.find((cat) => cat.name === article.category)?.color + '20' || '#f0f0f0',
+                        borderRadius: '4px',
+                        marginBottom: '10px',
+                      }}
+                    >
+                      {article.category}
+                    </div>
+                    <p
+                      style={{
+                        margin: '0 0 10px',
+                        fontSize: '14px',
+                        color: '#444', // Subtle gray for preview
+                      }}
+                    >
+                      {article.preview}
+                    </p>
                   </div>
-                  <p
-                    style={{
-                      margin: '0 0 10px',
-                      fontSize: '14px',
-                      color: '#444',
-                      textDecoration: 'none', // Ensure no underline
-                    }}
-                  >
-                    {article.preview}
-                  </p>
-                  <hr
-                    style={{
-                      border: 'none',
-                      borderBottom: '1px solid #ddd',
-                      width: '80%',
-                      margin: '0 auto',
-                    }}
-                  />
                 </a>
               </Link>
             </div>
