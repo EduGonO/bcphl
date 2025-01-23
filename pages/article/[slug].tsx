@@ -3,24 +3,26 @@ import fs from 'fs';
 import path from 'path';
 import { GetStaticProps, GetStaticPaths } from 'next';
 
-export const getStaticPaths: GetStaticPaths = async () => {
+export const getStaticPaths = async () => {
   const categoriesDir = path.join(process.cwd(), 'text');
   const paths: { params: { slug: string } }[] = [];
 
-  const categories = fs.readdirSync(categoriesDir);
-  categories.forEach((category) => {
-    const categoryPath = path.join(categoriesDir, category);
-    if (fs.lstatSync(categoryPath).isDirectory()) {
-      const files = fs.readdirSync(categoryPath);
-      files.forEach((file) => {
-        if (file.endsWith('.md')) {
-          paths.push({
-            params: { slug: `${category}/${file.replace('.md', '')}` },
-          });
-        }
-      });
-    }
-  });
+  if (fs.existsSync(categoriesDir)) {
+    const categories = fs.readdirSync(categoriesDir);
+    categories.forEach((category) => {
+      const categoryPath = path.join(categoriesDir, category);
+      if (fs.lstatSync(categoryPath).isDirectory()) {
+        const files = fs.readdirSync(categoryPath);
+        files.forEach((file) => {
+          if (file.endsWith('.md')) {
+            paths.push({
+              params: { slug: `${category}/${file.replace('.md', '')}` },
+            });
+          }
+        });
+      }
+    });
+  }
 
   return {
     paths,
