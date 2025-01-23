@@ -51,7 +51,7 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
       <div style={{ maxWidth: '800px', width: '100%' }}>
         {/* Logo */}
         <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <img src="/media/logo.png" alt="Logo" style={{ maxHeight: '100px' }} />
+          <img src="/media/logo.png" alt="Logo" style={{ maxHeight: '320px' }} />
         </div>
 
         {/* Category Selector */}
