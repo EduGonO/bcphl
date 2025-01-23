@@ -100,7 +100,7 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
               {/* Thumbnail */}
               <div
                 style={{
-                  width: '60px',
+                  width: '42px',
                   height: '60px',
                   backgroundColor: '#e0e0e0',
                   marginRight: '15px',
