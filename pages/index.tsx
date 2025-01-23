@@ -91,7 +91,13 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
           {filteredArticles.map((article, index) => (
             <div key={index} style={{ marginBottom: '15px' }}>
               <Link href={`/article?slug=${article.category}/${article.title.toLowerCase().replace(/\s+/g, '-')}`}>
-                <a style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}>
+                <a
+                  style={{
+                    textDecoration: 'none',
+                    color: '#000', // Ensures neutral/black color
+                    display: 'block',
+                  }}
+                >
                   <h3 style={{ margin: '0 0 5px', fontSize: '18px' }}>{article.title}</h3>
                   <p style={{ margin: '0 0 5px', fontSize: '14px', color: '#666' }}>
                     {article.date} • {article.author}
