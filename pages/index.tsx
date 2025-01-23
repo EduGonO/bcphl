@@ -93,12 +93,12 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
               <Link href={`/article?slug=${article.category}/${article.title.toLowerCase().replace(/\s+/g, '-')}`}>
                 <a
                   style={{
-                    textDecoration: 'none',
-                    color: '#000', // Ensures neutral/black color
-                    display: 'block',
+                    textDecoration: 'none', // Removes underline
+                    color: 'inherit', // Inherit parent color
+                    display: 'block', // Ensure block-level styling applies
                   }}
                 >
-                  <h3 style={{ margin: '0 0 5px', fontSize: '18px' }}>{article.title}</h3>
+                  <h3 style={{ margin: '0 0 5px', fontSize: '18px', color: '#000' }}>{article.title}</h3>
                   <p style={{ margin: '0 0 5px', fontSize: '14px', color: '#666' }}>
                     {article.date} • {article.author}
                   </p>
