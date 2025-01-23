@@ -1,6 +1,6 @@
-import { GetStaticPaths, GetStaticProps } from 'next';
 import fs from 'fs';
 import path from 'path';
+import { GetStaticPaths, GetStaticProps } from 'next';
 
 const ArticlePage = ({ title, content }: { title: string; content: string }) => {
   return (
@@ -12,7 +12,7 @@ const ArticlePage = ({ title, content }: { title: string; content: string }) => 
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const categoriesDir = path.join(process.cwd(), 'pages/text');
+  const categoriesDir = path.join(process.cwd(), 'text');
   const paths: { params: { category: string; slug: string } }[] = [];
 
   fs.readdirSync(categoriesDir).forEach((category) => {
@@ -32,17 +32,17 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { category, slug } = params as { category: string; slug: string };
-  const filePath = path.join(process.cwd(), 'pages/text', category, `${slug.replace(/-/g, ' ')}.md`);
+  const filePath = path.join(process.cwd(), 'text', category, `${slug.replace(/-/g, ' ')}.md`);
 
-  const content = fs.readFileSync(filePath, 'utf-8').trim();
-  const lines = content.split('\n').map((line) => line.trim());
+  const fileContents = fs.readFileSync(filePath, 'utf-8').trim();
+  const lines = fileContents.split('\n').map((line) => line.trim());
   const title = lines[0].startsWith('#') ? lines[0].replace(/^#+\s*/, '') : slug.replace(/-/g, ' ');
-  const body = lines.slice(3).join('\n');
+  const content = lines.slice(3).join('\n');
 
   return {
     props: {
       title,
-      content: body,
+      content,
     },
   };
 };
