@@ -1,4 +1,3 @@
-// pages/index.tsx
 import React, { useState, useEffect } from 'react';
 
 type Article = {
@@ -8,30 +7,42 @@ type Article = {
 };
 
 const categories = [
-  'actu',
-  'interviews & reportage',
-  'new',
-  'design',
-  'program',
-  'livre et film',
-  'archives',
+  { name: 'actu', color: '#f44336' }, // Red
+  { name: 'interviews & reportage', color: '#3f51b5' }, // Blue
+  { name: 'new', color: '#4caf50' }, // Green
+  { name: 'design', color: '#ff9800' }, // Orange
+  { name: 'program', color: '#9c27b0' }, // Purple
+  { name: 'livre et film', color: '#009688' }, // Teal
+  { name: 'archives', color: '#607d8b' }, // Gray
 ];
 
 const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
   const [filteredArticles, setFilteredArticles] = useState<Article[]>(articles);
   const [activeCategory, setActiveCategory] = useState<string>('all');
+  const [backgroundColor, setBackgroundColor] = useState<string>('#ffffff');
 
   const handleCategoryChange = (category: string) => {
     setActiveCategory(category);
     if (category === 'all') {
       setFilteredArticles(articles);
+      setBackgroundColor('#ffffff'); // Default white background
     } else {
       setFilteredArticles(articles.filter((article) => article.category === category));
+      const categoryColor = categories.find((cat) => cat.name === category)?.color || '#ffffff';
+      setBackgroundColor(categoryColor);
     }
   };
 
   return (
-    <div style={{ fontFamily: 'Arial, sans-serif', padding: '20px' }}>
+    <div
+      style={{
+        fontFamily: 'Arial, sans-serif',
+        padding: '20px',
+        backgroundColor,
+        minHeight: '100vh',
+        transition: 'background-color 0.3s ease',
+      }}
+    >
       {/* Logo */}
       <div style={{ textAlign: 'center', marginBottom: '40px' }}>
         <img src="/media/logo.png" alt="Logo" style={{ maxHeight: '100px' }} />
@@ -39,19 +50,29 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
 
       {/* Category Selector */}
       <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-        {['all', ...categories].map((category) => (
+        {['all', ...categories.map((cat) => cat.name)].map((category) => (
           <button
             key={category}
             onClick={() => handleCategoryChange(category)}
             style={{
-              margin: '0 10px',
-              padding: '10px 15px',
-              fontSize: '16px',
+              margin: '10px',
+              width: '100px',
+              height: '100px',
+              fontSize: '14px',
               border: '1px solid #ccc',
               borderRadius: '5px',
-              backgroundColor: activeCategory === category ? '#000' : '#fff',
+              backgroundColor:
+                activeCategory === category
+                  ? categories.find((cat) => cat.name === category)?.color || '#000'
+                  : '#fff',
               color: activeCategory === category ? '#fff' : '#000',
               cursor: 'pointer',
+              display: 'inline-flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              textAlign: 'center',
+              fontWeight: 'bold',
+              transition: 'all 0.2s ease',
             }}
           >
             {category.charAt(0).toUpperCase() + category.slice(1)}
@@ -92,7 +113,8 @@ export async function getStaticProps() {
 
   const categoriesDir = path.join(process.cwd(), 'pages/text');
 
-  for (const category of categories) {
+  for (const categoryObj of categories) {
+    const category = categoryObj.name;
     const categoryPath = path.join(categoriesDir, category);
     if (fs.existsSync(categoryPath)) {
       const files = fs.readdirSync(categoryPath);
