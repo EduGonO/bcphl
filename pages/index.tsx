@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import fs from 'fs';
 import path from 'path';
-import matter from 'gray-matter';
 
 type Article = {
   title: string;
   category: string;
-  slug: string;
   content: string;
 };
 
@@ -20,27 +18,28 @@ const categories = [
   'archives',
 ];
 
-const loadArticles = async (): Promise<Article[]> => {
-  const categoriesDir = 'pages/text';
+const loadArticles = (): Article[] => {
+  const categoriesDir = path.join(process.cwd(), 'pages/text');
   const articles: Article[] = [];
 
   for (const category of categories) {
-    const categoryPath = path.join(process.cwd(), categoriesDir, category);
+    const categoryPath = path.join(categoriesDir, category);
     if (fs.existsSync(categoryPath)) {
       const files = fs.readdirSync(categoryPath);
 
       for (const file of files) {
         if (file.endsWith('.md')) {
           const filePath = path.join(categoryPath, file);
-          const fileContents = fs.readFileSync(filePath, 'utf-8');
-          const { data, content } = matter(fileContents);
+          const fileContents = fs.readFileSync(filePath, 'utf-8').trim();
 
-          articles.push({
-            title: data.title || file.replace('.md', ''),
-            category,
-            slug: file.replace('.md', ''),
-            content,
-          });
+          // Extract title (first line of the file as Markdown convention)
+          const firstLine = fileContents.split('\n')[0];
+          const title = firstLine.startsWith('#') ? firstLine.replace(/^#+\s*/, '') : file.replace('.md', '');
+
+          // Content is the rest of the file
+          const content = fileContents.split('\n').slice(1).join('\n').trim();
+
+          articles.push({ title, category, content });
         }
       }
     }
@@ -55,13 +54,9 @@ const Home: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<string>('all');
 
   useEffect(() => {
-    const fetchArticles = async () => {
-      const allArticles = await loadArticles();
-      setArticles(allArticles);
-      setFilteredArticles(allArticles);
-    };
-
-    fetchArticles();
+    const allArticles = loadArticles();
+    setArticles(allArticles);
+    setFilteredArticles(allArticles);
   }, []);
 
   const handleCategoryChange = (category: string) => {
@@ -119,7 +114,7 @@ const Home: React.FC = () => {
             <p style={{ color: '#555', marginBottom: '10px' }}>
               <strong>Category:</strong> {article.category}
             </p>
-            <p style={{ color: '#777' }}>{article.content.slice(0, 100)}...</p>
+            <p style={{ color: '#777', whiteSpace: 'pre-wrap' }}>{article.content.slice(0, 200)}...</p>
           </div>
         ))}
       </div>
