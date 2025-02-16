@@ -35,13 +35,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   return { props: { title, date, author, category, content } };
 };
 
-const ArticlePage: React.FC<{
-  title: string;
-  date: string;
-  author: string;
-  category: string;
-  content: string;
-}> = ({ title, date, author, category, content }) => {
+const ArticlePage: React.FC<{ title: string; date: string; author: string; category: string; content: string; }> = ({ title, date, author, category, content }) => {
   const cats = [
     { name: 'actu', color: '#f44336' },
     { name: 'interviews & reportage', color: '#3f51b5' },
@@ -57,9 +51,9 @@ const ArticlePage: React.FC<{
       <Head>
         <title>{title}</title>
       </Head>
-      <div style={{ display: 'flex', minHeight: '100vh' }}>
+      <div style={{ backgroundColor: '#fff' }}>
         <Header categories={cats} showBackButton />
-        <main style={{ flex: 1, padding: '20px' }}>
+        <main style={{ marginLeft: '250px', padding: '20px', height: '100vh', overflowY: 'auto' }}>
           <h1 style={{ margin: '0 0 10px', fontFamily: 'GayaRegular' }}>{title}</h1>
           <p style={{ margin: '0 0 10px', color: '#555' }}>
             {date} • {author} • {category.charAt(0).toUpperCase() + category.slice(1)}

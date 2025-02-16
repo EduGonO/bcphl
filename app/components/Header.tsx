@@ -19,13 +19,18 @@ const Header: React.FC<HeaderProps> = ({
   return (
     <div
       style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
         width: '250px',
         height: '100vh',
         padding: '20px',
         boxSizing: 'border-box',
-        backgroundColor: '#f8f8f8',
+        background: 'rgba(248,248,248,0.8)',
+        backdropFilter: 'blur(8px)',
         display: 'flex',
         flexDirection: 'column',
+        zIndex: 1000,
       }}
     >
       {showBackButton && (

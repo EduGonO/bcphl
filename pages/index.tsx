@@ -60,38 +60,16 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
           }
         `}</style>
       </Head>
-      <div
-        style={{
-          display: 'flex',
-          minHeight: '100vh',
-          transition: 'background-color 0.3s ease',
-          backgroundColor,
-        }}
-      >
+      <div style={{ backgroundColor, transition: 'background-color 0.3s ease' }}>
         <Header categories={categories} activeCategory={activeCategory} onCategoryChange={handleCategoryChange} />
-        <main style={{ flex: 1, padding: '20px' }}>
+        <main style={{ marginLeft: '250px', padding: '20px', height: '100vh', overflowY: 'auto' }}>
           {filteredArticles.map((article, i) => (
             <div key={i} style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '15px' }}>
-              <div
-                style={{
-                  width: '42px',
-                  height: '60px',
-                  backgroundColor: '#e0e0e0',
-                  marginRight: '15px',
-                  borderRadius: '4px',
-                }}
-              />
+              <div style={{ width: '42px', height: '60px', backgroundColor: '#e0e0e0', marginRight: '15px', borderRadius: '4px' }}></div>
               <div style={{ flex: 1 }}>
                 <Link href={`/${article.category}/${article.slug}`}>
                   <a style={{ textDecoration: 'none', color: 'inherit' }}>
-                    <h3
-                      style={{
-                        margin: '0 0 5px',
-                        fontSize: '18px',
-                        fontFamily: 'GayaRegular',
-                        color: activeCategory ? '#fff' : '#000',
-                      }}
-                    >
+                    <h3 style={{ margin: '0 0 5px', fontSize: '18px', fontFamily: 'GayaRegular', color: activeCategory ? '#fff' : '#000' }}>
                       {article.title}
                     </h3>
                   </a>
@@ -99,28 +77,19 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
                 <p style={{ margin: '0 0 5px', fontSize: '14px', color: activeCategory ? '#fff' : '#666' }}>
                   {article.date} • {article.author}
                 </p>
-                <div
-                  style={{
-                    display: 'inline-block',
-                    fontSize: '12px',
-                    fontWeight: 'bold',
-                    padding: '3px 8px',
-                    color: activeCategory
-                      ? '#000'
-                      : categories.find((c) => c.name === article.category)?.color || '#000',
-                    border: `1px solid ${
-                      activeCategory
-                        ? 'rgba(255,255,255,0.8)'
-                        : categories.find((c) => c.name === article.category)?.color || '#000'
-                    }`,
-                    backgroundColor:
-                      activeCategory
-                        ? 'rgba(255,255,255,0.8)'
-                        : (categories.find((c) => c.name === article.category)?.color || '#f0f0f0') + '20',
-                    borderRadius: '4px',
-                    marginBottom: '10px',
-                  }}
-                >
+                <div style={{
+                  display: 'inline-block',
+                  fontSize: '12px',
+                  fontWeight: 'bold',
+                  padding: '3px 8px',
+                  color: activeCategory ? '#000' : categories.find(c => c.name === article.category)?.color || '#000',
+                  border: `1px solid ${activeCategory ? 'rgba(255,255,255,0.8)' : categories.find(c => c.name === article.category)?.color || '#000'}`,
+                  backgroundColor: activeCategory
+                    ? 'rgba(255,255,255,0.8)'
+                    : (categories.find(c => c.name === article.category)?.color || '#f0f0f0') + '20',
+                  borderRadius: '4px',
+                  marginBottom: '10px',
+                }}>
                   {article.category}
                 </div>
                 <p style={{ margin: '0 0 10px', fontSize: '14px', color: activeCategory ? '#fff' : '#444' }}>
