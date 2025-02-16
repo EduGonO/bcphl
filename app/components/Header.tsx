@@ -16,6 +16,7 @@ const Header: React.FC<HeaderProps> = ({
   onCategoryChange,
   layout,
 }) => {
+  // Force consistent button styling
   const commonBtnStyle: React.CSSProperties = {
     fontSize: '14px',
     border: 'none',
@@ -71,7 +72,6 @@ const Header: React.FC<HeaderProps> = ({
                 </button>
               );
             }
-            // Ensure link looks identical: enforce block display and full width
             return (
               <Link key={cat.name} href={`/?category=${cat.name}`}>
                 <a
@@ -79,6 +79,7 @@ const Header: React.FC<HeaderProps> = ({
                     ...btnStyle,
                     textDecoration: 'none',
                     display: 'block',
+                    width: '100%',
                   }}
                 >
                   {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
@@ -91,7 +92,7 @@ const Header: React.FC<HeaderProps> = ({
     );
   }
 
-  // Horizontal layout remains unchanged.
+  // Horizontal layout
   return (
     <div
       style={{
