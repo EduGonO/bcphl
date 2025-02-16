@@ -35,7 +35,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   return { props: { title, date, author, category, content } };
 };
 
-const ArticlePage: React.FC<{ title: string; date: string; author: string; category: string; content: string; }> = ({ title, date, author, category, content }) => {
+const ArticlePage: React.FC<{
+  title: string;
+  date: string;
+  author: string;
+  category: string;
+  content: string;
+}> = ({ title, date, author, category, content }) => {
   const cats = [
     { name: 'actu', color: '#f44336' },
     { name: 'interviews & reportage', color: '#3f51b5' },
@@ -51,15 +57,17 @@ const ArticlePage: React.FC<{ title: string; date: string; author: string; categ
       <Head>
         <title>{title}</title>
       </Head>
-      <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
+      <div style={{ display: 'flex', minHeight: '100vh' }}>
         <Header categories={cats} showBackButton />
-        <h1 style={{ margin: '0 0 10px', fontFamily: 'GayaRegular' }}>{title}</h1>
-        <p style={{ margin: '0 0 10px', color: '#555' }}>
-          {date} • {author} • {category.charAt(0).toUpperCase() + category.slice(1)}
-        </p>
-        <div style={{ marginTop: '20px', lineHeight: '1.6', whiteSpace: 'pre-wrap', color: '#333' }}>
-          {content}
-        </div>
+        <main style={{ flex: 1, padding: '20px' }}>
+          <h1 style={{ margin: '0 0 10px', fontFamily: 'GayaRegular' }}>{title}</h1>
+          <p style={{ margin: '0 0 10px', color: '#555' }}>
+            {date} • {author} • {category.charAt(0).toUpperCase() + category.slice(1)}
+          </p>
+          <div style={{ marginTop: '20px', lineHeight: '1.6', whiteSpace: 'pre-wrap', color: '#333' }}>
+            {content}
+          </div>
+        </main>
       </div>
     </>
   );
