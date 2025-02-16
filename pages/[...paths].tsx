@@ -2,10 +2,11 @@ import React from 'react';
 import fs from 'fs';
 import path from 'path';
 import { GetStaticProps, GetStaticPaths } from 'next';
-import Header from '../components/Header';
+import Header from '../app/components/Header';
+
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const categoriesDir = path.join(process.cwd(), 'texts'); // Updated folder
+  const categoriesDir = path.join(process.cwd(), 'pages', 'text');
   const paths: { params: { slug: string } }[] = [];
 
   if (fs.existsSync(categoriesDir)) {
