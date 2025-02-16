@@ -6,7 +6,7 @@ import Header from '../app/components/Header';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const categoriesDir = path.join(process.cwd(), 'pages', 'texts');
-  const paths: { params: { slug: string } }[] = [];
+  const paths: { params: { paths: string[] } }[] = [];
 
   if (fs.existsSync(categoriesDir)) {
     const categories = fs.readdirSync(categoriesDir);
@@ -16,7 +16,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
         fs.readdirSync(categoryPath).forEach((file) => {
           if (file.endsWith('.md')) {
             paths.push({
-              params: { slug: `${category}/${file.replace('.md', '')}` },
+              params: { paths: [category, file.replace('.md', '')] },
             });
           }
         });
@@ -28,10 +28,10 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const [category, slug] = (params?.slug as string).split('/');
+  const [category, slug] = params?.paths as string[];
   const filePath = path.join(process.cwd(), 'pages', 'texts', category, `${slug}.md`);
   const fileContents = fs.readFileSync(filePath, 'utf-8');
-  const lines = fileContents.split('\n').map((line: string) => line.trim());
+  const lines = fileContents.split('\n').map(line => line.trim());
   const title = lines[0].startsWith('#') ? lines[0].replace(/^#+\s*/, '') : 'Untitled';
   const date = lines[1] || 'Unknown Date';
   const author = lines[2] || 'Unknown Author';
@@ -40,13 +40,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   return { props: { title, date, author, category, content } };
 };
 
-const ArticlePage: React.FC<{
-  title: string;
-  date: string;
-  author: string;
-  category: string;
-  content: string;
-}> = ({ title, date, author, category, content }) => {
+const ArticlePage: React.FC<{ title: string; date: string; author: string; category: string; content: string; }> = ({ title, date, author, category, content }) => {
   const categories = [
     { name: 'actu', color: '#f44336' },
     { name: 'interviews & reportage', color: '#3f51b5' },
