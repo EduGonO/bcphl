@@ -61,12 +61,10 @@ const ArticlePage: React.FC<{
   const [imagePreview, setImagePreview] = useState<boolean>(true);
   const [showArticleSidebar, setShowArticleSidebar] = useState<boolean>(true);
 
-  const mainStyle: React.CSSProperties =
-    layout === 'vertical'
-      ? { marginLeft: '250px', padding: '20px' }
-      : { marginTop: '80px', padding: '20px' };
+  // Since the header is fixed at the top, we add a top margin to avoid content overlap.
+  const mainStyle: React.CSSProperties = { marginTop: '100px', padding: '20px' };
 
-  // Define the header category style similar to the Header component buttons.
+  // Style similar to header category button.
   const headerCategoryStyle: React.CSSProperties = {
     fontSize: '14px',
     backgroundColor: '#3f51b5',
@@ -115,14 +113,13 @@ const ArticlePage: React.FC<{
         <main style={mainStyle}>
           <div
             style={{
-              maxWidth: '800px',
-              width: '100%',
-              margin: '0 auto',
               display: 'flex',
               gap: '20px',
+              width: '100%',
             }}
           >
-            <div style={{ flex: 2 }}>
+            {/* Article view: occupies 80% of the width */}
+            <div style={{ flex: '0 0 80%' }}>
               {imagePreview && (
                 <img
                   src="/media/exampleImage.jpg"
@@ -158,8 +155,15 @@ const ArticlePage: React.FC<{
                 {content}
               </div>
             </div>
+            {/* Sidebar: occupies 20% of the width */}
             {showArticleSidebar && (
-              <aside style={{ flex: 1, borderLeft: '1px solid #ddd', paddingLeft: '20px' }}>
+              <aside
+                style={{
+                  flex: '0 0 20%',
+                  borderLeft: '1px solid #ddd',
+                  paddingLeft: '20px',
+                }}
+              >
                 <div
                   style={{
                     display: 'flex',
@@ -275,11 +279,13 @@ const ArticlePage: React.FC<{
                 </ul>
 
                 <h4>Commentaires</h4>
-                <ul style={{
+                <ul
+                  style={{
                     paddingLeft: '20px',
                     marginTop: '4px',
                     marginBottom: '20px',
-                  }}>
+                  }}
+                >
                   <li>
                     <strong>User1:</strong> Example de commentaire
                   </li>
