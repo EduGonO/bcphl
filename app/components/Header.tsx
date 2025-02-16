@@ -53,7 +53,14 @@ const Header: React.FC<HeaderProps> = ({
           </a>
         </Link>
         <h1 style={{ fontSize: '24px', textAlign: 'center' }}>Bicéphale</h1>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', width: '100%' }}>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '15px',
+            width: '100%',
+          }}
+        >
           {categories.map((cat) => {
             const btnStyle: React.CSSProperties = {
               ...commonBtnStyle,
@@ -87,8 +94,9 @@ const Header: React.FC<HeaderProps> = ({
       </div>
     );
   }
-   
-   return (
+
+  // Horizontal layout
+  return (
     <div
       style={{
         position: 'fixed',
@@ -102,14 +110,33 @@ const Header: React.FC<HeaderProps> = ({
         zIndex: 1000,
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'flex-end', gap: '10px' }}>
+      {/* Logo and Title (centered together) */}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'flex-end',
+          justifyContent: 'center',
+          gap: '10px',
+        }}
+      >
         <Link href="/">
-          <a style={{ textDecoration: 'none', display: 'flex', alignItems: 'flex-end', gap: '10px' }}>
+          <a style={{ textDecoration: 'none' }}>
             <img src="/media/logo.png" alt="Logo" style={{ height: '70px' }} />
-            <h1 style={{ fontSize: '24px', margin: 0, lineHeight: '1' }}>Bicéphale</h1>
           </a>
         </Link>
+        <h1
+          style={{
+            fontSize: '24px',
+            margin: 0,
+            lineHeight: '1',
+            fontFamily: 'DINAlternate-Bold, sans-serif',
+            color: 'inherit',
+          }}
+        >
+          Bicéphale
+        </h1>
       </div>
+      {/* Categories (displayed as plain text) */}
       <div
         style={{
           display: 'flex',
@@ -123,24 +150,22 @@ const Header: React.FC<HeaderProps> = ({
           lineHeight: 1,
         }}
       >
-        {categories.map((cat) => {
-          const btnStyle: React.CSSProperties = {
-            ...commonBtnStyle,
-            backgroundColor: cat.color,
-            opacity: activeCategory === cat.name ? 1 : 0.8,
-          };
-          return onCategoryChange ? (
-            <button key={cat.name} onClick={() => onCategoryChange(cat.name)} style={btnStyle}>
-              {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
-            </button>
-          ) : (
-            <Link key={cat.name} href={`/?category=${cat.name}`}>
-              <a style={{ ...btnStyle, textDecoration: 'none', display: 'block' }}>
-                {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
-              </a>
-            </Link>
-          );
-        })}
+        {categories.map((cat) => (
+          <span
+            key={cat.name}
+            style={{
+              fontSize: '14px',
+              fontWeight: 'bold',
+              color: '#fff',
+              backgroundColor: cat.color,
+              padding: '5px 10px',
+              borderRadius: '5px',
+              opacity: activeCategory === cat.name ? 1 : 0.8,
+            }}
+          >
+            {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
+          </span>
+        ))}
       </div>
     </div>
   );
