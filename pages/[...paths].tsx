@@ -45,13 +45,14 @@ const ArticlePage: React.FC<{
   content: string;
 }> = ({ title, date, author, category, content }) => {
   const cats: Category[] = [
-    { name: 'actu', color: '#f44336' },
-    { name: 'interviews & reportage', color: '#3f51b5' },
-    { name: 'new', color: '#4caf50' },
-    { name: 'design', color: '#ff9800' },
-    { name: 'program', color: '#9c27b0' },
-    { name: 'livre et film', color: '#009688' },
-    { name: 'archives', color: '#607d8b' },
+    { name: 'Love Letters', color: '#f44336' },
+    { name: 'Image-Critique', color: '#3f51b5' },
+    { name: 'Bascule', color: '#4caf50' },
+    { name: 'Sensure', color: '#ff9800' },
+    { name: 'Automaton', color: '#9c27b0' },
+    { name: 'Bicaméralité', color: '#009688' },
+    { name: 'Banque des rêves', color: '#607d8b' },
+    { name: 'Cartographie', color: '#607d8b' },
   ];
 
   const [layout, setLayout] = useState<'vertical' | 'horizontal'>('vertical');
