@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
-import Header from '../components/Header';
+import Header from '../Header';
 
 export type Article = {
   title: string;
