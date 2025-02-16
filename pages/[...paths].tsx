@@ -4,6 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import Header, { Category } from '../app/components/Header';
+import DebugOverlay from '../app/components/DebugOverlay';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const textsDir = path.join(process.cwd(), 'texts');
@@ -53,6 +54,10 @@ const ArticlePage: React.FC<{
   ];
 
   const [layout, setLayout] = useState<'vertical' | 'horizontal'>('vertical');
+  const [bodyFontSize, setBodyFontSize] = useState<number>(16);
+  const [titleFont, setTitleFont] = useState<'Gaya' | 'Avenir'>('Gaya');
+  const [imagePreview, setImagePreview] = useState<boolean>(false);
+
   const mainStyle: React.CSSProperties =
     layout === 'vertical'
       ? { marginLeft: '250px', height: '100vh', overflowY: 'auto' as 'auto', padding: '20px' }
@@ -62,8 +67,29 @@ const ArticlePage: React.FC<{
     <>
       <Head>
         <title>{title}</title>
+        <style>{`
+          @font-face {
+            font-family: 'AvenirNextCondensed';
+            src: url('/fonts/AvenirNextCondensed-Regular.otf') format('opentype');
+            font-display: swap;
+          }
+          @font-face {
+            font-family: 'GayaRegular';
+            src: url('/fonts/gaya-regular.otf') format('opentype');
+            font-display: swap;
+          }
+          @font-face {
+            font-family: 'AvenirNextBolder';
+            src: url('/fonts/AvenirNextBolder.otf') format('opentype');
+            font-display: swap;
+          }
+          body {
+            margin: 0;
+            font-family: 'AvenirNextCondensed', Arial, sans-serif;
+          }
+        `}</style>
       </Head>
-      <div style={{ backgroundColor: '#fff' }}>
+      <div style={{ backgroundColor: '#fff', fontSize: `${bodyFontSize}px` }}>
         <Header
           categories={cats}
           showBackButton
@@ -72,7 +98,21 @@ const ArticlePage: React.FC<{
         />
         <main style={mainStyle}>
           <div style={{ maxWidth: '800px', width: '100%', margin: '0 auto' }}>
-            <h1 style={{ margin: '0 0 10px', fontFamily: 'GayaRegular' }}>{title}</h1>
+            {imagePreview && (
+              <img
+                src="/media/articleImage.png"
+                alt="Article Preview"
+                style={{ width: '100%', borderRadius: '8px', marginBottom: '20px' }}
+              />
+            )}
+            <h1
+              style={{
+                margin: '0 0 10px',
+                fontFamily: titleFont === 'Gaya' ? 'GayaRegular' : 'AvenirNextBolder',
+              }}
+            >
+              {title}
+            </h1>
             <p style={{ margin: '0 0 10px', color: '#555' }}>
               {date} • {author} • {category.charAt(0).toUpperCase() + category.slice(1)}
             </p>
@@ -81,6 +121,16 @@ const ArticlePage: React.FC<{
             </div>
           </div>
         </main>
+        <DebugOverlay
+          layout={layout}
+          onToggleLayout={() => setLayout(layout === 'vertical' ? 'horizontal' : 'vertical')}
+          bodyFontSize={bodyFontSize}
+          onBodyFontSizeChange={setBodyFontSize}
+          titleFont={titleFont}
+          onTitleFontChange={setTitleFont}
+          imagePreview={imagePreview}
+          onToggleImagePreview={() => setImagePreview(!imagePreview)}
+        />
       </div>
     </>
   );

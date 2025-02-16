@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
 import Header, { Category } from '../app/components/Header';
+import DebugOverlay from '../app/components/DebugOverlay';
 
 export type Article = {
   title: string;
@@ -27,6 +28,9 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [backgroundColor, setBackgroundColor] = useState<string>('#ffffff');
   const [layout, setLayout] = useState<'vertical' | 'horizontal'>('vertical');
+  const [bodyFontSize, setBodyFontSize] = useState<number>(16);
+  const [titleFont, setTitleFont] = useState<'Gaya' | 'Avenir'>('Gaya');
+  const [imagePreview, setImagePreview] = useState<boolean>(false);
 
   const handleCategoryChange = (category: string) => {
     if (activeCategory === category) {
@@ -60,19 +64,23 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
             src: url('/fonts/gaya-regular.otf') format('opentype');
             font-display: swap;
           }
+          @font-face {
+            font-family: 'AvenirNextBolder';
+            src: url('/fonts/AvenirNextBolder.otf') format('opentype');
+            font-display: swap;
+          }
           body {
             margin: 0;
             font-family: 'AvenirNextCondensed', Arial, sans-serif;
           }
         `}</style>
       </Head>
-      <div style={{ backgroundColor, transition: 'background-color 0.3s ease' }}>
+      <div style={{ backgroundColor, transition: 'background-color 0.3s ease', fontSize: `${bodyFontSize}px` }}>
         <Header
           categories={categories}
           activeCategory={activeCategory}
           onCategoryChange={handleCategoryChange}
           layout={layout}
-          onLayoutToggle={() => setLayout(layout === 'vertical' ? 'horizontal' : 'vertical')}
         />
         <main style={mainStyle}>
           <div style={{ maxWidth: '800px', width: '100%', margin: '0 auto' }}>
@@ -94,7 +102,7 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
                         style={{
                           margin: '0 0 5px',
                           fontSize: '18px',
-                          fontFamily: 'GayaRegular',
+                          fontFamily: titleFont === 'Gaya' ? 'GayaRegular' : 'AvenirNextBolder',
                           color: activeCategory ? '#fff' : '#000',
                         }}
                       >
@@ -137,6 +145,16 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
             ))}
           </div>
         </main>
+        <DebugOverlay
+          layout={layout}
+          onToggleLayout={() => setLayout(layout === 'vertical' ? 'horizontal' : 'vertical')}
+          bodyFontSize={bodyFontSize}
+          onBodyFontSizeChange={setBodyFontSize}
+          titleFont={titleFont}
+          onTitleFontChange={setTitleFont}
+          imagePreview={imagePreview}
+          onToggleImagePreview={() => setImagePreview(!imagePreview)}
+        />
       </div>
     </>
   );

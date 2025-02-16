@@ -9,7 +9,6 @@ export type HeaderProps = {
   onCategoryChange?: (category: string) => void;
   showBackButton?: boolean;
   layout: 'vertical' | 'horizontal';
-  onLayoutToggle: () => void;
 };
 
 const Header: React.FC<HeaderProps> = ({
@@ -18,18 +17,7 @@ const Header: React.FC<HeaderProps> = ({
   onCategoryChange,
   showBackButton = false,
   layout,
-  onLayoutToggle,
 }) => {
-  const switchBtnStyle = {
-    padding: '4px 8px',
-    fontSize: '12px',
-    border: 'none',
-    borderRadius: '5px',
-    backgroundColor: '#333',
-    color: '#fff',
-    cursor: 'pointer',
-  };
-
   if (layout === 'vertical') {
     return (
       <div
@@ -96,11 +84,6 @@ const Header: React.FC<HeaderProps> = ({
               </Link>
             );
           })}
-        </div>
-        <div style={{ marginTop: 'auto' }}>
-          <button onClick={onLayoutToggle} style={switchBtnStyle}>
-            Switch Layout
-          </button>
         </div>
       </div>
     );
@@ -183,11 +166,6 @@ const Header: React.FC<HeaderProps> = ({
             </Link>
           );
         })}
-      </div>
-      <div>
-        <button onClick={onLayoutToggle} style={switchBtnStyle}>
-          Switch Layout
-        </button>
       </div>
     </div>
   );
