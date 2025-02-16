@@ -114,8 +114,7 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
                   </p>
                   <div
                     style={{
-                      display: 'block', // Changed from 'inline-block' to 'block'
-                      textAlign: 'left', // Ensures text is left-aligned
+                      display: 'inline-block',
                       fontSize: '12px',
                       fontWeight: 'bold',
                       padding: '3px 8px',
