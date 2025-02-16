@@ -134,51 +134,66 @@ const ArticlePage: React.FC<{
               </div>
             </div>
             {showArticleSidebar && (
-              <aside
-                style={{
-                  flex: 1,
-                  borderLeft: '1px solid #ddd',
-                  paddingLeft: '20px',
-                }}
-              >
-                <h4 style={{ marginTop: 0 }}>Article Info</h4>
-                <p>
-                  <strong>Author:</strong> {author}
-                </p>
-                <p>
-                  <strong>Date:</strong> {date}
-                </p>
-                <p>
-                  <strong>Category:</strong> {category.charAt(0).toUpperCase() + category.slice(1)}
-                </p>
-                <h4>References</h4>
-                <ul style={{ paddingLeft: '20px' }}>
-                  <li>
-                    <a href="#" style={{ textDecoration: 'none', color: '#3f51b5' }}>
-                      Sample Reference 1
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" style={{ textDecoration: 'none', color: '#3f51b5' }}>
-                      Sample Reference 2
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" style={{ textDecoration: 'none', color: '#3f51b5' }}>
-                      Sample Reference 3
-                    </a>
-                  </li>
-                </ul>
-                <h4>Comments</h4>
-                <ul style={{ paddingLeft: '20px' }}>
-                  <li>
-                    <strong>User1:</strong> This is a sample comment.
-                  </li>
-                  <li>
-                    <strong>User2:</strong> Another comment example.
-                  </li>
-                </ul>
-              </aside>
+              <aside style={{ flex: 1, borderLeft: '1px solid #ddd', paddingLeft: '20px' }}>
+              <h4 style={{ marginTop: 0 }}>Info</h4>
+              <div style={headerCategoryStyle}>
+                {category.charAt(0).toUpperCase() + category.slice(1)}
+              </div>
+              <div style={{ color: 'gray', marginBottom: '10px' }}>{formattedDate}</div>
+
+              <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                <div
+                  style={{
+                    width: 24,
+                    height: 24,
+                    borderRadius: '50%',
+                    backgroundColor: 'gray',
+                    marginRight: '10px',
+                  }}
+                />
+                <h4 style={{ margin: 0 }}>{author}</h4>
+              </div>        
+
+              <p>Ceci est une courte biographie de l'auteur.</p>
+
+              <div style={{ marginBottom: '20px' }}>
+                <a href="#" style={{ marginRight: '10px', textDecoration: 'none', color: '#3f51b5' }}>
+                  Portfolio
+                </a>
+                <a href="#" style={{ marginRight: '10px', textDecoration: 'none', color: '#3f51b5' }}>
+                  Twitter
+                </a>
+              </div>
+
+              <h4 style={{ marginBottom: '4px' }}>References</h4>
+              <ul style={{ paddingLeft: '20px', marginTop: '4px' }}>
+                <li>
+                  <a href="#" style={{ textDecoration: 'none', color: '#3f51b5' }}>
+                    Sample Reference 1
+                  </a>
+                </li>
+                <li>
+                  <a href="#" style={{ textDecoration: 'none', color: '#3f51b5' }}>
+                    Sample Reference 2
+                  </a>
+                </li>
+                <li>
+                  <a href="#" style={{ textDecoration: 'none', color: '#3f51b5' }}>
+                    Sample Reference 3
+                  </a>
+                </li>
+              </ul>
+
+              <h4>Comments</h4>
+              <ul style={{ paddingLeft: '20px' }}>
+                <li>
+                  <strong>User1:</strong> This is a sample comment.
+                </li>
+                <li>
+                  <strong>User2:</strong> Another comment example.
+                </li>
+              </ul>
+            </aside>
             )}
           </div>
           <Footer />
