@@ -31,7 +31,7 @@ const DebugOverlay: React.FC<DebugOverlayProps> = ({
         position: 'fixed',
         bottom: 10,
         left: 10,
-        background: 'rgba(0,0,0,0.7)',
+        background: 'rgba(0,0,0,0.42)',
         color: '#fff',
         padding: '10px',
         borderRadius: '5px',
