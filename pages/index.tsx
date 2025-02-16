@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Head from 'next/head';
-import Link from 'next/link';
 import Header, { Category } from '../app/components/Header';
 import DebugOverlay from '../app/components/DebugOverlay';
 import Footer from '../app/components/Footer';
@@ -48,8 +47,8 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
 
   const mainStyle: React.CSSProperties =
     layout === 'vertical'
-      ? { marginLeft: '250px', height: 'calc(100vh - 60px)', overflowY: 'auto', padding: '20px', marginBottom: '60px' }
-      : { marginTop: '80px', height: 'calc(100vh - 80px - 60px)', overflowY: 'auto', padding: '20px', marginBottom: '60px' };
+      ? { marginLeft: '250px', padding: '20px' }
+      : { marginTop: '80px', padding: '20px' };
 
   return (
     <>
@@ -97,20 +96,18 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
                   }}
                 />
                 <div style={{ flex: 1 }}>
-                  <Link href={`/${article.category}/${article.slug}`}>
-                    <a style={{ textDecoration: 'none', color: 'inherit' }}>
-                      <h3
-                        style={{
-                          margin: '0 0 5px',
-                          fontSize: '18px',
-                          fontFamily: titleFont === 'Gaya' ? 'GayaRegular' : 'AvenirNextBolder',
-                          color: activeCategory ? '#fff' : '#000',
-                        }}
-                      >
-                        {article.title}
-                      </h3>
-                    </a>
-                  </Link>
+                  <a href={`/${article.category}/${article.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                    <h3
+                      style={{
+                        margin: '0 0 5px',
+                        fontSize: '18px',
+                        fontFamily: titleFont === 'Gaya' ? 'GayaRegular' : 'AvenirNextBolder',
+                        color: activeCategory ? '#fff' : '#000',
+                      }}
+                    >
+                      {article.title}
+                    </h3>
+                  </a>
                   <p style={{ margin: '0 0 5px', fontSize: '14px', color: activeCategory ? '#fff' : '#666' }}>
                     {article.date} • {article.author}
                   </p>
@@ -146,8 +143,8 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
               </div>
             ))}
           </div>
+          <Footer />
         </main>
-        <Footer />
         <DebugOverlay
           layout={layout}
           onToggleLayout={() => setLayout(layout === 'vertical' ? 'horizontal' : 'vertical')}

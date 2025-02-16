@@ -60,8 +60,8 @@ const ArticlePage: React.FC<{
   const [imagePreview, setImagePreview] = useState<boolean>(true);
   const mainStyle: React.CSSProperties =
     layout === 'vertical'
-      ? { marginLeft: '250px', height: 'calc(100vh - 60px)', overflowY: 'auto', padding: '20px', marginBottom: '60px' }
-      : { marginTop: '80px', height: 'calc(100vh - 80px - 60px)', overflowY: 'auto', padding: '20px', marginBottom: '60px' };
+      ? { marginLeft: '250px', padding: '20px' }
+      : { marginTop: '80px', padding: '20px' };
 
   return (
     <>
@@ -80,7 +80,7 @@ const ArticlePage: React.FC<{
           }
           @font-face {
             font-family: 'AvenirNextBolder';
-            src: url('/fonts/AvenirNextCondensed-Regular.otf') format('opentype');
+            src: url('/fonts/AvenirNextBolder.otf') format('opentype');
             font-display: swap;
           }
           body {
@@ -95,7 +95,7 @@ const ArticlePage: React.FC<{
           <div style={{ maxWidth: '800px', width: '100%', margin: '0 auto' }}>
             {imagePreview && (
               <img
-                src="/media/exampleImage.jpg"
+                src="/media/articleImage.png"
                 alt="Article Preview"
                 style={{
                   width: '100%',
@@ -121,8 +121,8 @@ const ArticlePage: React.FC<{
               {content}
             </div>
           </div>
+          <Footer />
         </main>
-        <Footer />
         <DebugOverlay
           layout={layout}
           onToggleLayout={() => setLayout(layout === 'vertical' ? 'horizontal' : 'vertical')}

@@ -76,7 +76,6 @@ const Header: React.FC<HeaderProps> = ({
     );
   }
 
-  // Horizontal layout
   return (
     <div
       style={{
