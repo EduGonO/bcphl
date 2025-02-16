@@ -1,19 +1,14 @@
+/* /styles/global.css */
 @font-face {
   font-family: 'AvenirNextCondensed';
   src: url('/fonts/AvenirNextCondensed-Regular.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
   font-display: swap;
 }
-
 @font-face {
   font-family: 'GayaRegular';
   src: url('/fonts/gaya-regular.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
   font-display: swap;
 }
-
 body {
   font-family: 'AvenirNextCondensed', Arial, sans-serif;
 }

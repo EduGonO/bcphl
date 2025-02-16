@@ -8,7 +8,6 @@ import Header from '../app/components/Header';
 export const getStaticPaths: GetStaticPaths = async () => {
   const textsDir = path.join(process.cwd(), 'texts');
   const paths: { params: { paths: string[] } }[] = [];
-
   if (fs.existsSync(textsDir)) {
     fs.readdirSync(textsDir).forEach((cat) => {
       const catPath = path.join(textsDir, cat);
@@ -21,7 +20,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
       }
     });
   }
-
   return { paths, fallback: false };
 };
 
@@ -29,7 +27,7 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const [category, slug] = params?.paths as string[];
   const filePath = path.join(process.cwd(), 'texts', category, `${slug}.md`);
   const fileContents = fs.readFileSync(filePath, 'utf-8');
-  const lines = fileContents.split('\n').map(l => l.trim());
+  const lines = fileContents.split('\n').map((l: string) => l.trim());
   const title = lines[0].startsWith('#') ? lines[0].replace(/^#+\s*/, '') : 'Untitled';
   const date = lines[1] || 'Unknown Date';
   const author = lines[2] || 'Unknown Author';
@@ -47,28 +45,11 @@ const ArticlePage: React.FC<{ title: string; date: string; author: string; categ
     { name: 'livre et film', color: '#009688' },
     { name: 'archives', color: '#607d8b' },
   ];
-  
-  
-  
-  
 
   return (
     <>
       <Head>
-        <style jsx global>{`
-          @font-face {
-  font-family: 'AvenirNextCondensed';
-  src: url('/fonts/AvenirNextCondensed-Regular.otf') format('opentype');
-}
-@font-face {
-  font-family: 'GayaRegular';
-  src: url('/fonts/gaya-regular.otf') format('opentype');
-}
-
-          body {
-            font-family: 'AvenirNextCondensed', Arial, sans-serif;
-          }
-        `}</style>
+        <title>{title}</title>
       </Head>
       <div style={{ padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
         <Header categories={cats} showBackButton />
