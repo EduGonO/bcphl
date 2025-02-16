@@ -66,6 +66,24 @@ const ArticlePage: React.FC<{
       ? { marginLeft: '250px', padding: '20px' }
       : { marginTop: '80px', padding: '20px' };
 
+  // Define the header category style similar to the Header component buttons.
+  const headerCategoryStyle: React.CSSProperties = {
+    fontSize: '14px',
+    backgroundColor: '#3f51b5',
+    borderRadius: '5px',
+    color: '#fff',
+    padding: '5px 10px',
+    fontWeight: 'bold',
+    display: 'inline-block',
+  };
+
+  // Format the date to "MMM dd, YYYY"
+  const formattedDate = new Date(date).toLocaleDateString('en-US', {
+    month: 'short',
+    day: '2-digit',
+    year: 'numeric',
+  });
+
   return (
     <>
       <Head>
@@ -129,78 +147,153 @@ const ArticlePage: React.FC<{
               <p style={{ margin: '0 0 10px', color: '#555' }}>
                 {date} • {author} • {category.charAt(0).toUpperCase() + category.slice(1)}
               </p>
-              <div style={{ marginTop: '20px', lineHeight: '1.6', whiteSpace: 'pre-wrap', color: '#333' }}>
+              <div
+                style={{
+                  marginTop: '20px',
+                  lineHeight: '1.6',
+                  whiteSpace: 'pre-wrap',
+                  color: '#333',
+                }}
+              >
                 {content}
               </div>
             </div>
             {showArticleSidebar && (
               <aside style={{ flex: 1, borderLeft: '1px solid #ddd', paddingLeft: '20px' }}>
-              <h4 style={{ marginTop: 0 }}>Info</h4>
-              <div style={headerCategoryStyle}>
-                {category.charAt(0).toUpperCase() + category.slice(1)}
-              </div>
-              <div style={{ color: 'gray', marginBottom: '10px' }}>{formattedDate}</div>
-
-              <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
+                <h4 style={{ marginTop: 0 }}>Info</h4>
                 <div
                   style={{
-                    width: 24,
-                    height: 24,
-                    borderRadius: '50%',
-                    backgroundColor: 'gray',
-                    marginRight: '10px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    marginBottom: '10px',
                   }}
-                />
-                <h4 style={{ margin: 0 }}>{author}</h4>
-              </div>        
+                >
+                  <span style={headerCategoryStyle}>
+                    {category.charAt(0).toUpperCase() + category.slice(1)}
+                  </span>
+                  <span style={{ color: 'gray', fontSize: '14px' }}>
+                    {formattedDate}
+                  </span>
+                </div>
 
-              <p>Ceci est une courte biographie de l'auteur.</p>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '10px',
+                    marginBottom: '10px',
+                  }}
+                >
+                  <div
+                    style={{
+                      width: 24,
+                      height: 24,
+                      borderRadius: '50%',
+                      backgroundColor: 'gray',
+                    }}
+                  />
+                  <h4 style={{ margin: 0 }}>{author}</h4>
+                </div>
 
-              <div style={{ marginBottom: '20px' }}>
-                <a href="#" style={{ marginRight: '10px', textDecoration: 'none', color: '#3f51b5' }}>
-                  Portfolio
-                </a>
-                <a href="#" style={{ marginRight: '10px', textDecoration: 'none', color: '#3f51b5' }}>
-                  Twitter
-                </a>
-              </div>
+                <p style={{ fontStyle: 'italic', marginBottom: '10px' }}>
+                  Ceci est une courte biographie de l'auteur.
+                </p>
 
-              <h4 style={{ marginBottom: '4px' }}>References</h4>
-              <ul style={{ paddingLeft: '20px', marginTop: '4px' }}>
-                <li>
-                  <a href="#" style={{ textDecoration: 'none', color: '#3f51b5' }}>
-                    Sample Reference 1
+                <div style={{ marginBottom: '20px' }}>
+                  <a
+                    href="#"
+                    style={{
+                      textDecoration: 'none',
+                      color: '#3f51b5',
+                      marginRight: '10px',
+                    }}
+                  >
+                    Portfolio
                   </a>
-                </li>
-                <li>
-                  <a href="#" style={{ textDecoration: 'none', color: '#3f51b5' }}>
-                    Sample Reference 2
+                  <a
+                    href="#"
+                    style={{
+                      textDecoration: 'none',
+                      color: '#3f51b5',
+                      marginRight: '10px',
+                    }}
+                  >
+                    Twitter
                   </a>
-                </li>
-                <li>
-                  <a href="#" style={{ textDecoration: 'none', color: '#3f51b5' }}>
-                    Sample Reference 3
+                  <a
+                    href="#"
+                    style={{
+                      textDecoration: 'none',
+                      color: '#3f51b5',
+                    }}
+                  >
+                    LinkedIn
                   </a>
-                </li>
-              </ul>
+                </div>
 
-              <h4>Comments</h4>
-              <ul style={{ paddingLeft: '20px' }}>
-                <li>
-                  <strong>User1:</strong> This is a sample comment.
-                </li>
-                <li>
-                  <strong>User2:</strong> Another comment example.
-                </li>
-              </ul>
-            </aside>
+                <h4 style={{ marginBottom: '4px' }}>References</h4>
+                <ul
+                  style={{
+                    paddingLeft: '20px',
+                    marginTop: '4px',
+                    marginBottom: '20px',
+                  }}
+                >
+                  <li>
+                    <a
+                      href="#"
+                      style={{
+                        textDecoration: 'none',
+                        color: '#3f51b5',
+                      }}
+                    >
+                      Sample Reference 1
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      style={{
+                        textDecoration: 'none',
+                        color: '#3f51b5',
+                      }}
+                    >
+                      Sample Reference 2
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="#"
+                      style={{
+                        textDecoration: 'none',
+                        color: '#3f51b5',
+                      }}
+                    >
+                      Sample Reference 3
+                    </a>
+                  </li>
+                </ul>
+
+                <h4>Comments</h4>
+                <ul style={{ paddingLeft: '20px' }}>
+                  <li>
+                    <strong>User1:</strong> This is a sample comment.
+                  </li>
+                  <li>
+                    <strong>User2:</strong> Another comment example.
+                  </li>
+                </ul>
+              </aside>
             )}
           </div>
           <Footer />
         </main>
         <DebugOverlay
           layout={layout}
-          onToggleLayout={() => setLayout(layout === 'vertical' ? 'horizontal' : 'vertical')}
+          onToggleLayout={() =>
+            setLayout(layout === 'vertical' ? 'horizontal' : 'vertical')
+          }
           bodyFontSize={bodyFontSize}
           onBodyFontSizeChange={setBodyFontSize}
           titleFont={titleFont}
