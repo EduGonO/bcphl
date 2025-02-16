@@ -58,6 +58,8 @@ const ArticlePage: React.FC<{
   const [bodyFontSize, setBodyFontSize] = useState<number>(16);
   const [titleFont, setTitleFont] = useState<'Gaya' | 'Avenir'>('Gaya');
   const [imagePreview, setImagePreview] = useState<boolean>(true);
+  const [showArticleSidebar, setShowArticleSidebar] = useState<boolean>(true);
+
   const mainStyle: React.CSSProperties =
     layout === 'vertical'
       ? { marginLeft: '250px', padding: '20px' }
@@ -92,34 +94,91 @@ const ArticlePage: React.FC<{
       <div style={{ backgroundColor: '#fff', fontSize: `${bodyFontSize}px` }}>
         <Header categories={cats} layout={layout} />
         <main style={mainStyle}>
-          <div style={{ maxWidth: '800px', width: '100%', margin: '0 auto' }}>
-            {imagePreview && (
-              <img
-                src="/media/exampleImage.jpg"
-                alt="Article Preview"
+          <div
+            style={{
+              maxWidth: '800px',
+              width: '100%',
+              margin: '0 auto',
+              display: 'flex',
+              gap: '20px',
+            }}
+          >
+            <div style={{ flex: 2 }}>
+              {imagePreview && (
+                <img
+                  src="/media/exampleImage.jpg"
+                  alt="Article Preview"
+                  style={{
+                    width: '100%',
+                    maxHeight: '200px',
+                    objectFit: 'cover',
+                    borderRadius: '8px',
+                    marginBottom: '20px',
+                  }}
+                />
+              )}
+              <h1
                 style={{
-                  width: '100%',
-                  maxHeight: '200px',
-                  objectFit: 'cover',
-                  borderRadius: '8px',
-                  marginBottom: '20px',
+                  margin: '0 0 10px',
+                  fontFamily: titleFont === 'Gaya' ? 'GayaRegular' : 'AvenirNextBolder',
                 }}
-              />
-            )}
-            <h1
-              style={{
-                margin: '0 0 10px',
-                fontFamily: titleFont === 'Gaya' ? 'GayaRegular' : 'AvenirNextBolder',
-              }}
-            >
-              {title}
-            </h1>
-            <p style={{ margin: '0 0 10px', color: '#555' }}>
-              {date} • {author} • {category.charAt(0).toUpperCase() + category.slice(1)}
-            </p>
-            <div style={{ marginTop: '20px', lineHeight: '1.6', whiteSpace: 'pre-wrap', color: '#333' }}>
-              {content}
+              >
+                {title}
+              </h1>
+              <p style={{ margin: '0 0 10px', color: '#555' }}>
+                {date} • {author} • {category.charAt(0).toUpperCase() + category.slice(1)}
+              </p>
+              <div style={{ marginTop: '20px', lineHeight: '1.6', whiteSpace: 'pre-wrap', color: '#333' }}>
+                {content}
+              </div>
             </div>
+            {showArticleSidebar && (
+              <aside
+                style={{
+                  flex: 1,
+                  borderLeft: '1px solid #ddd',
+                  paddingLeft: '20px',
+                }}
+              >
+                <h4 style={{ marginTop: 0 }}>Article Info</h4>
+                <p>
+                  <strong>Author:</strong> {author}
+                </p>
+                <p>
+                  <strong>Date:</strong> {date}
+                </p>
+                <p>
+                  <strong>Category:</strong> {category.charAt(0).toUpperCase() + category.slice(1)}
+                </p>
+                <h4>References</h4>
+                <ul style={{ paddingLeft: '20px' }}>
+                  <li>
+                    <a href="#" style={{ textDecoration: 'none', color: '#3f51b5' }}>
+                      Sample Reference 1
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" style={{ textDecoration: 'none', color: '#3f51b5' }}>
+                      Sample Reference 2
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#" style={{ textDecoration: 'none', color: '#3f51b5' }}>
+                      Sample Reference 3
+                    </a>
+                  </li>
+                </ul>
+                <h4>Comments</h4>
+                <ul style={{ paddingLeft: '20px' }}>
+                  <li>
+                    <strong>User1:</strong> This is a sample comment.
+                  </li>
+                  <li>
+                    <strong>User2:</strong> Another comment example.
+                  </li>
+                </ul>
+              </aside>
+            )}
           </div>
           <Footer />
         </main>
@@ -132,6 +191,8 @@ const ArticlePage: React.FC<{
           onTitleFontChange={setTitleFont}
           imagePreview={imagePreview}
           onToggleImagePreview={() => setImagePreview(!imagePreview)}
+          articleSidebar={showArticleSidebar}
+          onToggleArticleSidebar={() => setShowArticleSidebar(!showArticleSidebar)}
         />
       </div>
     </>

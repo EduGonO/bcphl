@@ -9,6 +9,8 @@ type DebugOverlayProps = {
   onTitleFontChange: (font: 'Gaya' | 'Avenir') => void;
   imagePreview: boolean;
   onToggleImagePreview: () => void;
+  articleSidebar: boolean;
+  onToggleArticleSidebar: () => void;
 };
 
 const DebugOverlay: React.FC<DebugOverlayProps> = ({
@@ -20,6 +22,8 @@ const DebugOverlay: React.FC<DebugOverlayProps> = ({
   onTitleFontChange,
   imagePreview,
   onToggleImagePreview,
+  articleSidebar,
+  onToggleArticleSidebar,
 }) => {
   return (
     <div
@@ -36,10 +40,7 @@ const DebugOverlay: React.FC<DebugOverlayProps> = ({
       }}
     >
       <div style={{ marginBottom: '5px' }}>
-        <button
-          onClick={onToggleLayout}
-          style={{ padding: '4px 8px', fontSize: '12px' }}
-        >
+        <button onClick={onToggleLayout} style={{ padding: '4px 8px', fontSize: '12px' }}>
           Switch Layout (Current: {layout})
         </button>
       </div>
@@ -66,7 +67,7 @@ const DebugOverlay: React.FC<DebugOverlayProps> = ({
           <option value="Avenir">Avenir</option>
         </select>
       </div>
-      <div>
+      <div style={{ marginBottom: '5px' }}>
         <label>
           <input
             type="checkbox"
@@ -75,6 +76,17 @@ const DebugOverlay: React.FC<DebugOverlayProps> = ({
             style={{ marginRight: '5px' }}
           />
           Show Image Preview
+        </label>
+      </div>
+      <div>
+        <label>
+          <input
+            type="checkbox"
+            checked={articleSidebar}
+            onChange={onToggleArticleSidebar}
+            style={{ marginRight: '5px' }}
+          />
+          Show Article Sidebar
         </label>
       </div>
     </div>
