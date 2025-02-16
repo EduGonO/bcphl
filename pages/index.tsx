@@ -3,6 +3,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 import Header, { Category } from '../app/components/Header';
 import DebugOverlay from '../app/components/DebugOverlay';
+import Footer from '../app/components/Footer';
 
 export type Article = {
   title: string;
@@ -144,6 +145,7 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
               </div>
             ))}
           </div>
+          <Footer />
         </main>
         <DebugOverlay
           layout={layout}

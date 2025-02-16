@@ -5,6 +5,7 @@ import path from 'path';
 import { GetStaticProps, GetStaticPaths } from 'next';
 import Header, { Category } from '../app/components/Header';
 import DebugOverlay from '../app/components/DebugOverlay';
+import Footer from '../app/components/Footer';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const textsDir = path.join(process.cwd(), 'texts');
@@ -90,18 +91,20 @@ const ArticlePage: React.FC<{
         `}</style>
       </Head>
       <div style={{ backgroundColor: '#fff', fontSize: `${bodyFontSize}px` }}>
-        <Header
-          categories={cats}
-          showBackButton
-          layout={layout}
-        />
+        <Header categories={cats} showBackButton layout={layout} />
         <main style={mainStyle}>
           <div style={{ maxWidth: '800px', width: '100%', margin: '0 auto' }}>
             {imagePreview && (
               <img
-                src="/media/articleImage.png"
+                src="/media/exampleImage.jpg"
                 alt="Article Preview"
-                style={{ width: '100%', borderRadius: '8px', marginBottom: '20px' }}
+                style={{
+                  width: '100%',
+                  maxHeight: '200px',
+                  objectFit: 'cover',
+                  borderRadius: '8px',
+                  marginBottom: '20px',
+                }}
               />
             )}
             <h1
@@ -119,6 +122,7 @@ const ArticlePage: React.FC<{
               {content}
             </div>
           </div>
+          <Footer />
         </main>
         <DebugOverlay
           layout={layout}

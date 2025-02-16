@@ -47,8 +47,8 @@ const DebugOverlay: React.FC<DebugOverlayProps> = ({
         Body Font Size:
         <input
           type="range"
-          min="10"
-          max="30"
+          min="16"
+          max="24"
           value={bodyFontSize}
           onChange={(e) => onBodyFontSizeChange(Number(e.target.value))}
           style={{ marginLeft: '5px' }}

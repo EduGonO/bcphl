@@ -33,6 +33,7 @@ const Header: React.FC<HeaderProps> = ({
           backdropFilter: 'blur(8px)',
           display: 'flex',
           flexDirection: 'column',
+          gap: '15px',
           zIndex: 1000,
         }}
       >
@@ -47,18 +48,17 @@ const Header: React.FC<HeaderProps> = ({
               borderRadius: '5px',
               cursor: 'pointer',
               fontSize: '14px',
-              marginBottom: '20px',
             }}
           >
             Back
           </button>
         )}
         <Link href="/">
-          <a style={{ textDecoration: 'none', marginBottom: '20px' }}>
+          <a style={{ textDecoration: 'none' }}>
             <img src="/media/logo.png" alt="Logo" style={{ maxWidth: '100%' }} />
           </a>
         </Link>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
           {categories.map((cat) => {
             const btnStyle = {
               padding: '10px 12px',
