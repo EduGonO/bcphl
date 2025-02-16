@@ -46,11 +46,13 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
         <style jsx global>{`
           @font-face {
             font-family: 'AvenirNextCondensed';
-            src: url('/styles/AvenirNextCondensed-Regular.otf') format('opentype');
+            src: url('/fonts/AvenirNextCondensed-Regular.otf') format('opentype');
+            font-display: swap;
           }
           @font-face {
             font-family: 'GayaRegular';
-            src: url('/styles/gaya-regular.otf') format('opentype');
+            src: url('/fonts/gaya-regular.otf') format('opentype');
+            font-display: swap;
           }
           body {
             font-family: 'AvenirNextCondensed', Arial, sans-serif;
