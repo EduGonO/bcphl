@@ -49,7 +49,7 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
   const mainStyle: React.CSSProperties =
     layout === 'vertical'
       ? { marginLeft: '250px', padding: '20px' }
-      : { marginTop: '80px', padding: '20px' };
+      : { marginTop: '140px', padding: '20px' };
 
   return (
     <>
