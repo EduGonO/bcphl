@@ -113,7 +113,7 @@ export async function getStaticProps() {
         if (file.endsWith('.md')) {
           const filePath = path.join(catPath, file);
           const fileContents = fs.readFileSync(filePath, 'utf-8').trim();
-          const lines = fileContents.split('\n').map(l => l.trim());
+          const lines = fileContents.split('\n').map((l: string) => l.trim());
           const slug = file.replace('.md', '');
           const title = lines[0].startsWith('#') ? lines[0].replace(/^#+\s*/, '') : slug;
           const date = lines[1] || 'Unknown Date';

@@ -47,6 +47,10 @@ const ArticlePage: React.FC<{ title: string; date: string; author: string; categ
     { name: 'livre et film', color: '#009688' },
     { name: 'archives', color: '#607d8b' },
   ];
+  
+  
+  
+  
 
   return (
     <>
