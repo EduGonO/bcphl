@@ -49,11 +49,7 @@ const Header: React.FC<HeaderProps> = ({
       >
         <Link href="/">
           <a style={{ textDecoration: 'none' }}>
-            <img
-              src="/media/logo.png"
-              alt="Logo"
-              style={{ height: '60px' }}
-            />
+            <img src="/media/logo.png" alt="Logo" style={{ height: '60px' }} />
           </a>
         </Link>
         <h1
@@ -77,9 +73,10 @@ const Header: React.FC<HeaderProps> = ({
           {categories.map((cat) => {
             const btnStyle: React.CSSProperties = {
               ...commonBtnStyle,
-              width: '100%',
+              width: '80%', // reduced width
               backgroundColor: cat.color,
               opacity: activeCategory === cat.name ? 1 : 0.8,
+              textDecoration: 'none', // no underline
             };
             return onCategoryChange ? (
               <button
@@ -94,7 +91,6 @@ const Header: React.FC<HeaderProps> = ({
                 <a
                   style={{
                     ...btnStyle,
-                    textDecoration: 'none',
                     display: 'block',
                     textAlign: 'left',
                   }}
@@ -150,7 +146,7 @@ const Header: React.FC<HeaderProps> = ({
           BICÉPHALE
         </h1>
       </div>
-      {/* Categories (displayed as plain text) */}
+      {/* Categories as clickable links without underline */}
       <div
         style={{
           display: 'flex',
@@ -165,20 +161,22 @@ const Header: React.FC<HeaderProps> = ({
         }}
       >
         {categories.map((cat) => (
-          <span
-            key={cat.name}
-            style={{
-              fontSize: '14px',
-              fontWeight: 'bold',
-              color: '#fff',
-              backgroundColor: cat.color,
-              padding: '5px 10px',
-              borderRadius: '5px',
-              opacity: activeCategory === cat.name ? 1 : 0.8,
-            }}
-          >
-            {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
-          </span>
+          <Link key={cat.name} href={`/?category=${cat.name}`}>
+            <a
+              style={{
+                fontSize: '14px',
+                fontWeight: 'bold',
+                color: '#fff',
+                backgroundColor: cat.color,
+                padding: '5px 10px',
+                borderRadius: '5px',
+                opacity: activeCategory === cat.name ? 1 : 0.8,
+                textDecoration: 'none', // no underline
+              }}
+            >
+              {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
+            </a>
+          </Link>
         ))}
       </div>
     </div>
