@@ -103,13 +103,13 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
                         margin: '0 0 5px',
                         fontSize: '18px',
                         fontFamily: titleFont === 'Gaya' ? 'GayaRegular' : 'AvenirNextBolder',
-                        color: activeCategory ? '#fff' : '#000',
+                        color: activeCategory ? '#000' : '#000',
                       }}
                     >
                       {article.title}
                     </h3>
                   </a>
-                  <p style={{ margin: '0 0 5px', fontSize: '14px', color: activeCategory ? '#fff' : '#666' }}>
+                  <p style={{ margin: '0 0 5px', fontSize: '14px', color: activeCategory ? '#666' : '#666' }}>
                     {article.date} • {article.author}
                   </p>
                   <div
@@ -133,7 +133,7 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
                   >
                     {article.category}
                   </div>
-                  <p style={{ margin: '0 0 10px', fontSize: '14px', color: activeCategory ? '#fff' : '#444' }}>
+                  <p style={{ margin: '0 0 10px', fontSize: '14px', color: activeCategory ? '#444' : '#444' }}>
                     {article.preview}
                   </p>
                 </div>
