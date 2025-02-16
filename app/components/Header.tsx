@@ -50,7 +50,7 @@ const Header: React.FC<HeaderProps> = ({
             <img src="/media/logo.png" alt="Logo" style={{ maxWidth: '100%' }} />
           </a>
         </Link>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', width: '100%' }}>
           {categories.map((cat) => {
             const btnStyle = {
               ...commonBtnStyle,
@@ -58,6 +58,7 @@ const Header: React.FC<HeaderProps> = ({
               backgroundColor: cat.color,
               opacity: activeCategory === cat.name ? 1 : 0.8,
               textAlign: 'left' as const,
+              width: '100%',
             };
             return onCategoryChange ? (
               <button key={cat.name} onClick={() => onCategoryChange(cat.name)} style={btnStyle}>
@@ -76,6 +77,7 @@ const Header: React.FC<HeaderProps> = ({
     );
   }
 
+  // Horizontal layout
   return (
     <div
       style={{

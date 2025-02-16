@@ -80,7 +80,7 @@ const ArticlePage: React.FC<{
           }
           @font-face {
             font-family: 'AvenirNextBolder';
-            src: url('/fonts/AvenirNextBolder.otf') format('opentype');
+            src: url('/fonts/AvenirNextCondensed-Regular.otf') format('opentype');
             font-display: swap;
           }
           body {
@@ -95,7 +95,7 @@ const ArticlePage: React.FC<{
           <div style={{ maxWidth: '800px', width: '100%', margin: '0 auto' }}>
             {imagePreview && (
               <img
-                src="/media/articleImage.png"
+                src="/media/exampleImage.jpg"
                 alt="Article Preview"
                 style={{
                   width: '100%',
