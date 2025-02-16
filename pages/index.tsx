@@ -117,7 +117,8 @@ export async function getStaticProps() {
   const fs = require('fs');
   const path = require('path');
   const articles: Article[] = [];
-  const categoriesDir = path.join(process.cwd(), 'texts'); // Updated folder
+  // Use the correct folder
+  const categoriesDir = path.join(process.cwd(), 'pages', 'texts');
 
   for (const categoryObj of categories) {
     const category = categoryObj.name;
