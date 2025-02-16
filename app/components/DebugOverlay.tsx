@@ -41,11 +41,11 @@ const DebugOverlay: React.FC<DebugOverlayProps> = ({
     >
       <div style={{ marginBottom: '5px' }}>
         <button onClick={onToggleLayout} style={{ padding: '4px 8px', fontSize: '12px' }}>
-          Switch Layout (Current: {layout})
+          navigation: {layout}
         </button>
       </div>
       <div style={{ marginBottom: '5px' }}>
-        Body Font Size:
+        font(tout):
         <input
           type="range"
           min="16"
@@ -57,7 +57,7 @@ const DebugOverlay: React.FC<DebugOverlayProps> = ({
         <span style={{ marginLeft: '5px' }}>{bodyFontSize}px</span>
       </div>
       <div style={{ marginBottom: '5px' }}>
-        Title Font:
+        font(titre):
         <select
           value={titleFont}
           onChange={(e) => onTitleFontChange(e.target.value as 'Gaya' | 'Avenir')}
@@ -75,7 +75,7 @@ const DebugOverlay: React.FC<DebugOverlayProps> = ({
             onChange={onToggleImagePreview}
             style={{ marginRight: '5px' }}
           />
-          Show Image Preview
+          Image Article
         </label>
       </div>
       <div>
@@ -86,7 +86,7 @@ const DebugOverlay: React.FC<DebugOverlayProps> = ({
             onChange={onToggleArticleSidebar}
             style={{ marginRight: '5px' }}
           />
-          Show Article Sidebar
+          Info Article
         </label>
       </div>
     </div>

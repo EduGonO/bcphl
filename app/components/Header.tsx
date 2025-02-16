@@ -16,7 +16,6 @@ const Header: React.FC<HeaderProps> = ({
   onCategoryChange,
   layout,
 }) => {
-  // Force consistent button styling
   const commonBtnStyle: React.CSSProperties = {
     fontSize: '14px',
     border: 'none',
@@ -24,9 +23,8 @@ const Header: React.FC<HeaderProps> = ({
     cursor: 'pointer',
     fontWeight: 'bold',
     borderRadius: '5px',
-    width: '100%',
-    textAlign: 'left',
     padding: '10px 12px',
+    textAlign: 'center',
   };
 
   if (layout === 'vertical') {
@@ -54,32 +52,30 @@ const Header: React.FC<HeaderProps> = ({
             <img src="/media/logo.png" alt="Logo" style={{ maxWidth: '100%' }} />
           </a>
         </Link>
+        <h1 style={{ fontSize: '24px', textAlign: 'center' }}>Bicéphale</h1>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', width: '100%' }}>
           {categories.map((cat) => {
             const btnStyle: React.CSSProperties = {
               ...commonBtnStyle,
+              width: '100%',
               backgroundColor: cat.color,
               opacity: activeCategory === cat.name ? 1 : 0.8,
             };
-            if (onCategoryChange) {
-              return (
-                <button
-                  key={cat.name}
-                  onClick={() => onCategoryChange(cat.name)}
-                  style={btnStyle}
-                >
-                  {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
-                </button>
-              );
-            }
-            return (
+            return onCategoryChange ? (
+              <button
+                key={cat.name}
+                onClick={() => onCategoryChange(cat.name)}
+                style={btnStyle}
+              >
+                {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
+              </button>
+            ) : (
               <Link key={cat.name} href={`/?category=${cat.name}`}>
                 <a
                   style={{
                     ...btnStyle,
                     textDecoration: 'none',
                     display: 'block',
-                    width: '100%',
                   }}
                 >
                   {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
@@ -91,8 +87,7 @@ const Header: React.FC<HeaderProps> = ({
       </div>
     );
   }
-
-  // Horizontal layout
+  
   return (
     <div
       style={{
@@ -113,8 +108,9 @@ const Header: React.FC<HeaderProps> = ({
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
         <Link href="/">
-          <a style={{ textDecoration: 'none' }}>
+          <a style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '10px' }}>
             <img src="/media/logo.png" alt="Logo" style={{ height: '70px' }} />
+            <h1 style={{ fontSize: '24px', margin: 0 }}>Bicéphale</h1>
           </a>
         </Link>
       </div>
@@ -126,30 +122,22 @@ const Header: React.FC<HeaderProps> = ({
           alignItems: 'center',
           gap: '10px',
           whiteSpace: 'nowrap',
+          overflow: 'auto',
           lineHeight: 1,
+          paddingLeft: '20px',
         }}
       >
         {categories.map((cat) => {
           const btnStyle: React.CSSProperties = {
-            fontSize: '14px',
-            border: 'none',
-            color: '#fff',
-            cursor: 'pointer',
-            fontWeight: 'bold',
-            borderRadius: '5px',
-            padding: '8px 12px',
+            ...commonBtnStyle,
             backgroundColor: cat.color,
             opacity: activeCategory === cat.name ? 1 : 0.8,
-            textAlign: 'center',
           };
-          if (onCategoryChange) {
-            return (
-              <button key={cat.name} onClick={() => onCategoryChange(cat.name)} style={btnStyle}>
-                {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
-              </button>
-            );
-          }
-          return (
+          return onCategoryChange ? (
+            <button key={cat.name} onClick={() => onCategoryChange(cat.name)} style={btnStyle}>
+              {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
+            </button>
+          ) : (
             <Link key={cat.name} href={`/?category=${cat.name}`}>
               <a style={{ ...btnStyle, textDecoration: 'none', display: 'block' }}>
                 {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
