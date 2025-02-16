@@ -64,7 +64,7 @@ const Header: React.FC<HeaderProps> = ({
             margin: 0,
           }}
         >
-          Bicéphale
+          BICÉPHALE
         </h1>
         <div
           style={{

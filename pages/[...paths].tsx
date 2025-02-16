@@ -61,8 +61,11 @@ const ArticlePage: React.FC<{
   const [imagePreview, setImagePreview] = useState<boolean>(true);
   const [showArticleSidebar, setShowArticleSidebar] = useState<boolean>(true);
 
-  // Since the header is fixed at the top, we add a top margin to avoid content overlap.
-  const mainStyle: React.CSSProperties = { marginTop: '100px', padding: '20px' };
+  // Offset main content based on header mode:
+  const mainStyle: React.CSSProperties =
+    layout === 'vertical'
+      ? { marginLeft: '250px', padding: '20px' }
+      : { marginTop: '120px', padding: '20px' };
 
   // Style similar to header category button.
   const headerCategoryStyle: React.CSSProperties = {
@@ -115,11 +118,12 @@ const ArticlePage: React.FC<{
             style={{
               display: 'flex',
               gap: '20px',
-              width: '100%',
+              margin: '0 auto',
+              maxWidth: '1200px',
             }}
           >
-            {/* Article view: occupies 80% of the width */}
-            <div style={{ flex: '0 0 80%' }}>
+            {/* Article view: takes the remaining space */}
+            <div style={{ flex: 1 }}>
               {imagePreview && (
                 <img
                   src="/media/exampleImage.jpg"
@@ -155,13 +159,14 @@ const ArticlePage: React.FC<{
                 {content}
               </div>
             </div>
-            {/* Sidebar: occupies 20% of the width */}
+            {/* Sidebar: Always on the right, fixed to max 20% width */}
             {showArticleSidebar && (
               <aside
                 style={{
-                  flex: '0 0 20%',
+                  width: '20%',
+                  minWidth: '200px',
                   borderLeft: '1px solid #ddd',
-                  paddingLeft: '20px',
+                  paddingLeft: '40px', // increased padding to push content to the right
                 }}
               >
                 <div
@@ -200,7 +205,7 @@ const ArticlePage: React.FC<{
                 </div>
 
                 <p style={{ fontStyle: 'italic', marginBottom: '10px' }}>
-                  Ceci est une courte biographie de l'auteur qui est une courte biographie de l'auteur étant une courte biographie de l'auteur.
+                  Ceci est une courte biographie de l'auteur qui est une courte biographie de l'auteur.
                 </p>
 
                 <div style={{ marginBottom: '20px' }}>
@@ -290,7 +295,7 @@ const ArticlePage: React.FC<{
                     <strong>User1:</strong> Example de commentaire
                   </li>
                   <li>
-                    <strong>User2:</strong> Un autre example de commentaire.
+                    <strong>User2:</strong> Un autre exemple de commentaire.
                   </li>
                 </ul>
               </aside>
