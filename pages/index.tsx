@@ -118,14 +118,9 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
                       fontSize: '12px',
                       fontWeight: 'bold',
                       padding: '3px 8px',
-                      color:
-                        activeCategory
-                          ? '#000'
-                          : categories.find((c) => c.name === article.category)?.color || '#000',
+                      color: categories.find((c) => c.name === article.category)?.color,
                       border: `1px solid ${
-                        activeCategory
-                          ? 'rgba(255,255,255,0.8)'
-                          : categories.find((c) => c.name === article.category)?.color || '#000'
+                        categories.find((c) => c.name === article.category)?.color
                       }`,
                       backgroundColor: activeCategory ? 'rgba(255,255,255,0.8)' : (categories.find((c) => c.name === article.category)?.color || '#f0f0f0') + '20',
                       borderRadius: '4px',
