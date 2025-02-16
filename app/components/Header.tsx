@@ -49,10 +49,23 @@ const Header: React.FC<HeaderProps> = ({
       >
         <Link href="/">
           <a style={{ textDecoration: 'none' }}>
-            <img src="/media/logo.png" alt="Logo" style={{ maxWidth: '100%' }} />
+            <img
+              src="/media/logo.png"
+              alt="Logo"
+              style={{ height: '50px' }}
+            />
           </a>
         </Link>
-        <h1 style={{ fontSize: '24px', textAlign: 'center' }}>Bicéphale</h1>
+        <h1
+          style={{
+            fontSize: '24px',
+            textAlign: 'left',
+            fontFamily: 'DINAlternate-Bold, sans-serif',
+            margin: 0,
+          }}
+        >
+          Bicéphale
+        </h1>
         <div
           style={{
             display: 'flex',
