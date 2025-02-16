@@ -87,44 +87,40 @@ const Header: React.FC<HeaderProps> = ({
       </div>
     );
   }
-  
-  return (
+   
+   return (
     <div
       style={{
         position: 'fixed',
         top: 0,
         left: 0,
         right: 0,
-        height: '80px',
         padding: '10px 20px',
         boxSizing: 'border-box',
         background: 'rgba(248,248,248,0.8)',
         backdropFilter: 'blur(8px)',
-        display: 'flex',
-        alignItems: 'center',
         zIndex: 1000,
-        fontSize: '14px',
       }}
     >
-      <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+      <div style={{ display: 'flex', alignItems: 'flex-end', gap: '10px' }}>
         <Link href="/">
-          <a style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <a style={{ textDecoration: 'none', display: 'flex', alignItems: 'flex-end', gap: '10px' }}>
             <img src="/media/logo.png" alt="Logo" style={{ height: '70px' }} />
-            <h1 style={{ fontSize: '24px', margin: 0 }}>Bicéphale</h1>
+            <h1 style={{ fontSize: '24px', margin: 0, lineHeight: '1' }}>Bicéphale</h1>
           </a>
         </Link>
       </div>
       <div
         style={{
-          flex: 1,
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
           gap: '10px',
+          marginTop: '10px',
+          padding: '10px 0',
           whiteSpace: 'nowrap',
           overflow: 'auto',
           lineHeight: 1,
-          paddingLeft: '20px',
         }}
       >
         {categories.map((cat) => {
