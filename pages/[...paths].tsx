@@ -2,7 +2,7 @@ import React from 'react';
 import fs from 'fs';
 import path from 'path';
 import { GetStaticProps, GetStaticPaths } from 'next';
-import Header from '../Header';
+import Header from '../components/Header';
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const categoriesDir = path.join(process.cwd(), 'texts'); // Updated folder
