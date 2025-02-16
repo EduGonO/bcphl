@@ -42,7 +42,7 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
       setActiveCategory(category);
       setFilteredArticles(articles.filter((a) => a.category === category));
       const catColor = categories.find((c) => c.name === category)?.color || '#ffffff';
-      setBackgroundColor(catColor);
+      setBackgroundColor('#ffffff');
     }
   };
 
