@@ -55,8 +55,8 @@ const ArticlePage: React.FC<{
   const [layout, setLayout] = useState<'vertical' | 'horizontal'>('vertical');
   const mainStyle: React.CSSProperties =
     layout === 'vertical'
-      ? { marginLeft: '250px', height: '100vh', overflowY: 'auto', padding: '20px' }
-      : { marginTop: '80px', height: 'calc(100vh - 80px)', overflowY: 'auto', padding: '20px' };
+      ? { marginLeft: '250px', height: '100vh', overflowY: 'auto' as 'auto', padding: '20px' }
+      : { marginTop: '80px', height: 'calc(100vh - 80px)', overflowY: 'auto' as 'auto', padding: '20px' };
 
   return (
     <>

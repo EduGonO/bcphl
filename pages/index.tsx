@@ -41,10 +41,10 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
     }
   };
 
-  const mainStyle =
+  const mainStyle: React.CSSProperties =
     layout === 'vertical'
-      ? { marginLeft: '250px', height: '100vh', overflowY: 'auto', padding: '20px' }
-      : { marginTop: '80px', height: 'calc(100vh - 80px)', overflowY: 'auto', padding: '20px' };
+      ? { marginLeft: '250px', height: '100vh', overflowY: 'auto' as 'auto', padding: '20px' }
+      : { marginTop: '80px', height: 'calc(100vh - 80px)', overflowY: 'auto' as 'auto', padding: '20px' };
 
   return (
     <>
@@ -72,9 +72,7 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
           activeCategory={activeCategory}
           onCategoryChange={handleCategoryChange}
           layout={layout}
-          onLayoutToggle={() =>
-            setLayout(layout === 'vertical' ? 'horizontal' : 'vertical')
-          }
+          onLayoutToggle={() => setLayout(layout === 'vertical' ? 'horizontal' : 'vertical')}
         />
         <main style={mainStyle}>
           <div style={{ maxWidth: '800px', width: '100%', margin: '0 auto' }}>
