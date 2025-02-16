@@ -65,7 +65,7 @@ const ArticlePage: React.FC<{
   const mainStyle: React.CSSProperties =
     layout === 'vertical'
       ? { marginLeft: '250px', padding: '20px' }
-      : { marginTop: '120px', padding: '20px' };
+      : { marginTop: '140px', padding: '20px' };
 
   // Style similar to header category button.
   const headerCategoryStyle: React.CSSProperties = {
@@ -166,7 +166,9 @@ const ArticlePage: React.FC<{
                   width: '20%',
                   minWidth: '200px',
                   borderLeft: '1px solid #ddd',
-                  paddingLeft: '40px', // increased padding to push content to the right
+                  paddingLeft: '24px', // increased padding to push content to the right
+                  paddingRight: '24px',
+                  paddingTop: '24px',
                 }}
               >
                 <div
