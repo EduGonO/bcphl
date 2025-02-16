@@ -94,7 +94,6 @@ const ArticlePage: React.FC<{
           categories={cats}
           showBackButton
           layout={layout}
-          onLayoutToggle={() => setLayout(layout === 'vertical' ? 'horizontal' : 'vertical')}
         />
         <main style={mainStyle}>
           <div style={{ maxWidth: '800px', width: '100%', margin: '0 auto' }}>
