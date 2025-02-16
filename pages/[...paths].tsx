@@ -5,19 +5,17 @@ import { GetStaticProps, GetStaticPaths } from 'next';
 import Header from '../app/components/Header';
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const categoriesDir = path.join(process.cwd(), 'pages', 'texts');
+  const textsDir = path.join(process.cwd(), 'texts');
   const paths: { params: { paths: string[] } }[] = [];
 
-  if (fs.existsSync(categoriesDir)) {
-    const categories = fs.readdirSync(categoriesDir);
+  if (fs.existsSync(textsDir)) {
+    const categories = fs.readdirSync(textsDir);
     categories.forEach((category) => {
-      const categoryPath = path.join(categoriesDir, category);
+      const categoryPath = path.join(textsDir, category);
       if (fs.lstatSync(categoryPath).isDirectory()) {
         fs.readdirSync(categoryPath).forEach((file) => {
           if (file.endsWith('.md')) {
-            paths.push({
-              params: { paths: [category, file.replace('.md', '')] },
-            });
+            paths.push({ params: { paths: [category, file.replace('.md', '')] } });
           }
         });
       }
@@ -29,14 +27,13 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
   const [category, slug] = params?.paths as string[];
-  const filePath = path.join(process.cwd(), 'pages', 'texts', category, `${slug}.md`);
+  const filePath = path.join(process.cwd(), 'texts', category, `${slug}.md`);
   const fileContents = fs.readFileSync(filePath, 'utf-8');
-  const lines = fileContents.split('\n').map(line => line.trim());
+  const lines = fileContents.split('\n').map((line: string) => line.trim());
   const title = lines[0].startsWith('#') ? lines[0].replace(/^#+\s*/, '') : 'Untitled';
   const date = lines[1] || 'Unknown Date';
   const author = lines[2] || 'Unknown Author';
   const content = lines.slice(3).join('\n').trim();
-
   return { props: { title, date, author, category, content } };
 };
 
@@ -50,7 +47,7 @@ const ArticlePage: React.FC<{ title: string; date: string; author: string; categ
     { name: 'livre et film', color: '#009688' },
     { name: 'archives', color: '#607d8b' },
   ];
-  
+
   return (
     <div style={{ fontFamily: 'Arial, sans-serif', padding: '20px', maxWidth: '800px', margin: '0 auto' }}>
       <Header categories={categories} showBackButton />
