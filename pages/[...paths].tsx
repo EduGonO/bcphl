@@ -35,13 +35,13 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   return { props: { title, date, author, category, content } };
 };
 
-const ArticlePage: React.FC<{ title: string; date: string; author: string; category: string; content: string; }> = ({
-  title,
-  date,
-  author,
-  category,
-  content,
-}) => {
+const ArticlePage: React.FC<{
+  title: string;
+  date: string;
+  author: string;
+  category: string;
+  content: string;
+}> = ({ title, date, author, category, content }) => {
   const cats: Category[] = [
     { name: 'actu', color: '#f44336' },
     { name: 'interviews & reportage', color: '#3f51b5' },
@@ -53,7 +53,7 @@ const ArticlePage: React.FC<{ title: string; date: string; author: string; categ
   ];
 
   const [layout, setLayout] = useState<'vertical' | 'horizontal'>('vertical');
-  const mainStyle =
+  const mainStyle: React.CSSProperties =
     layout === 'vertical'
       ? { marginLeft: '250px', height: '100vh', overflowY: 'auto', padding: '20px' }
       : { marginTop: '80px', height: 'calc(100vh - 80px)', overflowY: 'auto', padding: '20px' };
