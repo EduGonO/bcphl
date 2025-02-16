@@ -7,7 +7,6 @@ export type HeaderProps = {
   categories: Category[];
   activeCategory?: string | null;
   onCategoryChange?: (category: string) => void;
-  showBackButton?: boolean;
   layout: 'vertical' | 'horizontal';
 };
 
@@ -15,9 +14,17 @@ const Header: React.FC<HeaderProps> = ({
   categories,
   activeCategory,
   onCategoryChange,
-  showBackButton = false,
   layout,
 }) => {
+  const commonBtnStyle = {
+    fontSize: '14px',
+    border: 'none',
+    color: '#fff',
+    cursor: 'pointer',
+    fontWeight: 'bold' as const,
+    borderRadius: '5px',
+  };
+
   if (layout === 'vertical') {
     return (
       <div
@@ -35,24 +42,9 @@ const Header: React.FC<HeaderProps> = ({
           flexDirection: 'column',
           gap: '15px',
           zIndex: 1000,
+          fontSize: '14px',
         }}
       >
-        {showBackButton && (
-          <button
-            onClick={() => window.history.back()}
-            style={{
-              backgroundColor: '#f44336',
-              color: '#fff',
-              border: 'none',
-              padding: '10px 15px',
-              borderRadius: '5px',
-              cursor: 'pointer',
-              fontSize: '14px',
-            }}
-          >
-            Back
-          </button>
-        )}
         <Link href="/">
           <a style={{ textDecoration: 'none' }}>
             <img src="/media/logo.png" alt="Logo" style={{ maxWidth: '100%' }} />
@@ -61,14 +53,9 @@ const Header: React.FC<HeaderProps> = ({
         <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
           {categories.map((cat) => {
             const btnStyle = {
+              ...commonBtnStyle,
               padding: '10px 12px',
-              fontSize: '14px',
-              border: 'none',
               backgroundColor: cat.color,
-              color: '#fff',
-              cursor: 'pointer',
-              fontWeight: 'bold' as const,
-              borderRadius: '5px',
               opacity: activeCategory === cat.name ? 1 : 0.8,
               textAlign: 'left' as const,
             };
@@ -105,25 +92,10 @@ const Header: React.FC<HeaderProps> = ({
         display: 'flex',
         alignItems: 'center',
         zIndex: 1000,
+        fontSize: '14px',
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-        {showBackButton && (
-          <button
-            onClick={() => window.history.back()}
-            style={{
-              backgroundColor: '#f44336',
-              color: '#fff',
-              border: 'none',
-              padding: '8px 12px',
-              borderRadius: '5px',
-              cursor: 'pointer',
-              fontSize: '14px',
-            }}
-          >
-            Back
-          </button>
-        )}
         <Link href="/">
           <a style={{ textDecoration: 'none' }}>
             <img src="/media/logo.png" alt="Logo" style={{ height: '70px' }} />
@@ -143,14 +115,9 @@ const Header: React.FC<HeaderProps> = ({
       >
         {categories.map((cat) => {
           const btnStyle = {
+            ...commonBtnStyle,
             padding: '8px 12px',
-            fontSize: '14px',
-            border: 'none',
             backgroundColor: cat.color,
-            color: '#fff',
-            cursor: 'pointer',
-            fontWeight: 'bold' as const,
-            borderRadius: '5px',
             opacity: activeCategory === cat.name ? 1 : 0.8,
             textAlign: 'center' as const,
           };

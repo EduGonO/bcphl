@@ -57,12 +57,11 @@ const ArticlePage: React.FC<{
   const [layout, setLayout] = useState<'vertical' | 'horizontal'>('vertical');
   const [bodyFontSize, setBodyFontSize] = useState<number>(16);
   const [titleFont, setTitleFont] = useState<'Gaya' | 'Avenir'>('Gaya');
-  const [imagePreview, setImagePreview] = useState<boolean>(false);
-
+  const [imagePreview, setImagePreview] = useState<boolean>(true);
   const mainStyle: React.CSSProperties =
     layout === 'vertical'
-      ? { marginLeft: '250px', height: '100vh', overflowY: 'auto' as 'auto', padding: '20px' }
-      : { marginTop: '80px', height: 'calc(100vh - 80px)', overflowY: 'auto' as 'auto', padding: '20px' };
+      ? { marginLeft: '250px', height: 'calc(100vh - 60px)', overflowY: 'auto', padding: '20px', marginBottom: '60px' }
+      : { marginTop: '80px', height: 'calc(100vh - 80px - 60px)', overflowY: 'auto', padding: '20px', marginBottom: '60px' };
 
   return (
     <>
@@ -81,7 +80,7 @@ const ArticlePage: React.FC<{
           }
           @font-face {
             font-family: 'AvenirNextBolder';
-            src: url('/fonts/AvenirNextBolder.otf') format('opentype');
+            src: url('/fonts/AvenirNextCondensed-Regular.otf') format('opentype');
             font-display: swap;
           }
           body {
@@ -91,7 +90,7 @@ const ArticlePage: React.FC<{
         `}</style>
       </Head>
       <div style={{ backgroundColor: '#fff', fontSize: `${bodyFontSize}px` }}>
-        <Header categories={cats} showBackButton layout={layout} />
+        <Header categories={cats} layout={layout} />
         <main style={mainStyle}>
           <div style={{ maxWidth: '800px', width: '100%', margin: '0 auto' }}>
             {imagePreview && (
@@ -122,8 +121,8 @@ const ArticlePage: React.FC<{
               {content}
             </div>
           </div>
-          <Footer />
         </main>
+        <Footer />
         <DebugOverlay
           layout={layout}
           onToggleLayout={() => setLayout(layout === 'vertical' ? 'horizontal' : 'vertical')}

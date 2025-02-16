@@ -4,17 +4,19 @@ const Footer: React.FC = () => {
   return (
     <footer
       style={{
-        backgroundColor: '#f2f2f2',
-        padding: '20px',
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
         textAlign: 'center',
+        padding: '10px 20px',
         fontSize: '14px',
         color: '#555',
-        borderTop: '1px solid #ddd',
-        marginTop: '40px',
+        background: 'transparent',
       }}
     >
-      <div style={{ marginBottom: '10px' }}>© Bicéphale, 2025. All rights reserved.</div>
-      <div>
+      <div>© Bicéphale, 2025. Tous droits réservés.</div>
+      <div style={{ marginTop: '5px' }}>
         <button
           style={{
             padding: '8px 16px',

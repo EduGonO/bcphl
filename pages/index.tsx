@@ -48,8 +48,8 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
 
   const mainStyle: React.CSSProperties =
     layout === 'vertical'
-      ? { marginLeft: '250px', height: '100vh', overflowY: 'auto' as 'auto', padding: '20px' }
-      : { marginTop: '80px', height: 'calc(100vh - 80px)', overflowY: 'auto' as 'auto', padding: '20px' };
+      ? { marginLeft: '250px', height: 'calc(100vh - 60px)', overflowY: 'auto', padding: '20px', marginBottom: '60px' }
+      : { marginTop: '80px', height: 'calc(100vh - 80px - 60px)', overflowY: 'auto', padding: '20px', marginBottom: '60px' };
 
   return (
     <>
@@ -120,9 +120,10 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
                       fontSize: '12px',
                       fontWeight: 'bold',
                       padding: '3px 8px',
-                      color: activeCategory
-                        ? '#000'
-                        : categories.find((c) => c.name === article.category)?.color || '#000',
+                      color:
+                        activeCategory
+                          ? '#000'
+                          : categories.find((c) => c.name === article.category)?.color || '#000',
                       border: `1px solid ${
                         activeCategory
                           ? 'rgba(255,255,255,0.8)'
@@ -145,8 +146,8 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
               </div>
             ))}
           </div>
-          <Footer />
         </main>
+        <Footer />
         <DebugOverlay
           layout={layout}
           onToggleLayout={() => setLayout(layout === 'vertical' ? 'horizontal' : 'vertical')}
