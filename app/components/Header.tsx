@@ -52,13 +52,13 @@ const Header: React.FC<HeaderProps> = ({
             <img
               src="/media/logo.png"
               alt="Logo"
-              style={{ height: '50px' }}
+              style={{ height: '60px' }}
             />
           </a>
         </Link>
         <h1
           style={{
-            fontSize: '24px',
+            fontSize: '34px',
             textAlign: 'left',
             fontFamily: 'DINAlternate-Bold, sans-serif',
             margin: 0,
@@ -96,6 +96,7 @@ const Header: React.FC<HeaderProps> = ({
                     ...btnStyle,
                     textDecoration: 'none',
                     display: 'block',
+                    textAlign: 'left',
                   }}
                 >
                   {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
@@ -134,12 +135,12 @@ const Header: React.FC<HeaderProps> = ({
       >
         <Link href="/">
           <a style={{ textDecoration: 'none' }}>
-            <img src="/media/logo.png" alt="Logo" style={{ height: '70px' }} />
+            <img src="/media/logo.png" alt="Logo" style={{ height: '60px' }} />
           </a>
         </Link>
         <h1
           style={{
-            fontSize: '28px',
+            fontSize: '38px',
             margin: 0,
             lineHeight: '1',
             fontFamily: 'DINAlternate-Bold, sans-serif',
