@@ -160,7 +160,6 @@ const ArticlePage: React.FC<{
             </div>
             {showArticleSidebar && (
               <aside style={{ flex: 1, borderLeft: '1px solid #ddd', paddingLeft: '20px' }}>
-                <h4 style={{ marginTop: 0 }}>Info</h4>
                 <div
                   style={{
                     display: 'flex',
@@ -197,7 +196,7 @@ const ArticlePage: React.FC<{
                 </div>
 
                 <p style={{ fontStyle: 'italic', marginBottom: '10px' }}>
-                  Ceci est une courte biographie de l'auteur.
+                  Ceci est une courte biographie de l'auteur qui est une courte biographie de l'auteur étant une courte biographie de l'auteur.
                 </p>
 
                 <div style={{ marginBottom: '20px' }}>
@@ -248,7 +247,7 @@ const ArticlePage: React.FC<{
                         color: '#3f51b5',
                       }}
                     >
-                      Sample Reference 1
+                      Example Reference 1
                     </a>
                   </li>
                   <li>
@@ -259,7 +258,7 @@ const ArticlePage: React.FC<{
                         color: '#3f51b5',
                       }}
                     >
-                      Sample Reference 2
+                      Example Reference 2
                     </a>
                   </li>
                   <li>
@@ -270,18 +269,22 @@ const ArticlePage: React.FC<{
                         color: '#3f51b5',
                       }}
                     >
-                      Sample Reference 3
+                      Example Reference 3
                     </a>
                   </li>
                 </ul>
 
-                <h4>Comments</h4>
-                <ul style={{ paddingLeft: '20px' }}>
+                <h4>Commentaires</h4>
+                <ul style={{
+                    paddingLeft: '20px',
+                    marginTop: '4px',
+                    marginBottom: '20px',
+                  }}>
                   <li>
-                    <strong>User1:</strong> This is a sample comment.
+                    <strong>User1:</strong> Example de commentaire
                   </li>
                   <li>
-                    <strong>User2:</strong> Another comment example.
+                    <strong>User2:</strong> Un autre example de commentaire.
                   </li>
                 </ul>
               </aside>
