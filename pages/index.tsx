@@ -146,15 +146,18 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
           <Footer />
         </main>
         <DebugOverlay
-          layout={layout}
-          onToggleLayout={() => setLayout(layout === 'vertical' ? 'horizontal' : 'vertical')}
-          bodyFontSize={bodyFontSize}
-          onBodyFontSizeChange={setBodyFontSize}
-          titleFont={titleFont}
-          onTitleFontChange={setTitleFont}
-          imagePreview={imagePreview}
-          onToggleImagePreview={() => setImagePreview(!imagePreview)}
-        />
+  layout={layout}
+  onToggleLayout={() => setLayout(layout === 'vertical' ? 'horizontal' : 'vertical')}
+  bodyFontSize={bodyFontSize}
+  onBodyFontSizeChange={setBodyFontSize}
+  titleFont={titleFont}
+  onTitleFontChange={setTitleFont}
+  imagePreview={imagePreview}
+  onToggleImagePreview={() => setImagePreview(!imagePreview)}
+  articleSidebar={false}
+  onToggleArticleSidebar={() => {}}
+/>
+
       </div>
     </>
   );
