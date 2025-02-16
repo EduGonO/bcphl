@@ -5,6 +5,7 @@ import Header from '../app/components/Header';
 
 export type Article = {
   title: string;
+  slug: string;
   category: string;
   date: string;
   author: string;
@@ -69,7 +70,7 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
               }}
             ></div>
             <div style={{ flex: '1' }}>
-              <Link href={`/${article.category}/${article.title.toLowerCase().replace(/\s+/g, '-')}`}>
+              <Link href={`/${article.category}/${article.slug}`}>
                 <a style={{ textDecoration: 'none', color: 'inherit' }}>
                   <h3 style={{ margin: '0 0 5px', fontSize: '18px', color: activeCategory ? '#fff' : '#000' }}>
                     {article.title}
@@ -117,7 +118,6 @@ export async function getStaticProps() {
   const fs = require('fs');
   const path = require('path');
   const articles: Article[] = [];
-  // Use the correct folder
   const categoriesDir = path.join(process.cwd(), 'pages', 'texts');
 
   for (const categoryObj of categories) {
@@ -130,19 +130,17 @@ export async function getStaticProps() {
           const filePath = path.join(categoryPath, file);
           const fileContents = fs.readFileSync(filePath, 'utf-8').trim();
           const lines = fileContents.split('\n').map((line: string) => line.trim());
+          const slug = file.replace('.md', '');
           const title = lines[0].startsWith('#')
             ? lines[0].replace(/^#+\s*/, '')
-            : file.replace('.md', '');
+            : slug;
           const date = lines[1] || 'Unknown Date';
           const author = lines[2] || 'Unknown Author';
           const preview = lines.slice(3).join(' ').slice(0, 80) + '...';
-          articles.push({ title, category, date, author, preview });
+          articles.push({ title, slug, category, date, author, preview });
         }
       }
     }
   }
-
   return { props: { articles } };
 }
-
-export default Home;
