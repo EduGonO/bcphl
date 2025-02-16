@@ -57,13 +57,14 @@ const ArticlePage: React.FC<{ title: string; date: string; author: string; categ
       <Head>
         <style jsx global>{`
           @font-face {
-            font-family: 'AvenirNextCondensed';
-            src: url('/styles/AvenirNextCondensed-Regular.otf') format('opentype');
-          }
-          @font-face {
-            font-family: 'GayaRegular';
-            src: url('/styles/gaya-regular.otf') format('opentype');
-          }
+  font-family: 'AvenirNextCondensed';
+  src: url('/fonts/AvenirNextCondensed-Regular.otf') format('opentype');
+}
+@font-face {
+  font-family: 'GayaRegular';
+  src: url('/fonts/gaya-regular.otf') format('opentype');
+}
+
           body {
             font-family: 'AvenirNextCondensed', Arial, sans-serif;
           }
