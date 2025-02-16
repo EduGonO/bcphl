@@ -1,13 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 
-type Category = { name: string; color: string };
+export type Category = { name: string; color: string };
 
-type HeaderProps = {
+export type HeaderProps = {
   categories: Category[];
   activeCategory?: string | null;
   onCategoryChange?: (category: string) => void;
   showBackButton?: boolean;
+  layout: 'vertical' | 'horizontal';
+  onLayoutToggle: () => void;
 };
 
 const Header: React.FC<HeaderProps> = ({
@@ -15,9 +17,18 @@ const Header: React.FC<HeaderProps> = ({
   activeCategory,
   onCategoryChange,
   showBackButton = false,
+  layout,
+  onLayoutToggle,
 }) => {
-  const [layout, setLayout] = useState<'vertical' | 'horizontal'>('vertical');
-  const toggleLayout = () => setLayout(layout === 'vertical' ? 'horizontal' : 'vertical');
+  const switchBtnStyle = {
+    padding: '4px 8px',
+    fontSize: '12px',
+    border: 'none',
+    borderRadius: '5px',
+    backgroundColor: '#333',
+    color: '#fff',
+    cursor: 'pointer',
+  };
 
   if (layout === 'vertical') {
     return (
@@ -87,20 +98,8 @@ const Header: React.FC<HeaderProps> = ({
           })}
         </div>
         <div style={{ marginTop: 'auto' }}>
-          <button
-            onClick={toggleLayout}
-            style={{
-              marginTop: '20px',
-              padding: '8px 12px',
-              fontSize: '14px',
-              border: 'none',
-              borderRadius: '5px',
-              backgroundColor: '#333',
-              color: '#fff',
-              cursor: 'pointer',
-            }}
-          >
-            Switch to Horizontal
+          <button onClick={onLayoutToggle} style={switchBtnStyle}>
+            Switch Layout
           </button>
         </div>
       </div>
@@ -144,7 +143,7 @@ const Header: React.FC<HeaderProps> = ({
         )}
         <Link href="/">
           <a style={{ textDecoration: 'none' }}>
-            <img src="/media/logo.png" alt="Logo" style={{ height: '60px' }} />
+            <img src="/media/logo.png" alt="Logo" style={{ height: '70px' }} />
           </a>
         </Link>
       </div>
@@ -155,6 +154,8 @@ const Header: React.FC<HeaderProps> = ({
           justifyContent: 'center',
           alignItems: 'center',
           gap: '10px',
+          whiteSpace: 'nowrap',
+          lineHeight: 1,
         }}
       >
         {categories.map((cat) => {
@@ -184,19 +185,8 @@ const Header: React.FC<HeaderProps> = ({
         })}
       </div>
       <div>
-        <button
-          onClick={toggleLayout}
-          style={{
-            padding: '8px 12px',
-            fontSize: '14px',
-            border: 'none',
-            borderRadius: '5px',
-            backgroundColor: '#333',
-            color: '#fff',
-            cursor: 'pointer',
-          }}
-        >
-          Switch to Vertical
+        <button onClick={onLayoutToggle} style={switchBtnStyle}>
+          Switch Layout
         </button>
       </div>
     </div>

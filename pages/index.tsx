@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Head from 'next/head';
 import Link from 'next/link';
-import Header from '../app/components/Header';
+import Header, { Category } from '../app/components/Header';
 
 export type Article = {
   title: string;
@@ -12,7 +12,7 @@ export type Article = {
   preview: string;
 };
 
-export const categories = [
+export const categories: Category[] = [
   { name: 'actu', color: '#f44336' },
   { name: 'interviews & reportage', color: '#3f51b5' },
   { name: 'new', color: '#4caf50' },
@@ -26,6 +26,7 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
   const [filteredArticles, setFilteredArticles] = useState<Article[]>(articles);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [backgroundColor, setBackgroundColor] = useState<string>('#ffffff');
+  const [layout, setLayout] = useState<'vertical' | 'horizontal'>('vertical');
 
   const handleCategoryChange = (category: string) => {
     if (activeCategory === category) {
@@ -39,6 +40,11 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
       setBackgroundColor(catColor);
     }
   };
+
+  const mainStyle =
+    layout === 'vertical'
+      ? { marginLeft: '250px', height: '100vh', overflowY: 'auto', padding: '20px' }
+      : { marginTop: '80px', height: 'calc(100vh - 80px)', overflowY: 'auto', padding: '20px' };
 
   return (
     <>
@@ -61,43 +67,77 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
         `}</style>
       </Head>
       <div style={{ backgroundColor, transition: 'background-color 0.3s ease' }}>
-        <Header categories={categories} activeCategory={activeCategory} onCategoryChange={handleCategoryChange} />
-        <main style={{ marginLeft: '250px', padding: '20px', height: '100vh', overflowY: 'auto' }}>
-          {filteredArticles.map((article, i) => (
-            <div key={i} style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '15px' }}>
-              <div style={{ width: '42px', height: '60px', backgroundColor: '#e0e0e0', marginRight: '15px', borderRadius: '4px' }}></div>
-              <div style={{ flex: 1 }}>
-                <Link href={`/${article.category}/${article.slug}`}>
-                  <a style={{ textDecoration: 'none', color: 'inherit' }}>
-                    <h3 style={{ margin: '0 0 5px', fontSize: '18px', fontFamily: 'GayaRegular', color: activeCategory ? '#fff' : '#000' }}>
-                      {article.title}
-                    </h3>
-                  </a>
-                </Link>
-                <p style={{ margin: '0 0 5px', fontSize: '14px', color: activeCategory ? '#fff' : '#666' }}>
-                  {article.date} • {article.author}
-                </p>
-                <div style={{
-                  display: 'inline-block',
-                  fontSize: '12px',
-                  fontWeight: 'bold',
-                  padding: '3px 8px',
-                  color: activeCategory ? '#000' : categories.find(c => c.name === article.category)?.color || '#000',
-                  border: `1px solid ${activeCategory ? 'rgba(255,255,255,0.8)' : categories.find(c => c.name === article.category)?.color || '#000'}`,
-                  backgroundColor: activeCategory
-                    ? 'rgba(255,255,255,0.8)'
-                    : (categories.find(c => c.name === article.category)?.color || '#f0f0f0') + '20',
-                  borderRadius: '4px',
-                  marginBottom: '10px',
-                }}>
-                  {article.category}
+        <Header
+          categories={categories}
+          activeCategory={activeCategory}
+          onCategoryChange={handleCategoryChange}
+          layout={layout}
+          onLayoutToggle={() =>
+            setLayout(layout === 'vertical' ? 'horizontal' : 'vertical')
+          }
+        />
+        <main style={mainStyle}>
+          <div style={{ maxWidth: '800px', width: '100%', margin: '0 auto' }}>
+            {filteredArticles.map((article, i) => (
+              <div key={i} style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '15px' }}>
+                <div
+                  style={{
+                    width: '42px',
+                    height: '60px',
+                    backgroundColor: '#e0e0e0',
+                    marginRight: '15px',
+                    borderRadius: '4px',
+                  }}
+                />
+                <div style={{ flex: 1 }}>
+                  <Link href={`/${article.category}/${article.slug}`}>
+                    <a style={{ textDecoration: 'none', color: 'inherit' }}>
+                      <h3
+                        style={{
+                          margin: '0 0 5px',
+                          fontSize: '18px',
+                          fontFamily: 'GayaRegular',
+                          color: activeCategory ? '#fff' : '#000',
+                        }}
+                      >
+                        {article.title}
+                      </h3>
+                    </a>
+                  </Link>
+                  <p style={{ margin: '0 0 5px', fontSize: '14px', color: activeCategory ? '#fff' : '#666' }}>
+                    {article.date} • {article.author}
+                  </p>
+                  <div
+                    style={{
+                      display: 'inline-block',
+                      fontSize: '12px',
+                      fontWeight: 'bold',
+                      padding: '3px 8px',
+                      color: activeCategory
+                        ? '#000'
+                        : categories.find((c) => c.name === article.category)?.color || '#000',
+                      border: `1px solid ${
+                        activeCategory
+                          ? 'rgba(255,255,255,0.8)'
+                          : categories.find((c) => c.name === article.category)?.color || '#000'
+                      }`,
+                      backgroundColor:
+                        activeCategory
+                          ? 'rgba(255,255,255,0.8)'
+                          : (categories.find((c) => c.name === article.category)?.color || '#f0f0f0') + '20',
+                      borderRadius: '4px',
+                      marginBottom: '10px',
+                    }}
+                  >
+                    {article.category}
+                  </div>
+                  <p style={{ margin: '0 0 10px', fontSize: '14px', color: activeCategory ? '#fff' : '#444' }}>
+                    {article.preview}
+                  </p>
                 </div>
-                <p style={{ margin: '0 0 10px', fontSize: '14px', color: activeCategory ? '#fff' : '#444' }}>
-                  {article.preview}
-                </p>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </main>
       </div>
     </>
