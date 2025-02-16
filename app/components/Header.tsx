@@ -139,14 +139,14 @@ const Header: React.FC<HeaderProps> = ({
         </Link>
         <h1
           style={{
-            fontSize: '24px',
+            fontSize: '28px',
             margin: 0,
             lineHeight: '1',
             fontFamily: 'DINAlternate-Bold, sans-serif',
             color: 'inherit',
           }}
         >
-          Bicéphale
+          BICÉPHALE
         </h1>
       </div>
       {/* Categories (displayed as plain text) */}
