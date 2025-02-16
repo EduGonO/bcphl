@@ -16,13 +16,16 @@ const Header: React.FC<HeaderProps> = ({
   onCategoryChange,
   layout,
 }) => {
-  const commonBtnStyle = {
+  const commonBtnStyle: React.CSSProperties = {
     fontSize: '14px',
     border: 'none',
     color: '#fff',
     cursor: 'pointer',
-    fontWeight: 'bold' as const,
+    fontWeight: 'bold',
     borderRadius: '5px',
+    width: '100%',
+    textAlign: 'left',
+    padding: '10px 12px',
   };
 
   if (layout === 'vertical') {
@@ -52,21 +55,32 @@ const Header: React.FC<HeaderProps> = ({
         </Link>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '15px', width: '100%' }}>
           {categories.map((cat) => {
-            const btnStyle = {
+            const btnStyle: React.CSSProperties = {
               ...commonBtnStyle,
-              padding: '10px 12px',
               backgroundColor: cat.color,
               opacity: activeCategory === cat.name ? 1 : 0.8,
-              textAlign: 'left' as const,
-              width: '100%',
             };
-            return onCategoryChange ? (
-              <button key={cat.name} onClick={() => onCategoryChange(cat.name)} style={btnStyle}>
-                {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
-              </button>
-            ) : (
+            if (onCategoryChange) {
+              return (
+                <button
+                  key={cat.name}
+                  onClick={() => onCategoryChange(cat.name)}
+                  style={btnStyle}
+                >
+                  {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
+                </button>
+              );
+            }
+            // Ensure link looks identical: enforce block display and full width
+            return (
               <Link key={cat.name} href={`/?category=${cat.name}`}>
-                <a style={{ ...btnStyle, textDecoration: 'none' }}>
+                <a
+                  style={{
+                    ...btnStyle,
+                    textDecoration: 'none',
+                    display: 'block',
+                  }}
+                >
                   {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
                 </a>
               </Link>
@@ -77,7 +91,7 @@ const Header: React.FC<HeaderProps> = ({
     );
   }
 
-  // Horizontal layout
+  // Horizontal layout remains unchanged.
   return (
     <div
       style={{
@@ -115,20 +129,28 @@ const Header: React.FC<HeaderProps> = ({
         }}
       >
         {categories.map((cat) => {
-          const btnStyle = {
-            ...commonBtnStyle,
+          const btnStyle: React.CSSProperties = {
+            fontSize: '14px',
+            border: 'none',
+            color: '#fff',
+            cursor: 'pointer',
+            fontWeight: 'bold',
+            borderRadius: '5px',
             padding: '8px 12px',
             backgroundColor: cat.color,
             opacity: activeCategory === cat.name ? 1 : 0.8,
-            textAlign: 'center' as const,
+            textAlign: 'center',
           };
-          return onCategoryChange ? (
-            <button key={cat.name} onClick={() => onCategoryChange(cat.name)} style={btnStyle}>
-              {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
-            </button>
-          ) : (
+          if (onCategoryChange) {
+            return (
+              <button key={cat.name} onClick={() => onCategoryChange(cat.name)} style={btnStyle}>
+                {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
+              </button>
+            );
+          }
+          return (
             <Link key={cat.name} href={`/?category=${cat.name}`}>
-              <a style={{ ...btnStyle, textDecoration: 'none' }}>
+              <a style={{ ...btnStyle, textDecoration: 'none', display: 'block' }}>
                 {cat.name.charAt(0).toUpperCase() + cat.name.slice(1)}
               </a>
             </Link>
