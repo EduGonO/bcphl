@@ -122,7 +122,7 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
                       border: `1px solid ${
                         categories.find((c) => c.name === article.category)?.color
                       }`,
-                      backgroundColor: activeCategory ? 'rgba(255,255,255,0.8)' : (categories.find((c) => c.name === article.category)?.color || '#f0f0f0') + '20',
+                      backgroundColor: (categories.find((c) => c.name === article.category)?.color || '#f0f0f0') + '20',
                       borderRadius: '4px',
                       marginBottom: '10px',
                     }}
