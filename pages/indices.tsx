@@ -1,15 +1,13 @@
 import React from 'react';
-import Link from 'next/link';
 import Head from 'next/head';
+import Link from 'next/link';
 import fs from 'fs';
 import path from 'path';
+import Header from '../app/components/Header';
 
 type TextEntry = {
   title: string;
   slug: string;
-  date: string;
-  author: string;
-  preview: string;
 };
 
 type CategoryIndex = {
@@ -22,66 +20,42 @@ type IndicesProps = {
 };
 
 const Indices: React.FC<IndicesProps> = ({ indices }) => {
+  const totalCategories = indices.length;
+  const totalArticles = indices.reduce((acc, cur) => acc + cur.texts.length, 0);
   return (
     <>
       <Head>
         <title>Indices – BICÉPHALE</title>
-        <meta name="description" content="Elegant index of all categories and texts." />
+        <meta name="description" content="Index of all categories and texts" />
       </Head>
+      <Header
+        categories={indices.map((cat) => ({ name: cat.name, color: '#607d8b' }))}
+        layout="horizontal"
+      />
       <div
         style={{
           maxWidth: '800px',
-          margin: '60px auto',
+          margin: '80px auto',
           padding: '20px',
           fontFamily: 'Helvetica, Arial, sans-serif',
           color: '#333',
-          backgroundColor: '#fafafa',
         }}
       >
-        <h1 style={{ fontSize: '24px', marginBottom: '20px', textAlign: 'center' }}>
+        <h1 style={{ fontSize: '24px', marginBottom: '10px', textAlign: 'center' }}>
           Indices
         </h1>
+        <p style={{ fontSize: '14px', textAlign: 'center', marginBottom: '30px' }}>
+          {totalCategories} categories, {totalArticles} articles
+        </p>
         {indices.map((cat) => (
-          <section key={cat.name} style={{ marginBottom: '30px' }}>
-            <h2
-              style={{
-                fontSize: '18px',
-                marginBottom: '10px',
-                borderBottom: '1px solid #ccc',
-                paddingBottom: '5px',
-              }}
-            >
-              {cat.name}
-            </h2>
-            <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
+          <section key={cat.name} style={{ marginBottom: '20px' }}>
+            <h2 style={{ fontSize: '16px', marginBottom: '10px' }}>{cat.name}</h2>
+            <ul style={{ listStyle: 'none', margin: 0, paddingLeft: '20px' }}>
               {cat.texts.map((text) => (
-                <li key={text.slug} style={{ marginBottom: '10px', marginLeft: '20px' }}>
+                <li key={text.slug} style={{ marginBottom: '5px' }}>
                   <Link href={`/${cat.name}/${text.slug}`}>
-                    <a style={{ textDecoration: 'none', color: '#333' }}>
-                      <div
-                        style={{
-                          padding: '8px',
-                          borderRadius: '4px',
-                          backgroundColor: '#fff',
-                          boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
-                        }}
-                      >
-                        <h3 style={{ fontSize: '14px', margin: '0 0 4px' }}>
-                          {text.title}
-                        </h3>
-                        <p
-                          style={{
-                            fontSize: '12px',
-                            margin: '0 0 4px',
-                            color: '#666',
-                          }}
-                        >
-                          {text.date} • {text.author}
-                        </p>
-                        <p style={{ fontSize: '12px', margin: 0, color: '#444' }}>
-                          {text.preview}
-                        </p>
-                      </div>
+                    <a style={{ fontSize: '12px', color: '#333', textDecoration: 'none' }}>
+                      {text.title}
                     </a>
                   </Link>
                 </li>
@@ -110,19 +84,12 @@ export async function getStaticProps() {
       const lines = content.split('\n').map((line) => line.trim());
       const slug = file.replace('.md', '');
       const title = lines[0].startsWith('#') ? lines[0].replace(/^#+\s*/, '') : slug;
-      const date = lines[1] || 'Unknown Date';
-      const author = lines[2] || 'Unknown Author';
-      const preview = lines.slice(3).join(' ').slice(0, 80) + '...';
-      return { title, slug, date, author, preview };
+      return { title, slug };
     });
     return { name: category, texts };
   });
 
-  return {
-    props: {
-      indices,
-    },
-  };
+  return { props: { indices } };
 }
 
 export default Indices;
