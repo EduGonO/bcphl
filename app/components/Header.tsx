@@ -16,6 +16,7 @@ const Header: React.FC<HeaderProps> = ({
   onCategoryChange,
   layout = 'horizontal',
 }) => {
+  // Separate hover states to keep dropdown open when either button or dropdown is hovered.
   const [isButtonHovered, setIsButtonHovered] = useState(false);
   const [isDropdownHovered, setIsDropdownHovered] = useState(false);
   const dropdownVisible = isButtonHovered || isDropdownHovered;
@@ -31,10 +32,10 @@ const Header: React.FC<HeaderProps> = ({
     transition: 'color 0.2s ease',
   };
 
-  // Vertical dropdown: spans sidebar width.
+  // Styles for vertical layout (unchanged)
   const verticalDropdownStyle: React.CSSProperties = {
     position: 'absolute',
-    top: '100%',
+    top: 'calc(100% + 8px)',
     left: 0,
     width: '100%',
     background: 'rgba(248,248,248,0.95)',
@@ -44,54 +45,56 @@ const Header: React.FC<HeaderProps> = ({
     display: 'flex',
     flexDirection: 'column',
     gap: '10px',
+    zIndex: 1000,
   };
 
-  // Horizontal dropdown: fixed, centered, constrained.
+  // Horizontal dropdown now rendered inside the same container.
   const horizontalDropdownStyle: React.CSSProperties = {
-    position: 'fixed',
-    top: '70px',
+    position: 'absolute',
+    top: 'calc(100% + 8px)',
     left: '50%',
     transform: 'translateX(-50%)',
     width: 'calc(100vw - 20px)',
     maxWidth: '600px',
-    background: 'rgba(248,248,248,0.95)',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-    padding: '10px 20px',
+    background: '#fff',
+    border: '1px solid #ddd',
+    boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
     borderRadius: '8px',
+    padding: '10px 20px',
     display: 'flex',
     flexWrap: 'wrap',
     gap: '10px',
     justifyContent: 'center',
+    zIndex: 1000,
   };
 
   const renderDropdown = () => {
     const style = layout === 'horizontal' ? horizontalDropdownStyle : verticalDropdownStyle;
     return (
       <div
+        style={style}
         onMouseEnter={() => setIsDropdownHovered(true)}
         onMouseLeave={() => setIsDropdownHovered(false)}
       >
-        <div style={style}>
-          {categories.map(cat =>
-            onCategoryChange ? (
-              <button
-                key={cat.name}
-                onClick={() => {
-                  onCategoryChange(cat.name);
-                }}
-                style={{ ...buttonBase, color: cat.color }}
-              >
+        {categories.map(cat =>
+          onCategoryChange ? (
+            <button
+              key={cat.name}
+              onClick={() => {
+                onCategoryChange(cat.name);
+              }}
+              style={{ ...buttonBase, color: cat.color }}
+            >
+              {cat.name}
+            </button>
+          ) : (
+            <Link key={cat.name} href={`/?category=${cat.name}`}>
+              <a style={{ ...buttonBase, color: cat.color, textDecoration: 'none' }}>
                 {cat.name}
-              </button>
-            ) : (
-              <Link key={cat.name} href={`/?category=${cat.name}`}>
-                <a style={{ ...buttonBase, color: cat.color, textDecoration: 'none' }}>
-                  {cat.name}
-                </a>
-              </Link>
-            )
-          )}
-        </div>
+              </a>
+            </Link>
+          )
+        )}
       </div>
     );
   };
@@ -118,18 +121,6 @@ const Header: React.FC<HeaderProps> = ({
     </Link>
   );
 
-  // Container for the categories button.
-  const categoriesContainer = (
-    <div
-      style={{ position: 'relative', display: 'inline-block' }}
-      onMouseEnter={() => setIsButtonHovered(true)}
-      onMouseLeave={() => setIsButtonHovered(false)}
-    >
-      {categoriesButton}
-      {dropdownVisible && layout === 'vertical' && renderDropdown()}
-    </div>
-  );
-
   if (layout === 'vertical') {
     return (
       <div
@@ -154,15 +145,31 @@ const Header: React.FC<HeaderProps> = ({
             <img src="/media/logo.png" alt="Logo" style={{ height: '60px' }} />
           </a>
         </Link>
-        <h1 style={{ fontSize: '34px', textAlign: 'left', fontFamily: 'DINAlternate-Bold, sans-serif', margin: 0, color: '#333' }}>
+        <h1
+          style={{
+            fontSize: '34px',
+            textAlign: 'left',
+            fontFamily: 'DINAlternate-Bold, sans-serif',
+            margin: 0,
+            color: '#333',
+          }}
+        >
           BICÉPHALE
         </h1>
-        {categoriesContainer}
+        <div
+          style={{ position: 'relative', display: 'inline-block' }}
+          onMouseEnter={() => setIsButtonHovered(true)}
+          onMouseLeave={() => setIsButtonHovered(false)}
+        >
+          {categoriesButton}
+          {dropdownVisible && renderDropdown()}
+        </div>
         {searchButton}
       </div>
     );
   }
 
+  // Horizontal layout header.
   return (
     <>
       <div
@@ -186,22 +193,36 @@ const Header: React.FC<HeaderProps> = ({
                 <img src="/media/logo.png" alt="Logo" style={{ height: '60px' }} />
               </a>
             </Link>
-            <h1 style={{ fontSize: '38px', margin: 0, lineHeight: '1', fontFamily: 'DINAlternate-Bold, sans-serif', color: '#333' }}>
+            <h1
+              style={{
+                fontSize: '38px',
+                margin: 0,
+                lineHeight: '1',
+                fontFamily: 'DINAlternate-Bold, sans-serif',
+                color: '#333',
+              }}
+            >
               BICÉPHALE
             </h1>
           </div>
-          <div style={{ display: 'flex', gap: '10px', alignItems: 'center', position: 'relative' }}>
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+            {/* Wrap both button and dropdown in one container */}
             <div
-              onMouseEnter={() => setIsButtonHovered(true)}
-              onMouseLeave={() => setIsButtonHovered(false)}
+              style={{ position: 'relative', display: 'inline-block' }}
+              onMouseEnter={() => {
+                setIsButtonHovered(true);
+              }}
+              onMouseLeave={() => {
+                setIsButtonHovered(false);
+              }}
             >
               {categoriesButton}
+              {dropdownVisible && renderDropdown()}
             </div>
             {searchButton}
           </div>
         </div>
       </div>
-      {layout === 'horizontal' && dropdownVisible && renderDropdown()}
     </>
   );
 };
