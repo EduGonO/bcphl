@@ -28,7 +28,6 @@ const Header: React.FC<HeaderProps> = ({
     color: '#607d8b',
   };
 
-  // For vertical layout, dropdown remains relative to the panel.
   const verticalDropdownStyle: React.CSSProperties = {
     position: 'absolute',
     top: '100%',
@@ -44,51 +43,47 @@ const Header: React.FC<HeaderProps> = ({
     gap: '10px',
   };
 
-  // For horizontal layout, dropdown spans full screen width.
   const horizontalDropdownStyle: React.CSSProperties = {
     position: 'fixed',
-    top: '70px', // adjust if needed
-    left: 0,
-    width: '100vw',
+    top: '70px', // adjust as needed
+    left: '50%',
+    transform: 'translateX(-50%)',
+    width: 'calc(100vw - 20px)',
     background: 'rgba(248,248,248,0.9)',
     boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-    padding: '10px 20px',
+    padding: '10px',
     zIndex: 1000,
     display: 'flex',
-    flexDirection: 'row',
+    flexWrap: 'wrap',
     gap: '10px',
     justifyContent: 'center',
   };
 
   const renderDropdown = () => {
     const style = layout === 'horizontal' ? horizontalDropdownStyle : verticalDropdownStyle;
-    const content = categories.map(cat =>
-      onCategoryChange ? (
-        <button
-          key={cat.name}
-          onClick={() => {
-            onCategoryChange(cat.name);
-            setDropdownVisible(false);
-          }}
-          style={{ ...buttonBase, color: cat.color }}
-        >
-          {cat.name}
-        </button>
-      ) : (
-        <Link key={cat.name} href={`/?category=${cat.name}`}>
-          <a style={{ ...buttonBase, color: cat.color, textDecoration: 'none' }}>
-            {cat.name}
-          </a>
-        </Link>
-      )
-    );
-    // In horizontal layout, wrap dropdown with mouse handlers so it stays visible.
-    return layout === 'horizontal' ? (
-      <div onMouseEnter={() => setDropdownVisible(true)} onMouseLeave={() => setDropdownVisible(false)}>
-        <div style={style}>{content}</div>
+    return (
+      <div style={style}>
+        {categories.map(cat =>
+          onCategoryChange ? (
+            <button
+              key={cat.name}
+              onClick={() => {
+                onCategoryChange(cat.name);
+                setDropdownVisible(false);
+              }}
+              style={{ ...buttonBase, color: cat.color }}
+            >
+              {cat.name}
+            </button>
+          ) : (
+            <Link key={cat.name} href={`/?category=${cat.name}`}>
+              <a style={{ ...buttonBase, color: cat.color, textDecoration: 'none' }}>
+                {cat.name}
+              </a>
+            </Link>
+          )
+        )}
       </div>
-    ) : (
-      <div style={style}>{content}</div>
     );
   };
 
@@ -141,7 +136,8 @@ const Header: React.FC<HeaderProps> = ({
         <h1 style={{ fontSize: '34px', textAlign: 'left', fontFamily: 'DINAlternate-Bold, sans-serif', margin: 0 }}>
           BICÉPHALE
         </h1>
-        <div style={{ position: 'relative' }}
+        <div
+          style={{ position: 'relative' }}
           onMouseEnter={() => setDropdownVisible(true)}
           onMouseLeave={() => setDropdownVisible(false)}
         >
@@ -179,8 +175,8 @@ const Header: React.FC<HeaderProps> = ({
               BICÉPHALE
             </h1>
           </div>
-          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-            <div style={{ position: 'relative', display: 'inline-block' }}
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center', position: 'relative' }}>
+            <div
               onMouseEnter={() => setDropdownVisible(true)}
               onMouseLeave={() => setDropdownVisible(false)}
             >
