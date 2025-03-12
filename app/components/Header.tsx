@@ -26,14 +26,16 @@ const Header: React.FC<HeaderProps> = ({
     padding: '10px 12px',
     background: 'none',
     color: '#607d8b',
+    transition: 'color 0.2s ease',
   };
 
+  // Vertical: dropdown spans full width of sidebar.
   const verticalDropdownStyle: React.CSSProperties = {
     position: 'absolute',
     top: '100%',
     left: 0,
     width: '100%',
-    background: 'rgba(248,248,248,0.9)',
+    background: 'rgba(248,248,248,0.95)',
     boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
     borderRadius: '4px',
     padding: '10px',
@@ -43,20 +45,23 @@ const Header: React.FC<HeaderProps> = ({
     gap: '10px',
   };
 
+  // Horizontal: dropdown is centered and constrained.
   const horizontalDropdownStyle: React.CSSProperties = {
     position: 'fixed',
-    top: '70px', // adjust as needed
+    top: '70px',
     left: '50%',
     transform: 'translateX(-50%)',
     width: 'calc(100vw - 20px)',
-    background: 'rgba(248,248,248,0.9)',
+    maxWidth: '600px',
+    background: 'rgba(248,248,248,0.95)',
     boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
-    padding: '10px',
+    padding: '10px 20px',
     zIndex: 1000,
     display: 'flex',
     flexWrap: 'wrap',
     gap: '10px',
     justifyContent: 'center',
+    borderRadius: '8px',
   };
 
   const renderDropdown = () => {
@@ -109,6 +114,18 @@ const Header: React.FC<HeaderProps> = ({
     </Link>
   );
 
+  // Container to keep dropdown visible if cursor enters it.
+  const categoriesContainer = (
+    <div
+      style={{ position: 'relative', display: 'inline-block' }}
+      onMouseEnter={() => setDropdownVisible(true)}
+      onMouseLeave={() => setDropdownVisible(false)}
+    >
+      {categoriesButton}
+      {dropdownVisible && renderDropdown()}
+    </div>
+  );
+
   if (layout === 'vertical') {
     return (
       <div
@@ -120,7 +137,7 @@ const Header: React.FC<HeaderProps> = ({
           height: '100vh',
           padding: '20px',
           boxSizing: 'border-box',
-          background: 'rgba(248,248,248,0.8)',
+          background: 'rgba(248,248,248,0.95)',
           backdropFilter: 'blur(8px)',
           display: 'flex',
           flexDirection: 'column',
@@ -133,17 +150,10 @@ const Header: React.FC<HeaderProps> = ({
             <img src="/media/logo.png" alt="Logo" style={{ height: '60px' }} />
           </a>
         </Link>
-        <h1 style={{ fontSize: '34px', textAlign: 'left', fontFamily: 'DINAlternate-Bold, sans-serif', margin: 0 }}>
+        <h1 style={{ fontSize: '34px', textAlign: 'left', fontFamily: 'DINAlternate-Bold, sans-serif', margin: 0, color: '#333' }}>
           BICÉPHALE
         </h1>
-        <div
-          style={{ position: 'relative' }}
-          onMouseEnter={() => setDropdownVisible(true)}
-          onMouseLeave={() => setDropdownVisible(false)}
-        >
-          {categoriesButton}
-          {dropdownVisible && renderDropdown()}
-        </div>
+        {categoriesContainer}
         {searchButton}
       </div>
     );
@@ -159,7 +169,8 @@ const Header: React.FC<HeaderProps> = ({
           right: 0,
           padding: '10px 20px',
           boxSizing: 'border-box',
-          background: 'rgba(248,248,248,0.8)',
+          background: 'rgba(255,255,255,0.95)',
+          boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
           backdropFilter: 'blur(8px)',
           zIndex: 1000,
         }}
@@ -171,22 +182,17 @@ const Header: React.FC<HeaderProps> = ({
                 <img src="/media/logo.png" alt="Logo" style={{ height: '60px' }} />
               </a>
             </Link>
-            <h1 style={{ fontSize: '38px', margin: 0, lineHeight: '1', fontFamily: 'DINAlternate-Bold, sans-serif' }}>
+            <h1 style={{ fontSize: '38px', margin: 0, lineHeight: '1', fontFamily: 'DINAlternate-Bold, sans-serif', color: '#333' }}>
               BICÉPHALE
             </h1>
           </div>
-          <div style={{ display: 'flex', gap: '10px', alignItems: 'center', position: 'relative' }}>
-            <div
-              onMouseEnter={() => setDropdownVisible(true)}
-              onMouseLeave={() => setDropdownVisible(false)}
-            >
-              {categoriesButton}
-            </div>
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+            {categoriesContainer}
             {searchButton}
           </div>
         </div>
       </div>
-      {dropdownVisible && layout === 'horizontal' && renderDropdown()}
+      {layout === 'horizontal' && dropdownVisible && renderDropdown()}
     </>
   );
 };
