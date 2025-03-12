@@ -13,18 +13,7 @@ export type Article = {
   preview: string;
 };
 
-export const categories: Category[] = [
-  { name: 'Love Letters', color: '#f44336' },
-    { name: 'Image-Critique', color: '#3f51b5' },
-    { name: 'Bascule', color: '#4caf50' },
-    { name: 'Sensure', color: '#ff9800' },
-    { name: 'Automaton', color: '#9c27b0' },
-    { name: 'Bicaméralité', color: '#009688' },
-    { name: 'Banque des rêves', color: '#607d8b' },
-    { name: 'Cartographie', color: '#607d8b' },
-];
-
-const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
+const Home: React.FC<{ articles: Article[]; categories: Category[] }> = ({ articles, categories }) => {
   const [filteredArticles, setFilteredArticles] = useState<Article[]>(articles);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [backgroundColor, setBackgroundColor] = useState<string>('#ffffff');
@@ -41,7 +30,6 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
     } else {
       setActiveCategory(category);
       setFilteredArticles(articles.filter((a) => a.category === category));
-      const catColor = categories.find((c) => c.name === category)?.color || '#ffffff';
       setBackgroundColor('#ffffff');
     }
   };
@@ -85,72 +73,72 @@ const Home: React.FC<{ articles: Article[] }> = ({ articles }) => {
         />
         <main style={mainStyle}>
           <div style={{ maxWidth: '800px', width: '100%', margin: '0 auto' }}>
-            {filteredArticles.map((article, i) => (
-              <div key={i} style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '15px' }}>
-                <div
-                  style={{
-                    width: '42px',
-                    height: '60px',
-                    backgroundColor: '#e0e0e0',
-                    marginRight: '15px',
-                    borderRadius: '4px',
-                  }}
-                />
-                <div style={{ flex: 1 }}>
-                  <a href={`/${article.category}/${article.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-                    <h3
-                      style={{
-                        margin: '0 0 5px',
-                        fontSize: '18px',
-                        fontFamily: titleFont === 'Gaya' ? 'GayaRegular' : 'AvenirNextBolder',
-                        color: activeCategory ? '#000' : '#000',
-                      }}
-                    >
-                      {article.title}
-                    </h3>
-                  </a>
-                  <p style={{ margin: '0 0 5px', fontSize: '14px', color: activeCategory ? '#666' : '#666' }}>
-                    {article.date} • {article.author}
-                  </p>
+            {filteredArticles.map((article, i) => {
+              const catColor = categories.find((c) => c.name === article.category)?.color || '#f0f0f0';
+              return (
+                <div key={i} style={{ display: 'flex', alignItems: 'flex-start', marginBottom: '15px' }}>
                   <div
                     style={{
-                      display: 'inline-block',
-                      fontSize: '12px',
-                      fontWeight: 'bold',
-                      padding: '3px 8px',
-                      color: categories.find((c) => c.name === article.category)?.color,
-                      border: `1px solid ${
-                        categories.find((c) => c.name === article.category)?.color
-                      }`,
-                      backgroundColor: (categories.find((c) => c.name === article.category)?.color || '#f0f0f0') + '20',
+                      width: '42px',
+                      height: '60px',
+                      backgroundColor: '#e0e0e0',
+                      marginRight: '15px',
                       borderRadius: '4px',
-                      marginBottom: '10px',
                     }}
-                  >
-                    {article.category}
+                  />
+                  <div style={{ flex: 1 }}>
+                    <a href={`/${article.category}/${article.slug}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                      <h3
+                        style={{
+                          margin: '0 0 5px',
+                          fontSize: '18px',
+                          fontFamily: titleFont === 'Gaya' ? 'GayaRegular' : 'AvenirNextBolder',
+                          color: '#000',
+                        }}
+                      >
+                        {article.title}
+                      </h3>
+                    </a>
+                    <p style={{ margin: '0 0 5px', fontSize: '14px', color: '#666' }}>
+                      {article.date} • {article.author}
+                    </p>
+                    <div
+                      style={{
+                        display: 'inline-block',
+                        fontSize: '12px',
+                        fontWeight: 'bold',
+                        padding: '3px 8px',
+                        color: catColor,
+                        border: `1px solid ${catColor}`,
+                        backgroundColor: catColor + '20',
+                        borderRadius: '4px',
+                        marginBottom: '10px',
+                      }}
+                    >
+                      {article.category}
+                    </div>
+                    <p style={{ margin: '0 0 10px', fontSize: '14px', color: '#444' }}>
+                      {article.preview}
+                    </p>
                   </div>
-                  <p style={{ margin: '0 0 10px', fontSize: '14px', color: activeCategory ? '#444' : '#444' }}>
-                    {article.preview}
-                  </p>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
           <Footer />
         </main>
         <DebugOverlay
-  layout={layout}
-  onToggleLayout={() => setLayout(layout === 'vertical' ? 'horizontal' : 'vertical')}
-  bodyFontSize={bodyFontSize}
-  onBodyFontSizeChange={setBodyFontSize}
-  titleFont={titleFont}
-  onTitleFontChange={setTitleFont}
-  imagePreview={imagePreview}
-  onToggleImagePreview={() => setImagePreview(!imagePreview)}
-  articleSidebar={false}
-  onToggleArticleSidebar={() => {}}
-/>
-
+          layout={layout}
+          onToggleLayout={() => setLayout(layout === 'vertical' ? 'horizontal' : 'vertical')}
+          bodyFontSize={bodyFontSize}
+          onBodyFontSizeChange={setBodyFontSize}
+          titleFont={titleFont}
+          onTitleFontChange={setTitleFont}
+          imagePreview={imagePreview}
+          onToggleImagePreview={() => setImagePreview(!imagePreview)}
+          articleSidebar={false}
+          onToggleArticleSidebar={() => {}}
+        />
       </div>
     </>
   );
@@ -162,26 +150,33 @@ export async function getStaticProps() {
   const articles: Article[] = [];
   const textsDir = path.join(process.cwd(), 'texts');
 
-  for (const catObj of categories) {
-    const cat = catObj.name;
+  const categoryFolders = fs
+    .readdirSync(textsDir, { withFileTypes: true })
+    .filter((dirent: any) => dirent.isDirectory())
+    .map((dirent: any) => dirent.name);
+
+  const categories: Category[] = categoryFolders.map((cat: string) => ({
+    name: cat,
+    color: '#607d8b', // default color
+  }));
+
+  for (const cat of categoryFolders) {
     const catPath = path.join(textsDir, cat);
-    if (fs.existsSync(catPath)) {
-      fs.readdirSync(catPath).forEach((file: string) => {
-        if (file.endsWith('.md')) {
-          const filePath = path.join(catPath, file);
-          const fileContents = fs.readFileSync(filePath, 'utf-8').trim();
-          const lines = fileContents.split('\n').map((l: string) => l.trim());
-          const slug = file.replace('.md', '');
-          const title = lines[0].startsWith('#') ? lines[0].replace(/^#+\s*/, '') : slug;
-          const date = lines[1] || 'Unknown Date';
-          const author = lines[2] || 'Unknown Author';
-          const preview = lines.slice(3).join(' ').slice(0, 80) + '...';
-          articles.push({ title, slug, category: cat, date, author, preview });
-        }
-      });
-    }
+    fs.readdirSync(catPath).forEach((file: string) => {
+      if (file.endsWith('.md')) {
+        const filePath = path.join(catPath, file);
+        const fileContents = fs.readFileSync(filePath, 'utf-8').trim();
+        const lines = fileContents.split('\n').map((l: string) => l.trim());
+        const slug = file.replace('.md', '');
+        const title = lines[0].startsWith('#') ? lines[0].replace(/^#+\s*/, '') : slug;
+        const date = lines[1] || 'Unknown Date';
+        const author = lines[2] || 'Unknown Author';
+        const preview = lines.slice(3).join(' ').slice(0, 80) + '...';
+        articles.push({ title, slug, category: cat, date, author, preview });
+      }
+    });
   }
-  return { props: { articles } };
+  return { props: { articles, categories } };
 }
 
 export default Home;
