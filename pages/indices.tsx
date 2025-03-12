@@ -31,38 +31,57 @@ const Indices: React.FC<IndicesProps> = ({ indices }) => {
       <div
         style={{
           maxWidth: '800px',
-          margin: '80px auto',
+          margin: '60px auto',
           padding: '20px',
-          fontFamily: 'Arial, sans-serif',
-          lineHeight: 1.5,
+          fontFamily: 'Helvetica, Arial, sans-serif',
           color: '#333',
+          backgroundColor: '#fafafa',
         }}
       >
-        <h1 style={{ fontSize: '36px', marginBottom: '20px', textAlign: 'center' }}>Indices</h1>
+        <h1 style={{ fontSize: '24px', marginBottom: '20px', textAlign: 'center' }}>
+          Indices
+        </h1>
         {indices.map((cat) => (
-          <section key={cat.name} style={{ marginBottom: '40px' }}>
+          <section key={cat.name} style={{ marginBottom: '30px' }}>
             <h2
               style={{
-                fontSize: '28px',
-                borderBottom: '2px solid #ddd',
-                paddingBottom: '10px',
-                marginBottom: '20px',
+                fontSize: '18px',
+                marginBottom: '10px',
+                borderBottom: '1px solid #ccc',
+                paddingBottom: '5px',
               }}
             >
               {cat.name}
             </h2>
-            <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+            <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
               {cat.texts.map((text) => (
-                <li key={text.slug} style={{ marginBottom: '15px' }}>
+                <li key={text.slug} style={{ marginBottom: '10px', marginLeft: '20px' }}>
                   <Link href={`/${cat.name}/${text.slug}`}>
                     <a style={{ textDecoration: 'none', color: '#333' }}>
-                      <h3 style={{ fontSize: '20px', margin: '0 0 5px' }}>{text.title}</h3>
-                      <p style={{ margin: 0, fontSize: '14px', color: '#666' }}>
-                        {text.date} • {text.author}
-                      </p>
-                      <p style={{ margin: '5px 0 0', fontSize: '14px', color: '#444' }}>
-                        {text.preview}
-                      </p>
+                      <div
+                        style={{
+                          padding: '8px',
+                          borderRadius: '4px',
+                          backgroundColor: '#fff',
+                          boxShadow: '0 1px 3px rgba(0,0,0,0.1)',
+                        }}
+                      >
+                        <h3 style={{ fontSize: '14px', margin: '0 0 4px' }}>
+                          {text.title}
+                        </h3>
+                        <p
+                          style={{
+                            fontSize: '12px',
+                            margin: '0 0 4px',
+                            color: '#666',
+                          }}
+                        >
+                          {text.date} • {text.author}
+                        </p>
+                        <p style={{ fontSize: '12px', margin: 0, color: '#444' }}>
+                          {text.preview}
+                        </p>
+                      </div>
                     </a>
                   </Link>
                 </li>
