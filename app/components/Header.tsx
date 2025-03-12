@@ -7,23 +7,28 @@ export type HeaderProps = {
   categories: Category[];
   activeCategory?: string | null;
   onCategoryChange?: (category: string) => void;
-  layout: 'vertical' | 'horizontal';
+  layout?: 'vertical' | 'horizontal';
 };
 
-const Header: React.FC<HeaderProps> = ({ categories, activeCategory, onCategoryChange, layout }) => {
+const Header: React.FC<HeaderProps> = ({
+  categories,
+  activeCategory,
+  onCategoryChange,
+  layout = 'horizontal',
+}) => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const btnStyle: React.CSSProperties = {
+
+  const buttonBase: React.CSSProperties = {
     fontSize: '14px',
     border: 'none',
-    color: '#fff',
     cursor: 'pointer',
     fontWeight: 'bold',
-    borderRadius: '5px',
     padding: '10px 12px',
-    backgroundColor: '#607d8b',
+    background: 'none',
+    color: '#607d8b',
   };
 
-  const dropdownStyle: React.CSSProperties = {
+  const dropdownContainerStyle: React.CSSProperties = {
     position: 'absolute',
     top: '100%',
     left: 0,
@@ -32,22 +37,28 @@ const Header: React.FC<HeaderProps> = ({ categories, activeCategory, onCategoryC
     borderRadius: '4px',
     padding: '10px',
     zIndex: 1000,
+    display: 'flex',
+    flexDirection: layout === 'horizontal' ? 'row' : 'column',
+    gap: '10px',
   };
 
   const renderDropdown = () => (
-    <div style={dropdownStyle}>
+    <div style={dropdownContainerStyle}>
       {categories.map(cat =>
         onCategoryChange ? (
           <button
             key={cat.name}
-            onClick={() => { onCategoryChange(cat.name); setDropdownVisible(false); }}
-            style={{ ...btnStyle, backgroundColor: cat.color, margin: '5px 0', width: '100%' }}
+            onClick={() => {
+              onCategoryChange(cat.name);
+              setDropdownVisible(false);
+            }}
+            style={{ ...buttonBase, color: cat.color }}
           >
             {cat.name}
           </button>
         ) : (
           <Link key={cat.name} href={`/?category=${cat.name}`}>
-            <a style={{ ...btnStyle, backgroundColor: cat.color, margin: '5px 0', width: '100%', display: 'block', textAlign: 'center', textDecoration: 'none' }}>
+            <a style={{ ...buttonBase, color: cat.color, textDecoration: 'none' }}>
               {cat.name}
             </a>
           </Link>
@@ -56,102 +67,126 @@ const Header: React.FC<HeaderProps> = ({ categories, activeCategory, onCategoryC
     </div>
   );
 
-  const searchBtn = (
+  const categoriesButton = (
+    <button style={{ ...buttonBase, display: 'flex', alignItems: 'center', gap: '5px' }}>
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <polyline points="6 9 12 15 18 9" />
+      </svg>
+      Categories
+    </button>
+  );
+
+  const searchButton = (
     <Link href="/indices">
-      <a style={{ ...btnStyle, display: 'flex', alignItems: 'center', gap: '5px' }}>
+      <a style={{ ...buttonBase, padding: '10px', display: 'flex', alignItems: 'center' }}>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+             stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="11" cy="11" r="8" />
           <line x1="21" y1="21" x2="16.65" y2="16.65" />
         </svg>
-        Search
       </a>
     </Link>
   );
 
   if (layout === 'vertical') {
     return (
-      <div style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '250px',
-        height: '100vh',
-        padding: '20px',
-        boxSizing: 'border-box',
-        background: 'rgba(248,248,248,0.8)',
-        backdropFilter: 'blur(8px)',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '15px',
-        zIndex: 1000,
-      }}>
+      <div
+        style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '250px',
+          height: '100vh',
+          padding: '20px',
+          boxSizing: 'border-box',
+          background: 'rgba(248,248,248,0.8)',
+          backdropFilter: 'blur(8px)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '15px',
+          zIndex: 1000,
+        }}
+      >
         <Link href="/">
           <a style={{ textDecoration: 'none' }}>
             <img src="/media/logo.png" alt="Logo" style={{ height: '60px' }} />
           </a>
         </Link>
-        <h1 style={{
-          fontSize: '34px',
-          textAlign: 'left',
-          fontFamily: 'DINAlternate-Bold, sans-serif',
-          margin: 0,
-        }}>
+        <h1
+          style={{
+            fontSize: '34px',
+            textAlign: 'left',
+            fontFamily: 'DINAlternate-Bold, sans-serif',
+            margin: 0,
+          }}
+        >
           BICÉPHALE
         </h1>
-        <div style={{ position: 'relative' }}
+        <div
+          style={{ position: 'relative' }}
           onMouseEnter={() => setDropdownVisible(true)}
           onMouseLeave={() => setDropdownVisible(false)}
         >
-          <button style={btnStyle}>Categories</button>
+          {categoriesButton}
           {dropdownVisible && renderDropdown()}
         </div>
-        {searchBtn}
+        {searchButton}
       </div>
     );
   }
 
   return (
-    <div style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      right: 0,
-      padding: '10px 20px',
-      boxSizing: 'border-box',
-      background: 'rgba(248,248,248,0.8)',
-      backdropFilter: 'blur(8px)',
-      zIndex: 1000,
-    }}>
-      <div style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-      }}>
+    <div
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        padding: '10px 20px',
+        boxSizing: 'border-box',
+        background: 'rgba(248,248,248,0.8)',
+        backdropFilter: 'blur(8px)',
+        zIndex: 1000,
+      }}
+    >
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+        }}
+      >
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <Link href="/">
             <a style={{ textDecoration: 'none' }}>
               <img src="/media/logo.png" alt="Logo" style={{ height: '60px' }} />
             </a>
           </Link>
-          <h1 style={{
-            fontSize: '38px',
-            margin: 0,
-            lineHeight: '1',
-            fontFamily: 'DINAlternate-Bold, sans-serif',
-          }}>
+          <h1
+            style={{
+              fontSize: '38px',
+              margin: 0,
+              lineHeight: '1',
+              fontFamily: 'DINAlternate-Bold, sans-serif',
+            }}
+          >
             BICÉPHALE
           </h1>
         </div>
-        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-          <div style={{ position: 'relative' }}
-            onMouseEnter={() => setDropdownVisible(true)}
-            onMouseLeave={() => setDropdownVisible(false)}
-          >
-            <button style={btnStyle}>Categories</button>
-            {dropdownVisible && renderDropdown()}
-          </div>
-          {searchBtn}
+        <div
+          style={{
+            display: 'flex',
+            gap: '10px',
+            alignItems: 'center',
+            position: 'relative',
+          }}
+          onMouseEnter={() => setDropdownVisible(true)}
+          onMouseLeave={() => setDropdownVisible(false)}
+        >
+          {categoriesButton}
+          {dropdownVisible && renderDropdown()}
+          {searchButton}
         </div>
       </div>
     </div>
