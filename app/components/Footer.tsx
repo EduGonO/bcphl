@@ -7,12 +7,17 @@ const Footer: React.FC = () => {
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (newsletterOpen && popoverRef.current && !popoverRef.current.contains(e.target as Node)) {
+      if (
+        newsletterOpen &&
+        popoverRef.current &&
+        !popoverRef.current.contains(e.target as Node)
+      ) {
         setNewsletterOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    return () =>
+      document.removeEventListener('mousedown', handleClickOutside);
   }, [newsletterOpen]);
 
   const linkStyle: React.CSSProperties = {
@@ -126,14 +131,20 @@ const Footer: React.FC = () => {
           }}
         >
           <Link href="/indices">
-            <a style={linkStyle}>articles</a>
+            <a style={{ ...linkStyle, textDecoration: 'none' }}>articles</a>
           </Link>
-          <a style={linkStyle}>événements</a>
+          <a style={{ ...linkStyle, textDecoration: 'none' }} href="#">
+            événements
+          </a>
           <button style={buttonStyle} onClick={() => setNewsletterOpen(true)}>
             newsletter
           </button>
-          <a style={linkStyle}>à propos</a>
-          <a style={linkStyle}>contact</a>
+          <a style={{ ...linkStyle, textDecoration: 'none' }} href="#">
+            à propos
+          </a>
+          <a style={{ ...linkStyle, textDecoration: 'none' }} href="#">
+            contact
+          </a>
         </nav>
         {/* Social media icons */}
         <div
@@ -144,7 +155,7 @@ const Footer: React.FC = () => {
             marginBottom: '15px',
           }}
         >
-          <a style={linkStyle} href="#">
+          <a style={{ ...linkStyle, textDecoration: 'none' }} href="#">
             <svg
               width="20"
               height="20"
@@ -158,7 +169,7 @@ const Footer: React.FC = () => {
               <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
             </svg>
           </a>
-          <a style={linkStyle} href="#">
+          <a style={{ ...linkStyle, textDecoration: 'none' }} href="#">
             <svg
               width="20"
               height="20"
@@ -172,7 +183,7 @@ const Footer: React.FC = () => {
               <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53A4.48 4.48 0 0 0 22.43 1a9.15 9.15 0 0 1-2.88 1.1A4.52 4.52 0 0 0 16.11 0a4.48 4.48 0 0 0-4.47 4.47c0 .35.04.7.11 1.03A12.8 12.8 0 0 1 1.64 1.14a4.48 4.48 0 0 0 1.38 5.97 4.46 4.46 0 0 1-2.03-.56v.06A4.48 4.48 0 0 0 4.47 11a4.48 4.48 0 0 1-2.02.08 4.48 4.48 0 0 0 4.18 3.11A9 9 0 0 1 0 19.54a12.76 12.76 0 0 0 6.92 2.03c8.3 0 12.84-6.87 12.84-12.84 0-.2 0-.39-.02-.59A9.22 9.22 0 0 0 23 3z" />
             </svg>
           </a>
-          <a style={linkStyle} href="#">
+          <a style={{ ...linkStyle, textDecoration: 'none' }} href="#">
             <svg
               width="20"
               height="20"
@@ -188,7 +199,7 @@ const Footer: React.FC = () => {
               <line x1="17.5" y1="6.5" x2="17.5" y2="6.5" />
             </svg>
           </a>
-          <a style={linkStyle} href="#">
+          <a style={{ ...linkStyle, textDecoration: 'none' }} href="#">
             <svg
               width="20"
               height="20"
@@ -213,4 +224,4 @@ const Footer: React.FC = () => {
   );
 };
 
-export 
+export default Footer;
