@@ -21,7 +21,8 @@ type IndicesProps = {
 
 const Indices: React.FC<IndicesProps> = ({ indices }) => {
   const totalCategories = indices.length;
-  const totalArticles = indices.reduce((acc, cur) => acc + cur.texts.length, 0);
+  const totalArticles = indices.reduce((acc, cat) => acc + cat.texts.length, 0);
+
   return (
     <>
       <Head>
@@ -49,12 +50,16 @@ const Indices: React.FC<IndicesProps> = ({ indices }) => {
         </p>
         {indices.map((cat) => (
           <section key={cat.name} style={{ marginBottom: '20px' }}>
-            <h2 style={{ fontSize: '16px', marginBottom: '10px' }}>{cat.name}</h2>
-            <ul style={{ listStyle: 'none', margin: 0, paddingLeft: '20px' }}>
+            <h2 style={{ fontSize: '16px', marginBottom: '10px' }}>
+              <Link href={`/?category=${encodeURIComponent(cat.name)}`}>
+                <a style={{ color: '#333', textDecoration: 'none' }}>{cat.name}</a>
+              </Link>
+            </h2>
+            <ul style={{ listStyleType: 'disc', margin: 0, paddingLeft: '20px' }}>
               {cat.texts.map((text) => (
-                <li key={text.slug} style={{ marginBottom: '5px' }}>
-                  <Link href={`/${cat.name}/${text.slug}`}>
-                    <a style={{ fontSize: '12px', color: '#333', textDecoration: 'none' }}>
+                <li key={text.slug} style={{ marginBottom: '5px', fontSize: '12px' }}>
+                  <Link href={`/${encodeURIComponent(cat.name)}/${text.slug}`}>
+                    <a style={{ color: '#333', textDecoration: 'none' }}>
                       {text.title}
                     </a>
                   </Link>
