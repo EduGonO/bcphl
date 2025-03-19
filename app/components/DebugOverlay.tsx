@@ -5,13 +5,16 @@ type DebugOverlayProps = {
   onToggleLayout: () => void;
   bodyFontSize: number;
   onBodyFontSizeChange: (size: number) => void;
-  titleFont: 'Gaya' | 'Avenir';
-  onTitleFontChange: (font: 'Gaya' | 'Avenir') => void;
+  bodyFont: 'InterRegular' | 'InterMedium' | 'InterSemiBold';
+  onBodyFontChange: (font: 'InterRegular' | 'InterMedium' | 'InterSemiBold') => void;
+  titleFont: 'RecoletaSemiBold' | 'RecoletaMedium' | 'RecoletaBold';
+  onTitleFontChange: (font: 'RecoletaSemiBold' | 'RecoletaMedium' | 'RecoletaBold') => void;
   imagePreview: boolean;
   onToggleImagePreview: () => void;
   articleSidebar: boolean;
   onToggleArticleSidebar: () => void;
 };
+
 
 const DebugOverlay: React.FC<DebugOverlayProps> = ({
   layout,
@@ -67,6 +70,18 @@ const DebugOverlay: React.FC<DebugOverlayProps> = ({
           <option value="Avenir">Avenir</option>
         </select>
       </div>
+      <div style={{ marginBottom: '5px' }}>
+  <label style={{ marginRight: '5px' }}>Body Font:</label>
+  <select
+    value={bodyFont}
+    onChange={(e) => onBodyFontChange(e.target.value as 'InterRegular' | 'InterMedium' | 'InterSemiBold')}
+  >
+    <option value="InterRegular">Inter Regular</option>
+    <option value="InterMedium">Inter Medium</option>
+    <option value="InterSemiBold">Inter SemiBold</option>
+  </select>
+</div>
+
       <div style={{ marginBottom: '5px' }}>
         <label>
           <input

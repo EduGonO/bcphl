@@ -9,6 +9,41 @@
   src: url('/fonts/gaya-regular.otf') format('opentype');
   font-display: swap;
 }
+@font-face {
+  font-family: 'RecoletaBold';
+  src: url('/fonts/Recoleta-Bold.ttf') format('truetype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'RecoletaMedium';
+  src: url('/fonts/Recoleta-Medium.ttf') format('truetype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'RecoletaSemiBold';
+  src: url('/fonts/Recoleta-SemiBold.ttf') format('truetype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'InterRegular';
+  src: url('/fonts/Inter-Regular.otf') format('opentype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'InterMedium';
+  src: url('/fonts/Inter-Medium.otf') format('opentype');
+  font-display: swap;
+}
+@font-face {
+  font-family: 'InterSemiBold';
+  src: url('/fonts/Inter-SemiBold.otf') format('opentype');
+  font-display: swap;
+}
+
 body {
-  font-family: 'AvenirNextCondensed', Arial, sans-serif;
+  font-family: 'InterRegular', Arial, sans-serif;
+}
+
+h1, h2, h3 {
+  font-family: 'RecoletaSemiBold', serif;
 }
