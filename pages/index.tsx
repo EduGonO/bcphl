@@ -19,8 +19,8 @@ const Home: React.FC<{ articles: Article[]; categories: Category[] }> = ({ artic
   const [backgroundColor, setBackgroundColor] = useState<string>('#ffffff');
   const [layout, setLayout] = useState<'vertical' | 'horizontal'>('horizontal');
   const [bodyFontSize, setBodyFontSize] = useState<number>(16);
-  const [bodyFont, setBodyFont] = useState<'InterRegular' | 'InterMedium' | 'InterSemiBold'>('InterRegular');
-  const [titleFont, setTitleFont] = useState<'RecoletaSemiBold' | 'RecoletaMedium' | 'RecoletaBold'>('RecoletaSemiBold');
+  const [bodyFont, setBodyFont] = useState<'InterRegular' | 'AvenirNextCondensed'>('InterRegular');
+  const [titleFont, setTitleFont] = useState<'RecoletaMedium' | 'GayaRegular'>('RecoletaMedium');
   const [imagePreview, setImagePreview] = useState<boolean>(false);
 
   const handleCategoryChange = (category: string) => {
@@ -43,42 +43,7 @@ const Home: React.FC<{ articles: Article[]; categories: Category[] }> = ({ artic
   return (
     <>
       <Head>
-  <style jsx global>{`
-    @font-face {
-      font-family: 'InterRegular';
-      src: url('/fonts/Inter-Regular.otf') format('opentype');
-      font-display: swap;
-    }
-    @font-face {
-      font-family: 'InterMedium';
-      src: url('/fonts/Inter-Medium.otf') format('opentype');
-      font-display: swap;
-    }
-    @font-face {
-      font-family: 'InterSemiBold';
-      src: url('/fonts/Inter-SemiBold.otf') format('opentype');
-      font-display: swap;
-    }
-    @font-face {
-      font-family: 'RecoletaSemiBold';
-      src: url('/fonts/Recoleta-SemiBold.ttf') format('truetype');
-      font-display: swap;
-    }
-    @font-face {
-      font-family: 'RecoletaMedium';
-      src: url('/fonts/Recoleta-Medium.ttf') format('truetype');
-      font-display: swap;
-    }
-    @font-face {
-      font-family: 'RecoletaBold';
-      src: url('/fonts/Recoleta-Bold.ttf') format('truetype');
-      font-display: swap;
-    }
-    body {
-      margin: 0;
-      font-family: 'InterRegular', Arial, sans-serif;
-    }
-  `}</style>
+
 </Head>
 
       <div style={{
