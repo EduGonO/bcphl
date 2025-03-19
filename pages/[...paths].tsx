@@ -62,11 +62,23 @@ const ArticlePage: React.FC<{
   const [imagePreview, setImagePreview] = useState<boolean>(true);
   const [showArticleSidebar, setShowArticleSidebar] = useState<boolean>(true);
 
-  const mainStyle: React.CSSProperties =
+   const mainStyle: React.CSSProperties =
     layout === 'vertical'
       ? { marginLeft: '250px', padding: '20px' }
       : { marginTop: '140px', padding: '20px' };
 
+  // Style similar to header category button.
+  const headerCategoryStyle: React.CSSProperties = {
+    fontSize: '14px',
+    backgroundColor: '#3f51b5',
+    borderRadius: '5px',
+    color: '#fff',
+    padding: '5px 10px',
+    fontWeight: 'bold',
+    display: 'inline-block',
+  };
+
+  // Format the date to "MMM dd, YYYY"
   const formattedDate = new Date(date).toLocaleDateString('en-US', {
     month: 'short',
     day: '2-digit',
