@@ -57,29 +57,16 @@ const ArticlePage: React.FC<{
 
   const [layout, setLayout] = useState<'vertical' | 'horizontal'>('vertical');
   const [bodyFontSize, setBodyFontSize] = useState<number>(16);
-  const [bodyFont, setBodyFont] = useState<'InterRegular' | 'InterMedium' | 'InterSemiBold'>('InterRegular');
-  const [titleFont, setTitleFont] = useState<'RecoletaSemiBold' | 'RecoletaMedium' | 'RecoletaBold'>('RecoletaSemiBold');
+  const [bodyFont, setBodyFont] = useState<'InterRegular' | 'AvenirNextCondensed'>('InterRegular');
+  const [titleFont, setTitleFont] = useState<'RecoletaMedium' | 'GayaRegular'>('RecoletaMedium');
   const [imagePreview, setImagePreview] = useState<boolean>(true);
   const [showArticleSidebar, setShowArticleSidebar] = useState<boolean>(true);
 
-  // Offset main content based on header mode:
   const mainStyle: React.CSSProperties =
     layout === 'vertical'
       ? { marginLeft: '250px', padding: '20px' }
       : { marginTop: '140px', padding: '20px' };
 
-  // Style similar to header category button.
-  const headerCategoryStyle: React.CSSProperties = {
-    fontSize: '14px',
-    backgroundColor: '#3f51b5',
-    borderRadius: '5px',
-    color: '#fff',
-    padding: '5px 10px',
-    fontWeight: 'bold',
-    display: 'inline-block',
-  };
-
-  // Format the date to "MMM dd, YYYY"
   const formattedDate = new Date(date).toLocaleDateString('en-US', {
     month: 'short',
     day: '2-digit',
@@ -89,56 +76,13 @@ const ArticlePage: React.FC<{
   return (
     <>
       <Head>
-  <title>{title}</title>
-  <style>{`
-    @font-face {
-      font-family: 'InterRegular';
-      src: url('/fonts/Inter-Regular.otf') format('opentype');
-      font-display: swap;
-    }
-    @font-face {
-      font-family: 'InterMedium';
-      src: url('/fonts/Inter-Medium.otf') format('opentype');
-      font-display: swap;
-    }
-    @font-face {
-      font-family: 'InterSemiBold';
-      src: url('/fonts/Inter-SemiBold.otf') format('opentype');
-      font-display: swap;
-    }
-    @font-face {
-      font-family: 'RecoletaSemiBold';
-      src: url('/fonts/Recoleta-SemiBold.ttf') format('truetype');
-      font-display: swap;
-    }
-    @font-face {
-      font-family: 'RecoletaMedium';
-      src: url('/fonts/Recoleta-Medium.ttf') format('truetype');
-      font-display: swap;
-    }
-    @font-face {
-      font-family: 'RecoletaBold';
-      src: url('/fonts/Recoleta-Bold.ttf') format('truetype');
-      font-display: swap;
-    }
-    body {
-      margin: 0;
-      font-family: 'InterRegular', Arial, sans-serif;
-    }
-  `}</style>
-</Head>
-      <div style={{ backgroundColor: '#fff', fontSize: `${bodyFontSize}px` }}>
+        <title>{title}</title>
+        {/* Note: Global font declarations are now in your global CSS */}
+      </Head>
+      <div style={{ backgroundColor: '#fff', fontSize: `${bodyFontSize}px`, fontFamily: bodyFont }}>
         <Header categories={cats} layout={layout} />
         <main style={mainStyle}>
-          <div
-            style={{
-              display: 'flex',
-              gap: '20px',
-              margin: '0 auto',
-              maxWidth: '1200px',
-            }}
-          >
-            {/* Article view: takes the remaining space */}
+          <div style={{ display: 'flex', gap: '20px', margin: '0 auto', maxWidth: '1200px' }}>
             <div style={{ flex: 1 }}>
               {imagePreview && (
                 <img
@@ -153,25 +97,13 @@ const ArticlePage: React.FC<{
                   }}
                 />
               )}
-              <h1
-                style={{
-                  margin: '0 0 10px',
-                  fontFamily: titleFont,
-                }}
-              >
+              <h1 style={{ margin: '0 0 10px', fontFamily: titleFont }}>
                 {title}
               </h1>
               <p style={{ margin: '0 0 10px', color: '#555' }}>
                 {date} • {author} • {category.charAt(0).toUpperCase() + category.slice(1)}
               </p>
-              <div
-                style={{
-                  marginTop: '20px',
-                  lineHeight: '1.6',
-                  whiteSpace: 'pre-wrap',
-                  color: '#333',
-                }}
-              >
+              <div style={{ marginTop: '20px', lineHeight: '1.6', whiteSpace: 'pre-wrap', color: '#333' }}>
                 {content}
               </div>
             </div>
@@ -322,19 +254,19 @@ const ArticlePage: React.FC<{
           <Footer />
         </main>
         <DebugOverlay
-  layout={layout}
-  onToggleLayout={() => setLayout(layout === 'vertical' ? 'horizontal' : 'vertical')}
-  bodyFontSize={bodyFontSize}
-  onBodyFontSizeChange={setBodyFontSize}
-  bodyFont={bodyFont}
-  onBodyFontChange={setBodyFont}
-  titleFont={titleFont}
-  onTitleFontChange={setTitleFont}
-  imagePreview={imagePreview}
-  onToggleImagePreview={() => setImagePreview(!imagePreview)}
-  articleSidebar={showArticleSidebar}
-  onToggleArticleSidebar={() => setShowArticleSidebar(!showArticleSidebar)}
-/>
+          layout={layout}
+          onToggleLayout={() => setLayout(layout === 'vertical' ? 'horizontal' : 'vertical')}
+          bodyFontSize={bodyFontSize}
+          onBodyFontSizeChange={setBodyFontSize}
+          bodyFont={bodyFont}
+          onBodyFontChange={setBodyFont}
+          titleFont={titleFont}
+          onTitleFontChange={setTitleFont}
+          imagePreview={imagePreview}
+          onToggleImagePreview={() => setImagePreview(!imagePreview)}
+          articleSidebar={showArticleSidebar}
+          onToggleArticleSidebar={() => setShowArticleSidebar(!showArticleSidebar)}
+        />
       </div>
     </>
   );
