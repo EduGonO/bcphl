@@ -63,11 +63,16 @@ const DebugOverlay: React.FC<DebugOverlayProps> = ({
         font(titre):
         <select
           value={titleFont}
-          onChange={(e) => onTitleFontChange(e.target.value as 'Gaya' | 'Avenir')}
+          onChange={(e) =>
+            onTitleFontChange(
+              e.target.value as 'RecoletaSemiBold' | 'RecoletaMedium' | 'RecoletaBold'
+            )
+          }
           style={{ marginLeft: '5px' }}
         >
-          <option value="Gaya">Gaya</option>
-          <option value="Avenir">Avenir</option>
+          <option value="RecoletaSemiBold">Recoleta SemiBold</option>
+          <option value="RecoletaMedium">Recoleta Medium</option>
+          <option value="RecoletaBold">Recoleta Bold</option>
         </select>
       </div>
       <div style={{ marginBottom: '5px' }}>
