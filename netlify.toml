@@ -1,11 +1,10 @@
 [build]
-  base = "/pages"
-  publish = "/.next"
-  command = "npm run build"
+  base = ""
+  publish = ".next"
+  command = "npm install && npm run build"
 
 [build.environment]
   NODE_VERSION = "18"
-
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
