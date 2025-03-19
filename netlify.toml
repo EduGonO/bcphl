@@ -1,9 +1,12 @@
 [build]
-  command = "bun run build"
-  publish = "build"
+  base = "/pages"
+  publish = "/.next"
+  command = "npm run build"
 
 [build.environment]
-  NETLIFY_NEXT_PLUGIN_SKIP = "true"
+  NODE_VERSION = "18"
+
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+This approach worked for anot
