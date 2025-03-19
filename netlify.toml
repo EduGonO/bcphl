@@ -9,4 +9,3 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
-This approach worked for anot
