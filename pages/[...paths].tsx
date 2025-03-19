@@ -57,6 +57,7 @@ const ArticlePage: React.FC<{
 
   const [layout, setLayout] = useState<'vertical' | 'horizontal'>('vertical');
   const [bodyFontSize, setBodyFontSize] = useState<number>(16);
+  const [bodyFont, setBodyFont] = useState<'InterRegular' | 'InterMedium' | 'InterSemiBold'>('InterRegular');
   const [titleFont, setTitleFont] = useState<'RecoletaSemiBold' | 'RecoletaMedium' | 'RecoletaBold'>('RecoletaSemiBold');
   const [imagePreview, setImagePreview] = useState<boolean>(true);
   const [showArticleSidebar, setShowArticleSidebar] = useState<boolean>(true);
@@ -321,19 +322,19 @@ const ArticlePage: React.FC<{
           <Footer />
         </main>
         <DebugOverlay
-          layout={layout}
-          onToggleLayout={() =>
-            setLayout(layout === 'vertical' ? 'horizontal' : 'vertical')
-          }
-          bodyFontSize={bodyFontSize}
-          onBodyFontSizeChange={setBodyFontSize}
-          titleFont={titleFont}
-          onTitleFontChange={setTitleFont}
-          imagePreview={imagePreview}
-          onToggleImagePreview={() => setImagePreview(!imagePreview)}
-          articleSidebar={showArticleSidebar}
-          onToggleArticleSidebar={() => setShowArticleSidebar(!showArticleSidebar)}
-        />
+  layout={layout}
+  onToggleLayout={() => setLayout(layout === 'vertical' ? 'horizontal' : 'vertical')}
+  bodyFontSize={bodyFontSize}
+  onBodyFontSizeChange={setBodyFontSize}
+  bodyFont={bodyFont}
+  onBodyFontChange={setBodyFont}
+  titleFont={titleFont}
+  onTitleFontChange={setTitleFont}
+  imagePreview={imagePreview}
+  onToggleImagePreview={() => setImagePreview(!imagePreview)}
+  articleSidebar={showArticleSidebar}
+  onToggleArticleSidebar={() => setShowArticleSidebar(!showArticleSidebar)}
+/>
       </div>
     </>
   );
