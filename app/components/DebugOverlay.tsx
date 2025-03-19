@@ -5,10 +5,10 @@ type DebugOverlayProps = {
   onToggleLayout: () => void;
   bodyFontSize: number;
   onBodyFontSizeChange: (size: number) => void;
-  bodyFont: 'InterRegular' | 'InterMedium' | 'InterSemiBold';
-  onBodyFontChange: (font: 'InterRegular' | 'InterMedium' | 'InterSemiBold') => void;
-  titleFont: 'RecoletaSemiBold' | 'RecoletaMedium' | 'RecoletaBold';
-  onTitleFontChange: (font: 'RecoletaSemiBold' | 'RecoletaMedium' | 'RecoletaBold') => void;
+  bodyFont: 'InterRegular' | 'AvenirNextCondensed';
+  onBodyFontChange: (font: 'InterRegular' | 'AvenirNextCondensed') => void;
+  titleFont: 'RecoletaMedium' | 'Gaya';
+  onTitleFontChange: (font: 'RecoletaMedium' | 'Gaya') => void;
   imagePreview: boolean;
   onToggleImagePreview: () => void;
   articleSidebar: boolean;
@@ -65,15 +65,12 @@ const DebugOverlay: React.FC<DebugOverlayProps> = ({
         <select
           value={titleFont}
           onChange={(e) =>
-            onTitleFontChange(
-              e.target.value as 'RecoletaSemiBold' | 'RecoletaMedium' | 'RecoletaBold'
-            )
+            onTitleFontChange(e.target.value as 'RecoletaMedium' | 'Gaya')
           }
           style={{ marginLeft: '5px' }}
         >
-          <option value="RecoletaSemiBold">Recoleta SemiBold</option>
           <option value="RecoletaMedium">Recoleta Medium</option>
-          <option value="RecoletaBold">Recoleta Bold</option>
+          <option value="Gaya">Gaya</option>
         </select>
       </div>
       <div style={{ marginBottom: '5px' }}>
@@ -81,12 +78,11 @@ const DebugOverlay: React.FC<DebugOverlayProps> = ({
         <select
           value={bodyFont}
           onChange={(e) =>
-            onBodyFontChange(e.target.value as 'InterRegular' | 'InterMedium' | 'InterSemiBold')
+            onBodyFontChange(e.target.value as 'InterRegular' | 'AvenirNextCondensed')
           }
         >
           <option value="InterRegular">Inter Regular</option>
-          <option value="InterMedium">Inter Medium</option>
-          <option value="InterSemiBold">Inter SemiBold</option>
+          <option value="AvenirNextCondensed">AvenirNextCondensed</option>
         </select>
       </div>
       <div style={{ marginBottom: '5px' }}>
