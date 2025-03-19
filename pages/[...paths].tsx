@@ -57,7 +57,7 @@ const ArticlePage: React.FC<{
 
   const [layout, setLayout] = useState<'vertical' | 'horizontal'>('vertical');
   const [bodyFontSize, setBodyFontSize] = useState<number>(16);
-  const [titleFont, setTitleFont] = useState<'Gaya' | 'Avenir'>('Gaya');
+  const [titleFont, setTitleFont] = useState<'RecoletaSemiBold' | 'RecoletaMedium' | 'RecoletaBold'>('RecoletaSemiBold');
   const [imagePreview, setImagePreview] = useState<boolean>(true);
   const [showArticleSidebar, setShowArticleSidebar] = useState<boolean>(true);
 
@@ -88,29 +88,44 @@ const ArticlePage: React.FC<{
   return (
     <>
       <Head>
-        <title>{title}</title>
-        <style>{`
-          @font-face {
-            font-family: 'AvenirNextCondensed';
-            src: url('/fonts/AvenirNextCondensed-Regular.otf') format('opentype');
-            font-display: swap;
-          }
-          @font-face {
-            font-family: 'GayaRegular';
-            src: url('/fonts/gaya-regular.otf') format('opentype');
-            font-display: swap;
-          }
-          @font-face {
-            font-family: 'AvenirNextBolder';
-            src: url('/fonts/AvenirNextCondensed-Regular.otf') format('opentype');
-            font-display: swap;
-          }
-          body {
-            margin: 0;
-            font-family: 'AvenirNextCondensed', Arial, sans-serif;
-          }
-        `}</style>
-      </Head>
+  <title>{title}</title>
+  <style>{`
+    @font-face {
+      font-family: 'InterRegular';
+      src: url('/fonts/Inter-Regular.otf') format('opentype');
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'InterMedium';
+      src: url('/fonts/Inter-Medium.otf') format('opentype');
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'InterSemiBold';
+      src: url('/fonts/Inter-SemiBold.otf') format('opentype');
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'RecoletaSemiBold';
+      src: url('/fonts/Recoleta-SemiBold.ttf') format('truetype');
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'RecoletaMedium';
+      src: url('/fonts/Recoleta-Medium.ttf') format('truetype');
+      font-display: swap;
+    }
+    @font-face {
+      font-family: 'RecoletaBold';
+      src: url('/fonts/Recoleta-Bold.ttf') format('truetype');
+      font-display: swap;
+    }
+    body {
+      margin: 0;
+      font-family: 'InterRegular', Arial, sans-serif;
+    }
+  `}</style>
+</Head>
       <div style={{ backgroundColor: '#fff', fontSize: `${bodyFontSize}px` }}>
         <Header categories={cats} layout={layout} />
         <main style={mainStyle}>
@@ -140,7 +155,7 @@ const ArticlePage: React.FC<{
               <h1
                 style={{
                   margin: '0 0 10px',
-                  fontFamily: titleFont === 'Gaya' ? 'GayaRegular' : 'AvenirNextBolder',
+                  fontFamily: titleFont,
                 }}
               >
                 {title}
