@@ -15,12 +15,13 @@ type DebugOverlayProps = {
   onToggleArticleSidebar: () => void;
 };
 
-
 const DebugOverlay: React.FC<DebugOverlayProps> = ({
   layout,
   onToggleLayout,
   bodyFontSize,
   onBodyFontSizeChange,
+  bodyFont,
+  onBodyFontChange,
   titleFont,
   onTitleFontChange,
   imagePreview,
@@ -76,17 +77,18 @@ const DebugOverlay: React.FC<DebugOverlayProps> = ({
         </select>
       </div>
       <div style={{ marginBottom: '5px' }}>
-  <label style={{ marginRight: '5px' }}>Body Font:</label>
-  <select
-    value={bodyFont}
-    onChange={(e) => onBodyFontChange(e.target.value as 'InterRegular' | 'InterMedium' | 'InterSemiBold')}
-  >
-    <option value="InterRegular">Inter Regular</option>
-    <option value="InterMedium">Inter Medium</option>
-    <option value="InterSemiBold">Inter SemiBold</option>
-  </select>
-</div>
-
+        <label style={{ marginRight: '5px' }}>Body Font:</label>
+        <select
+          value={bodyFont}
+          onChange={(e) =>
+            onBodyFontChange(e.target.value as 'InterRegular' | 'InterMedium' | 'InterSemiBold')
+          }
+        >
+          <option value="InterRegular">Inter Regular</option>
+          <option value="InterMedium">Inter Medium</option>
+          <option value="InterSemiBold">Inter SemiBold</option>
+        </select>
+      </div>
       <div style={{ marginBottom: '5px' }}>
         <label>
           <input
