@@ -72,7 +72,7 @@ const Home: React.FC<{ articles: Article[]; categories: Category[] }> = ({ artic
           layout={layout}
         />
         <main style={mainStyle}>
-          <div style={{ maxWidth: '800px', width: '100%', margin: '0' }}>
+          <div style={{ maxWidth: '800px', width: '100%', margin: '0 auto' }}>
             {filteredArticles.map((article, i) => {
               const catColor = categories.find((c) => c.name === article.category)?.color || '#f0f0f0';
               return (
