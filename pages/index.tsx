@@ -36,8 +36,8 @@ const Home: React.FC<{ articles: Article[]; categories: Category[] }> = ({ artic
 
   const mainStyle: React.CSSProperties =
     layout === 'vertical'
-      ? { marginLeft: '250px', padding: '20px' }
-      : { marginTop: '140px', padding: '20px' };
+      ? { marginLeft: '250px' }
+      : { marginTop: '140px' };
 
   return (
     <>
